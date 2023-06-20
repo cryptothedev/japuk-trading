@@ -10,6 +10,8 @@ import {
 } from '@chakra-ui/react'
 import { FiArchive, FiPlay } from 'react-icons/fi'
 
+import { useAlertLogWS } from './useAlertLogWS.ts'
+
 interface AlertLog {
   time: string
   coin: string
@@ -27,6 +29,8 @@ const alerts: AlertLog[] = [
 ]
 
 export const AlertLogs = () => {
+  useAlertLogWS()
+
   return (
     <Table>
       <Thead>
