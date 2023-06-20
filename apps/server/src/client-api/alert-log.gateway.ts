@@ -2,7 +2,6 @@ import {
   OnGatewayConnection,
   OnGatewayDisconnect,
   OnGatewayInit,
-  SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets'
@@ -16,10 +15,7 @@ export class AlertLogGateway
 {
   @WebSocketServer() wss: Server
   constructor(private logger: LogService) {
-    setInterval(() => {
-      this.wss.emit('new', 'new log')
-      console.log('running')
-    }, 1000)
+    // this.wss.emit('new', 'new log')
   }
 
   afterInit(server: Server) {
