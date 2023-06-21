@@ -1,7 +1,5 @@
 import { Module } from '@nestjs/common'
 
-import { AppController } from './app.controller'
-import { AppService } from './app.service'
 import { BinanceModule } from './binance/binance.module'
 import { ClientApiModule } from './client-api/client-api.module'
 import { CoreModule } from './core/core.module'
@@ -16,7 +14,7 @@ import { TradingviewModule } from './tradingview/tradingview.module'
     TradingviewModule,
     ClientApiModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

@@ -9,4 +9,8 @@ export class ConfigService {
   getTradingViewToken() {
     return process.env['TRADINGVIEW_WEBHOOK_TOKEN'] as string
   }
+
+  getMongooseURI() {
+    return process.env['MONGOOSE_URI'] as string
+  }
 }
