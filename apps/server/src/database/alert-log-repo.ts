@@ -22,4 +22,16 @@ export class AlertLogRepo {
   getAll() {
     return this.alertLogModel.find().exec()
   }
+
+  async dismiss(id: string) {
+    return this.alertLogModel
+      .findByIdAndUpdate(
+        id,
+        {
+          $set: { dismissed: true },
+        },
+        { new: true },
+      )
+      .exec()
+  }
 }

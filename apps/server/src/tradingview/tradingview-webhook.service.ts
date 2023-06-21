@@ -1,10 +1,8 @@
-import { AlertLogResponse } from '@japuk/models'
 import { Injectable } from '@nestjs/common'
 
 import { AlertLogGateway } from '../client-api/alert-log.gateway'
 import { AlertLogService } from '../client-api/alert-log.service'
 import { AlertLogRepo } from '../database/alert-log-repo'
-import { AlertLogDocument } from '../database/alert-log.schema'
 import { TradingviewAlertDto } from './tradingview-alert.dto'
 
 @Injectable()

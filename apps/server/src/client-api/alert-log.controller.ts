@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common'
+import { Controller, Get, Param, Patch } from '@nestjs/common'
 
 import { AlertLogService } from './alert-log.service'
 
@@ -9,5 +9,10 @@ export class AlertLogController {
   @Get()
   getAllAlertLogs() {
     return this.alertLogService.getAllAlertLogs()
+  }
+
+  @Patch(':id')
+  dismiss(@Param('id') id: string) {
+    return this.alertLogService.dismiss(id)
   }
 }

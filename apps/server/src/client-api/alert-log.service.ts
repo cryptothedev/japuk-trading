@@ -1,5 +1,5 @@
 import { AlertLogResponse } from '@japuk/models'
-import { Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 
 import { LogService } from '../core/log.service'
 import { AlertLogRepo } from '../database/alert-log-repo'
@@ -12,6 +12,17 @@ export class AlertLogService {
   async getAllAlertLogs() {
     const alertLogDocs = await this.alertLogRepo.getAll()
     return alertLogDocs.map(this.toAlertLogResponse)
+  }
+
+  async dismiss(id: string) {
+    const updated = await this.alertLogRepo.dismiss(id)
+    if (!updated) {
+      this.logger.error('failed to dismiss alert log the id does not exist', {
+        id,
+      })
+      throw new BadRequestException()
+    }
+    return this.toAlertLogResponse(updated)
   }
 
   toAlertLogResponse(alertLogDoc: AlertLogDocument): AlertLogResponse {
