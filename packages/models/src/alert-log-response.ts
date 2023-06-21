@@ -1,6 +1,6 @@
 import { IsoString } from './shared'
 
-export enum AlertLogEvent {
+export const enum AlertLogEvent {
   New = 'new',
 }
 

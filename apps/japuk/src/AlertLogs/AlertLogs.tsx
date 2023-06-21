@@ -10,26 +10,10 @@ import {
 } from '@chakra-ui/react'
 import { FiArchive, FiPlay } from 'react-icons/fi'
 
-import { useAlertLogWS } from './useAlertLogWS.ts'
-
-interface AlertLog {
-  time: string
-  coin: string
-  price: number
-  reason: string
-}
-
-const alerts: AlertLog[] = [
-  {
-    time: `${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`,
-    coin: 'BTCUSDT',
-    price: 27002.12,
-    reason: 'ชนแนวรับ กรอบสำคัญ',
-  },
-]
+import { useAlertLog } from './useAlertLog'
 
 export const AlertLogs = () => {
-  useAlertLogWS()
+  const { alertLogs } = useAlertLog()
 
   return (
     <Table>
@@ -43,9 +27,9 @@ export const AlertLogs = () => {
         </Tr>
       </Thead>
       <Tbody>
-        {alerts.map(({ time, coin, price, reason }) => (
-          <Tr key={time}>
-            <td>{time}</td>
+        {alertLogs.map(({ id, createdAt, coin, price, reason }) => (
+          <Tr key={id}>
+            <td>{createdAt}</td>
             <Td>{coin}</Td>
             <Td>{price}</Td>
             <Td>{reason}</Td>

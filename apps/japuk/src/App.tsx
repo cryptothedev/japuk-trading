@@ -1,3 +1,4 @@
+import { AlertLogs } from "./AlertLogs/AlertLogs";
 import {
   Container,
   Stack,
@@ -5,13 +6,11 @@ import {
   TabIndicator,
   TabList,
   Tabs,
-} from '@chakra-ui/react'
-
-import { AlertLogs } from './AlertLogs/AlertLogs.tsx'
+} from "@chakra-ui/react";
 
 export const App = () => {
   return (
-    <Container py={{ base: '12', md: '16' }}>
+    <Container py={{ base: "12", md: "16" }}>
       <Stack spacing="8">
         <Tabs size="md" variant="indicator">
           <TabList>
@@ -23,5 +22,5 @@ export const App = () => {
         <AlertLogs />
       </Stack>
     </Container>
-  )
-}
+  );
+};

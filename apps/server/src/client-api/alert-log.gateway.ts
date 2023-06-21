@@ -15,9 +15,7 @@ export class AlertLogGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
   @WebSocketServer() wss: Server
-  constructor(private logger: LogService) {
-    // this.wss.emit('new', 'new log')
-  }
+  constructor(private logger: LogService) {}
 
   afterInit(server: Server) {
     this.logger.info('Initialized')
