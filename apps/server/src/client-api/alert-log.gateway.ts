@@ -1,3 +1,4 @@
+import { AlertLogEvent, AlertLogResponse } from '@japuk/models'
 import {
   OnGatewayConnection,
   OnGatewayDisconnect,
@@ -19,14 +20,18 @@ export class AlertLogGateway
   }
 
   afterInit(server: Server) {
-    this.logger.log('Initialized')
+    this.logger.info('Initialized')
   }
 
   handleConnection(client: Socket, ...args: any[]) {
-    this.logger.log(`Client Connected: ${client.id}`)
+    this.logger.info(`Client Connected: ${client.id}`)
   }
 
   handleDisconnect(client: Socket): any {
-    this.logger.log(`Client Disconnected: ${client.id}`)
+    this.logger.info(`Client Disconnected: ${client.id}`)
+  }
+
+  newAlertLog(alertLogResponse: AlertLogResponse) {
+    this.wss.emit(AlertLogEvent.New, alertLogResponse)
   }
 }

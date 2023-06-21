@@ -18,5 +18,6 @@ import { MongooseConfigService } from './mongoose-config.service'
     ]),
   ],
   providers: [MongooseConfigService, AlertLogRepo],
+  exports: [AlertLogRepo],
 })
 export class DatabaseModule {}

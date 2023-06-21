@@ -1,7 +1,8 @@
+import { WithTimestamp } from '@japuk/models'
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { HydratedDocument } from 'mongoose'
 
-export type AlertLogDocument = HydratedDocument<AlertLog>
+export type AlertLogDocument = HydratedDocument<AlertLog, WithTimestamp>
 
 @Schema({ timestamps: true })
 export class AlertLog {

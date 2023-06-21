@@ -2,5 +2,6 @@ import { Injectable } from '@nestjs/common'
 
 @Injectable()
 export class LogService {
-  log = console.log.bind(console)
+  info = console.log.bind(console)
+  error = console.error.bind(console)
 }
