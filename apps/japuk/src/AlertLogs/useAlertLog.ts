@@ -2,6 +2,7 @@ import { AlertLogEvent, AlertLogResponse } from '@japuk/models'
 import { useEffect } from 'react'
 import { io } from 'socket.io-client'
 
+import { BASE_URL } from '../configs/constants'
 import { AlertLogSelector } from '../store/alert-log/alertLogSelector'
 import { addAlertLog, fetchAlertLogs } from '../store/alert-log/alertLogSlice'
 import { useAppDispatch, useAppSelector } from '../store/store'
@@ -14,7 +15,8 @@ export const useAlertLog = () => {
   )
 
   useEffect(() => {
-    const socket = io('http://localhost:3000/alert-log')
+    const wsURL = BASE_URL + '/alert-log'
+    const socket = io(wsURL)
 
     socket.on('connect', () => {
       console.log(socket.id)
