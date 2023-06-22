@@ -27,29 +27,34 @@ export const AlertLogs = () => {
         </Tr>
       </Thead>
       <Tbody>
-        {alertLogs.map(({ id, createdAt, coin, price, reason }) => (
-          <Tr key={id}>
-            <td>{createdAt}</td>
-            <Td>{coin}</Td>
-            <Td>{price}</Td>
-            <Td>{reason}</Td>
+        {alertLogs.map(({ id, createdAt, coin, price, reason }) => {
+          const date = new Date(createdAt)
+          const dateTimeString = `${date.toLocaleDateString()}: ${date.toLocaleTimeString()}`
 
-            <Td>
-              <HStack spacing="1">
-                <IconButton
-                  icon={<FiArchive fontSize="1.25rem" />}
-                  variant="tertiary"
-                  aria-label="Archive alert"
-                />
-                <IconButton
-                  icon={<FiPlay fontSize="1.25rem" />}
-                  variant="tertiary"
-                  aria-label="Open order from alert"
-                />
-              </HStack>
-            </Td>
-          </Tr>
-        ))}
+          return (
+            <Tr key={id}>
+              <td>{dateTimeString}</td>
+              <Td>{coin}</Td>
+              <Td>{price}</Td>
+              <Td>{reason}</Td>
+
+              <Td>
+                <HStack spacing="1">
+                  <IconButton
+                    icon={<FiArchive fontSize="1.25rem" />}
+                    variant="tertiary"
+                    aria-label="Archive alert"
+                  />
+                  <IconButton
+                    icon={<FiPlay fontSize="1.25rem" />}
+                    variant="tertiary"
+                    aria-label="Open order from alert"
+                  />
+                </HStack>
+              </Td>
+            </Tr>
+          )
+        })}
       </Tbody>
     </Table>
   )

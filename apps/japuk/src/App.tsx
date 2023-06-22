@@ -1,26 +1,17 @@
-import { AlertLogs } from "./AlertLogs/AlertLogs";
-import {
-  Container,
-  Stack,
-  Tab,
-  TabIndicator,
-  TabList,
-  Tabs,
-} from "@chakra-ui/react";
+import { Box, Flex, useColorModeValue as mode } from '@chakra-ui/react'
+
+import { AlertLogs } from './AlertLogs/AlertLogs'
+import { LeftNav } from './LeftNav/LeftNav'
 
 export const App = () => {
   return (
-    <Container py={{ base: "12", md: "16" }}>
-      <Stack spacing="8">
-        <Tabs size="md" variant="indicator">
-          <TabList>
-            <Tab>Alert Logs</Tab>
-          </TabList>
-          <TabIndicator />
-        </Tabs>
-
-        <AlertLogs />
-      </Stack>
-    </Container>
-  );
-};
+    <Box height="100vh" overflow="hidden" position="relative">
+      <Flex h="full" id="app-container">
+        <LeftNav />
+        <Box flex="1" p="6">
+          <AlertLogs />
+        </Box>
+      </Flex>
+    </Box>
+  )
+}
