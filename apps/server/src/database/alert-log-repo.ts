@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 
-import { TradingviewAlertDto } from '../tradingview/tradingview-alert.dto'
+import { TradingviewAlert } from '../tradingview/tradingview-alert'
 import { AlertLog, AlertLogDocument } from './alert-log.schema'
 
 @Injectable()
@@ -11,7 +11,7 @@ export class AlertLogRepo {
     @InjectModel(AlertLog.name) private alertLogModel: Model<AlertLogDocument>,
   ) {}
 
-  async createOne(tradingviewAlertDto: TradingviewAlertDto) {
+  async createOne(tradingviewAlertDto: TradingviewAlert) {
     const created: AlertLog = {
       ...tradingviewAlertDto,
       dismissed: false,

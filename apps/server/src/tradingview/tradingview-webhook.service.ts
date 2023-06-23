@@ -3,7 +3,6 @@ import { Injectable } from '@nestjs/common'
 import { AlertLogGateway } from '../client-api/alert-log.gateway'
 import { AlertLogService } from '../client-api/alert-log.service'
 import { AlertLogRepo } from '../database/alert-log-repo'
-import { TradingviewAlertDto } from './tradingview-alert.dto'
 
 @Injectable()
 export class TradingviewWebhookService {
@@ -12,10 +11,14 @@ export class TradingviewWebhookService {
     private alertLogGateway: AlertLogGateway,
     private alertLogService: AlertLogService,
   ) {}
-  async processWebhookFromTradingview(
-    tradingviewAlertDto: TradingviewAlertDto,
-  ) {
-    const alertLogDoc = await this.alertLogRepo.createOne(tradingviewAlertDto)
+  async processWebhookFromTradingview(actionBody: string) {
+    const [coin, price, reason] = actionBody.split(':')
+
+    const alertLogDoc = await this.alertLogRepo.createOne({
+      coin,
+      price,
+      reason,
+    })
 
     await this.alertLogGateway.newAlertLog(
       this.alertLogService.toAlertLogResponse(alertLogDoc),

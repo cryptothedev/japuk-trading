@@ -1,4 +1,4 @@
-export class TradingviewAlertDto {
+export class TradingviewAlert {
   coin: string
   reason: string
   price: string

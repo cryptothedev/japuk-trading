@@ -5,7 +5,7 @@ import {
   BiNews,
   BiPurchaseTagAlt,
 } from 'react-icons/bi'
-import { useLocation, useMatches } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 
 import { AccountSwitcher } from './AccountSwitcher'
 import { NavGroup } from './NavGroup'
