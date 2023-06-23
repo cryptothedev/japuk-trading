@@ -11,15 +11,7 @@ export class TradingviewWebhookService {
     private alertLogRepo: AlertLogRepo,
     private alertLogGateway: AlertLogGateway,
     private alertLogService: AlertLogService,
-  ) {
-    setInterval(() => {
-      this.processWebhookFromTradingview({
-        coin: 'BTCUSDT',
-        price: '30000.5',
-        reason: 'BTC ชนแนวรับ Fibo 61.8',
-      })
-    }, 5000)
-  }
+  ) {}
   async processWebhookFromTradingview(
     tradingviewAlertDto: TradingviewAlertDto,
   ) {
