@@ -2,6 +2,7 @@
   "singleQuote": true,
   "trailingComma": "all",
   "semi": false,
+  "printWidth": 80,
   "importOrder": ["^[./]"],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true

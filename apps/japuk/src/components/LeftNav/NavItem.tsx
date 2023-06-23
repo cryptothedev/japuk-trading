@@ -1,9 +1,10 @@
 import { Box, HStack } from '@chakra-ui/react'
 import { ReactElement, ReactNode } from 'react'
 import { BsCaretRightFill } from 'react-icons/bs'
+import { Link } from 'react-router-dom'
 
 interface NavItemProps {
-  href?: string
+  to: string
   label: string
   subtle?: boolean
   active?: boolean
@@ -13,11 +14,11 @@ interface NavItemProps {
 }
 
 export const NavItem = (props: NavItemProps) => {
-  const { active, subtle, icon, children, label, endElement, href } = props
+  const { active, subtle, icon, children, label, endElement, to } = props
   return (
     <HStack
-      as="a"
-      href={href}
+      as={Link}
+      to={to}
       w="full"
       px="3"
       py="2"
@@ -32,7 +33,11 @@ export const NavItem = (props: NavItemProps) => {
       <Box fontSize="lg" color={active ? 'currentcolor' : 'gray.400'}>
         {icon}
       </Box>
-      <Box flex="1" fontWeight="inherit" color={subtle ? 'gray.400' : undefined}>
+      <Box
+        flex="1"
+        fontWeight="inherit"
+        color={subtle ? 'gray.400' : undefined}
+      >
         {label}
       </Box>
       {endElement && !children && <Box>{endElement}</Box>}
