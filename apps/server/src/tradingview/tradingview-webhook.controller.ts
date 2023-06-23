@@ -9,6 +9,7 @@ import {
 import { ConfigService } from '../core/config.service'
 import { LogService } from '../core/log.service'
 import { wait } from '../utils/wait'
+import { BinanceSpotTradingService } from './binance-spot-trading.service'
 import { WebhookAction } from './models/WebhookAction'
 import { TradingviewWebhookService } from './tradingview-webhook.service'
 import { getWebhookAction } from './utils/getWebhookAction'
@@ -20,6 +21,7 @@ export class TradingviewWebhookController {
   constructor(
     private configService: ConfigService,
     private tradingviewWebhookService: TradingviewWebhookService,
+    private binanceSpotTradingService: BinanceSpotTradingService,
     private logger: LogService,
   ) {}
 
@@ -50,6 +52,7 @@ export class TradingviewWebhookController {
 
         const webhookAction = getWebhookAction(message)
         const actionBody = message.split('_').slice(1).join('_')
+
         switch (webhookAction) {
           case WebhookAction.Alert: {
             await this.tradingviewWebhookService.processWebhookFromTradingview(
@@ -58,12 +61,22 @@ export class TradingviewWebhookController {
             break
           }
           case WebhookAction.RebalanceTo: {
+            const rebalanceToUSD = Number(actionBody)
+            await this.binanceSpotTradingService.rebalance(
+              rebalanceToUSD,
+              [],
+              true,
+            )
             break
           }
           case WebhookAction.DCA: {
+            const amountUSD = Number(actionBody)
+            await this.binanceSpotTradingService.dca(amountUSD, [])
             break
           }
           case WebhookAction.SellPercent: {
+            const sellPercent = Number(actionBody)
+            await this.binanceSpotTradingService.sellDCA(sellPercent, [])
             break
           }
         }
