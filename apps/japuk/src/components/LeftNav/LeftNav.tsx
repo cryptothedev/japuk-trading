@@ -33,7 +33,7 @@ export const LeftNav = () => {
   const { pathname } = useLocation()
 
   const isMatch = (to: string) => {
-    return pathname === to
+    return pathname.includes(to)
   }
 
   return (

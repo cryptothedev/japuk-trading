@@ -22,7 +22,7 @@ export const AlertLogs = () => {
         title="Alert Logs"
         description="Logs triggered from Tradingview"
       />
-      <Table>
+      <Table variant="striped">
         <Thead>
           <Tr>
             <Th>Time</Th>
