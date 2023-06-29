@@ -6,29 +6,42 @@ import {
   FormLabel,
   Input,
 } from '@chakra-ui/react'
+import { QueryStatus } from '@reduxjs/toolkit/query'
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { PageHeader } from '../../components/PageHeader/PageHeader'
+import { useSetting } from './useSetting'
 
 type SettingsFormValues = {
   rebalanceTo: string
 }
 
 export const Settings = () => {
+  const { setting, upsert, settingLoadingStatus, upsertSettingLoadingStatus } =
+    useSetting(false)
+
   const {
     handleSubmit,
     register,
+    setValue,
     formState: { errors, isSubmitting, isValid, isDirty },
   } = useForm<SettingsFormValues>({
-    defaultValues: { rebalanceTo: '8000' },
     mode: 'onChange',
   })
 
-  function onSubmit(formValues: SettingsFormValues) {
-    console.log(formValues)
+  const onSubmit = async (formValues: SettingsFormValues) => {
+    await upsert({ rebalanceToUSD: Number(formValues.rebalanceTo) })
   }
 
+  useEffect(() => {
+    setValue('rebalanceTo', setting.rebalanceToUSD.toString())
+  }, [setValue, setting])
+
   const canSave = isValid && isDirty
+  const isLoading =
+    settingLoadingStatus === QueryStatus.pending ||
+    upsertSettingLoadingStatus === QueryStatus.pending
 
   return (
     <>
@@ -41,7 +54,7 @@ export const Settings = () => {
           isLoading={isSubmitting}
           type="submit"
           onClick={handleSubmit(onSubmit)}
-          isDisabled={!canSave}
+          isDisabled={!canSave || isLoading}
         >
           Save
         </Button>

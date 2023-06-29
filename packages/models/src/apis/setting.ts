@@ -3,5 +3,6 @@ export interface UpsertSettingDto {
 }
 
 export interface SettingResponse {
+  id: string
   rebalanceToUSD: number
 }

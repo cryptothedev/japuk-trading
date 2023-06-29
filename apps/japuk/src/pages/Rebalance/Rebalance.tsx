@@ -3,9 +3,14 @@ import { FaBalanceScaleLeft } from 'react-icons/fa'
 import { FiRefreshCw } from 'react-icons/fi'
 
 import { PageHeader } from '../../components/PageHeader/PageHeader'
+import { useSetting } from '../Settings/useSetting'
 import { RebalanceTickers } from './RebalanceTickers'
 
 export const Rebalance = () => {
+  const { setting } = useSetting(false)
+
+  const { rebalanceToUSD } = setting
+
   return (
     <>
       <Flex justifyContent="space-between">
@@ -19,7 +24,7 @@ export const Rebalance = () => {
             <b>3</b> pairs
           </Text>
           <Text>
-            Each to <b>$8,000</b>
+            Each to <b>${rebalanceToUSD.toLocaleString()}</b>
           </Text>
           <Text>
             Total <b>$23,924.35</b>

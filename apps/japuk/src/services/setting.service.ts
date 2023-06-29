@@ -3,7 +3,7 @@ import axios from 'axios'
 
 import { BASE_URL } from '../configs/constants'
 
-export class AlertLogService {
+export class SettingService {
   static fetchSetting = () => {
     const url = BASE_URL + '/setting'
     return axios
@@ -14,7 +14,7 @@ export class AlertLogService {
   static upsertSetting = (dto: UpsertSettingDto) => {
     const url = BASE_URL + '/setting'
     return axios
-      .post<SettingResponse, UpsertSettingDto>(url, dto)
-      .then((response) => response)
+      .post<SettingResponse>(url, dto)
+      .then((response) => response.data)
   }
 }
