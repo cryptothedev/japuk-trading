@@ -3,6 +3,7 @@ import { FiSettings } from 'react-icons/fi'
 
 import { AlertLogs } from '../pages/AlertLogs/AlertLogs'
 import { Rebalance } from '../pages/Rebalance/Rebalance'
+import { Settings } from '../pages/Settings/Settings'
 
 export const routes = {
   rebalance: {
@@ -20,7 +21,7 @@ export const routes = {
   settings: {
     label: 'Settings',
     path: '/settings',
-    element: <AlertLogs />,
+    element: <Settings />,
     icon: <FiSettings />,
   },
 }

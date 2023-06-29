@@ -1,5 +1,4 @@
 import { Box, Flex, Stack } from '@chakra-ui/react'
-import { BiEnvelope } from 'react-icons/bi'
 import { useLocation } from 'react-router-dom'
 
 import { routes } from '../../configs/routes'
