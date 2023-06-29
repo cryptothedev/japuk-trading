@@ -2,10 +2,10 @@ import { AlertLogEvent, AlertLogResponse } from '@japuk/models'
 import { useEffect } from 'react'
 import { io } from 'socket.io-client'
 
-import { BASE_URL } from '../configs/constants'
-import { AlertLogSelector } from '../store/alert-log/alertLogSelector'
-import { addAlertLog, fetchAlertLogs } from '../store/alert-log/alertLogSlice'
-import { useAppDispatch, useAppSelector } from '../store/store'
+import { BASE_URL } from '../../configs/constants'
+import { AlertLogSelector } from '../../store/alert-log/alertLogSelector'
+import { addAlertLog, fetchAlertLogs } from '../../store/alert-log/alertLogSlice'
+import { useAppDispatch, useAppSelector } from '../../store/store'
 
 export const useAlertLog = () => {
   const dispatch = useAppDispatch()

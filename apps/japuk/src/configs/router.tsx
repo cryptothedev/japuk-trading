@@ -1,9 +1,7 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { Navigate, createBrowserRouter } from 'react-router-dom'
 
-import { AlertLogs } from '../AlertLogs/AlertLogs'
 import { App } from '../App'
-import { Rebalance } from '../Rebalance/Rebalance'
-import { RebalanceTickers } from '../Rebalance/RebalanceTickers'
+import { routes } from './routes'
 
 export const router = createBrowserRouter([
   {
@@ -11,18 +9,13 @@ export const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: '/rebalance',
-        element: <Rebalance />,
-        children: [
-          {
-            index: true,
-            element: <RebalanceTickers />,
-          },
-        ],
+        path: routes.rebalance.path,
+        element: routes.rebalance.element,
       },
-      { path: '/alert-logs', element: <AlertLogs /> },
-      { path: '/my-portfolios', element: <h1>My Portfolios</h1> },
-      { path: '/high-volumes', element: <h1>High Volumes</h1> },
+      { path: routes.alertLogs.path, element: routes.alertLogs.element },
+      { path: routes.settings.path, element: routes.settings.element },
+      { path: '/', element: <Navigate to={routes.rebalance.path} /> },
+      { path: '*', element: <Navigate to={routes.rebalance.path} /> },
     ],
   },
 ])

@@ -1,16 +1,9 @@
 import { Box, Flex, HStack, IconButton, Text } from '@chakra-ui/react'
 import { FaBalanceScaleLeft } from 'react-icons/fa'
 import { FiRefreshCw } from 'react-icons/fi'
-import { Outlet, useLocation } from 'react-router-dom'
 
-import { PageHeader } from '../components/PageHeader/PageHeader'
-
-const TabItems = [
-  {
-    title: 'Tickers',
-    to: '/rebalance',
-  },
-]
+import { PageHeader } from '../../components/PageHeader/PageHeader'
+import { RebalanceTickers } from './RebalanceTickers'
 
 export const Rebalance = () => {
   return (
@@ -51,7 +44,7 @@ export const Rebalance = () => {
         </HStack>
       </Flex>
 
-      <Outlet />
+      <RebalanceTickers />
     </>
   )
 }

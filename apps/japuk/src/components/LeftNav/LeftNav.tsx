@@ -1,12 +1,8 @@
 import { Box, Flex, Stack } from '@chakra-ui/react'
-import {
-  BiCreditCard,
-  BiEnvelope,
-  BiNews,
-  BiPurchaseTagAlt,
-} from 'react-icons/bi'
+import { BiEnvelope } from 'react-icons/bi'
 import { useLocation } from 'react-router-dom'
 
+import { routes } from '../../configs/routes'
 import { AccountSwitcher } from './AccountSwitcher'
 import { NavGroup } from './NavGroup'
 import { NavItem } from './NavItem'
@@ -15,16 +11,26 @@ const navGroups = [
   {
     groupLabel: 'Tools',
     items: [
-      { label: 'Rebalance', to: '/rebalance', icon: <BiCreditCard /> },
-      { label: 'Alert Logs', to: '/alert-logs', icon: <BiPurchaseTagAlt /> },
+      {
+        label: routes.rebalance.label,
+        to: routes.rebalance.path,
+        icon: routes.rebalance.icon,
+      },
+      {
+        label: routes.alertLogs.label,
+        to: routes.alertLogs.path,
+        icon: routes.alertLogs.icon,
+      },
     ],
   },
   {
-    groupLabel: 'Today Insights',
+    groupLabel: 'Others',
     items: [
-      { label: 'My Portfolios', to: '/my-portfolios', icon: <BiEnvelope /> },
-
-      { label: 'High Volumes', to: '/high-volumes', icon: <BiNews /> },
+      {
+        label: routes.settings.label,
+        to: routes.settings.path,
+        icon: routes.settings.icon,
+      },
     ],
   },
 ]

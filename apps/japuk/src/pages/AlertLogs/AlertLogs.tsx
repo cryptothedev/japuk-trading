@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react'
 import { FiArchive, FiPlay } from 'react-icons/fi'
 
-import { PageHeader } from '../components/PageHeader/PageHeader'
+import { PageHeader } from '../../components/PageHeader/PageHeader'
 import { useAlertLog } from './useAlertLog'
 
 export const AlertLogs = () => {
@@ -39,7 +39,7 @@ export const AlertLogs = () => {
 
             return (
               <Tr key={id}>
-                <td>{dateTimeString}</td>
+                <Td>{dateTimeString}</Td>
                 <Td>{coin}</Td>
                 <Td>{price}</Td>
                 <Td>{reason}</Td>
