@@ -9,13 +9,13 @@ import { removeStable } from './utils/removeStable'
 export class BinanceSpotTradingService {
   constructor(
     private binanceSpotService: BinanceSpotService,
-    private log: LogService,
+    private logger: LogService,
   ) {}
 
   async dca(amountUSD: number, pairs: string[]) {
     for (const pair of pairs) {
       await this.binanceSpotService.buy(pair, amountUSD)
-      this.log.info(`dca ${pair} amount ${amountUSD}`)
+      this.logger.info(`dca ${pair} amount ${amountUSD}`)
       await wait(1)
     }
   }
@@ -32,19 +32,19 @@ export class BinanceSpotTradingService {
         const currentAmount = balancesDict[pairCoin]
 
         if (!currentPrice || !currentAmount) {
-          this.log.info('skipped', pair)
+          this.logger.info('skipped', pair)
           continue
         }
 
         const amountUSD = Math.floor(
           (currentPrice * currentAmount * percentTp) / 100,
         )
-        this.log.info('selling amount', amountUSD)
+        this.logger.info('selling amount', amountUSD)
 
         await this.binanceSpotService.sell(pair, amountUSD)
-        this.log.info(`dca sell ${pair} amount ${amountUSD}`)
+        this.logger.info(`dca sell ${pair} amount ${amountUSD}`)
       } catch (e) {
-        this.log.error('failed to dca sell', pair, e)
+        this.logger.error('failed to dca sell', pair, e)
       } finally {
         await wait(1)
       }
@@ -63,7 +63,7 @@ export class BinanceSpotTradingService {
         const currentAmount = balancesDict[pairCoin]
 
         if (!currentPrice || !currentAmount) {
-          this.log.info('skipped', pair)
+          this.logger.info('skipped', pair)
           continue
         }
 
@@ -72,7 +72,7 @@ export class BinanceSpotTradingService {
         const buy = amount < 0
         const sell = !buy
         if (buy && !alsoBuy) {
-          this.log.info(
+          this.logger.info(
             'skipped. does not need to do anything',
             pair,
             amount,
@@ -81,15 +81,15 @@ export class BinanceSpotTradingService {
           continue
         } else if (buy) {
           const buyAmount = amount * -1
-          this.log.info('buying amount', buyAmount)
+          this.logger.info('buying amount', buyAmount)
           await this.binanceSpotService.buy(pair, buyAmount)
         } else if (sell) {
-          this.log.info('selling amount', amount)
+          this.logger.info('selling amount', amount)
           await this.binanceSpotService.sell(pair, amount)
         }
-        this.log.info('rebalance', pair, amount)
+        this.logger.info('rebalance', pair, amount)
       } catch (e) {
-        this.log.error('failed to rebalance', pair, e)
+        this.logger.error('failed to rebalance', pair, e)
       } finally {
         await wait(1)
       }

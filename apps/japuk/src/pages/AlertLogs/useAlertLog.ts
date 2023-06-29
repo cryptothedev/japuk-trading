@@ -4,10 +4,13 @@ import { io } from 'socket.io-client'
 
 import { BASE_URL } from '../../configs/constants'
 import { AlertLogSelector } from '../../store/alert-log/alertLogSelector'
-import { addAlertLog, fetchAlertLogs } from '../../store/alert-log/alertLogSlice'
+import {
+  addAlertLog,
+  fetchAlertLogs,
+} from '../../store/alert-log/alertLogSlice'
 import { useAppDispatch, useAppSelector } from '../../store/store'
 
-export const useAlertLog = () => {
+export const useAlertLog = (fetch: boolean) => {
   const dispatch = useAppDispatch()
   const alertLogs = useAppSelector(AlertLogSelector.alertLogs)
   const alertLogsLoadingStatus = useAppSelector(
@@ -15,6 +18,10 @@ export const useAlertLog = () => {
   )
 
   useEffect(() => {
+    if (!fetch) {
+      return
+    }
+
     const wsURL = BASE_URL + '/alert-log'
     const socket = io(wsURL)
 
@@ -36,7 +43,7 @@ export const useAlertLog = () => {
       console.log('disconnect')
       socket.disconnect()
     }
-  }, [dispatch])
+  }, [dispatch, fetch])
 
   return {
     alertLogs,

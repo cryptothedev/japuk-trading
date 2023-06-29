@@ -5,13 +5,15 @@ import { DatabaseModule } from '../database/database.module'
 import { AlertLogController } from './alert-log/alert-log.controller'
 import { AlertLogGateway } from './alert-log/alert-log.gateway'
 import { AlertLogService } from './alert-log/alert-log.service'
-import { SettingService } from './setting/setting.service';
-import { SettingController } from './setting/setting.controller';
+import { SettingController } from './setting/setting.controller'
+import { SettingService } from './setting/setting.service'
+import { TickerController } from './ticker/ticker.controller'
+import { TickerService } from './ticker/ticker.service'
 
 @Module({
   imports: [CoreModule, DatabaseModule],
-  controllers: [AlertLogController, SettingController],
-  providers: [AlertLogGateway, AlertLogService, SettingService],
+  controllers: [AlertLogController, SettingController, TickerController],
+  providers: [AlertLogGateway, AlertLogService, SettingService, TickerService],
   exports: [AlertLogGateway, AlertLogService],
 })
 export class ClientApiModule {}

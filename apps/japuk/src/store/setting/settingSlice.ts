@@ -6,13 +6,11 @@ import { SettingService } from '../../services/setting.service'
 
 export const fetchSetting = createAsyncThunk(
   'setting/fetchSetting',
-  // if you type your function argument here
   SettingService.fetchSetting,
 )
 
 export const upsertSetting = createAsyncThunk(
   'setting/upsertSetting',
-  // if you type your function argument here
   SettingService.upsertSetting,
 )
 

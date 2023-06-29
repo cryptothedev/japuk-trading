@@ -6,7 +6,6 @@ import { AlertLogService } from '../../services/alert-log.service'
 
 export const fetchAlertLogs = createAsyncThunk(
   'alertLog/fetchAlertLogs',
-  // if you type your function argument here
   AlertLogService.fetchAlertLogs,
 )
 

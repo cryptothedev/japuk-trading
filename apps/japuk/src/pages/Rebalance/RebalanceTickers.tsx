@@ -8,6 +8,7 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react'
+import { TickerResponse } from '@japuk/models'
 import {
   FaBalanceScale,
   FaBalanceScaleLeft,
@@ -15,7 +16,18 @@ import {
 } from 'react-icons/fa'
 import { MdDelete } from 'react-icons/md'
 
-export const RebalanceTickers = () => {
+interface RebalanceTickersProps {
+  tickers: TickerResponse[]
+  deleteTicker: (id: string) => void
+}
+export const RebalanceTickers = ({
+  tickers,
+  deleteTicker,
+}: RebalanceTickersProps) => {
+  const handleDelete = (id: string) => {
+    deleteTicker(id)
+  }
+
   return (
     <Table variant="striped">
       <Thead>
@@ -26,66 +38,32 @@ export const RebalanceTickers = () => {
         </Tr>
       </Thead>
       <Tbody>
-        <Tr>
-          <Td>BTCUSDT</Td>
-          <Td>8,012.23</Td>
-          <Td>
-            <HStack spacing="4">
-              <IconButton
-                icon={<FaBalanceScaleRight fontSize="1.25rem" />}
-                variant="solid"
-                aria-label="Rebalance"
-                colorScheme="red"
-              />
-              <IconButton
-                icon={<MdDelete fontSize="1.25rem" />}
-                variant="ghost"
-                aria-label="Delete"
-                colorScheme="black"
-              />
-            </HStack>
-          </Td>
-        </Tr>
-        <Tr>
-          <Td>ARBUSDT</Td>
-          <Td>7,912.12</Td>
-          <Td>
-            <HStack spacing="4">
-              <IconButton
-                icon={<FaBalanceScaleLeft fontSize="1.25rem" />}
-                variant="solid"
-                aria-label="Rebalance"
-                colorScheme="green"
-              />
-              <IconButton
-                icon={<MdDelete fontSize="1.25rem" />}
-                variant="ghost"
-                aria-label="Delete"
-                colorScheme="black"
-              />
-            </HStack>
-          </Td>
-        </Tr>
-        <Tr>
-          <Td>OPUSDT</Td>
-          <Td>8,000</Td>
-          <Td>
-            <HStack spacing="4">
-              <IconButton
-                icon={<FaBalanceScale fontSize="1.25rem" />}
-                variant="ghost"
-                aria-label="Rebalance"
-                isDisabled
-              />
-              <IconButton
-                icon={<MdDelete fontSize="1.25rem" />}
-                variant="ghost"
-                aria-label="Delete"
-                colorScheme="black"
-              />
-            </HStack>
-          </Td>
-        </Tr>
+        {tickers.map((ticker) => {
+          const { id, name } = ticker
+          return (
+            <Tr key={id}>
+              <Td>{name}</Td>
+              <Td>{id}</Td>
+              <Td>
+                <HStack spacing="4">
+                  <IconButton
+                    icon={<FaBalanceScaleRight fontSize="1.25rem" />}
+                    variant="solid"
+                    aria-label="rebalance"
+                    colorScheme="danger"
+                  />
+                  <IconButton
+                    icon={<MdDelete fontSize="1.25rem" />}
+                    variant="ghost"
+                    aria-label="delete"
+                    colorScheme="black"
+                    onClick={() => handleDelete(id)}
+                  />
+                </HStack>
+              </Td>
+            </Tr>
+          )
+        })}
       </Tbody>
     </Table>
   )

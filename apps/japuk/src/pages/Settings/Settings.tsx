@@ -18,7 +18,7 @@ type SettingsFormValues = {
 }
 
 export const Settings = () => {
-  const { setting, upsert, settingLoadingStatus, upsertSettingLoadingStatus } =
+  const { setting, upsertIt, settingLoadingStatus, upsertSettingLoadingStatus } =
     useSetting(false)
 
   const {
@@ -31,7 +31,7 @@ export const Settings = () => {
   })
 
   const onSubmit = async (formValues: SettingsFormValues) => {
-    await upsert({ rebalanceToUSD: Number(formValues.rebalanceTo) })
+    await upsertIt({ rebalanceToUSD: Number(formValues.rebalanceTo) })
   }
 
   useEffect(() => {
@@ -67,7 +67,7 @@ export const Settings = () => {
             id="rebalanceTo"
             placeholder="0"
             {...register('rebalanceTo', {
-              required: 'Please put amount in USD',
+              required: 'Please input amount in USD',
             })}
           />
           {errors.rebalanceTo && errors.rebalanceTo.message && (

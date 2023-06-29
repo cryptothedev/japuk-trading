@@ -15,7 +15,7 @@ export const useSetting = (fetch: boolean) => {
     SettingSelector.upsertSettingLoadingStatus,
   )
 
-  const upsert = (upsertSettingDto: UpsertSettingDto) => {
+  const upsertIt = (upsertSettingDto: UpsertSettingDto) => {
     dispatch(upsertSetting(upsertSettingDto))
   }
 
@@ -25,5 +25,5 @@ export const useSetting = (fetch: boolean) => {
     }
   }, [dispatch, fetch])
 
-  return { setting, settingLoadingStatus, upsertSettingLoadingStatus, upsert }
+  return { setting, settingLoadingStatus, upsertSettingLoadingStatus, upsertIt }
 }

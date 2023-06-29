@@ -14,7 +14,7 @@ import { PageHeader } from '../../components/PageHeader/PageHeader'
 import { useAlertLog } from './useAlertLog'
 
 export const AlertLogs = () => {
-  const { alertLogs } = useAlertLog()
+  const { alertLogs } = useAlertLog(false)
 
   return (
     <>
@@ -49,12 +49,12 @@ export const AlertLogs = () => {
                     <IconButton
                       icon={<FiArchive fontSize="1.25rem" />}
                       variant="tertiary"
-                      aria-label="Archive alert"
+                      aria-label="archive alert"
                     />
                     <IconButton
                       icon={<FiPlay fontSize="1.25rem" />}
                       variant="tertiary"
-                      aria-label="Open order from alert"
+                      aria-label="open order from alert"
                     />
                   </HStack>
                 </Td>

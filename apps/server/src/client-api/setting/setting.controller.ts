@@ -9,11 +9,11 @@ export class SettingController {
 
   @Get()
   getOne() {
-    return this.settingService.getSetting()
+    return this.settingService.getOne()
   }
 
   @Post()
   upsert(@Body() upsertSettingDto: UpsertSettingDto) {
-    return this.settingService.upsertSetting(upsertSettingDto)
+    return this.settingService.upsert(upsertSettingDto)
   }
 }

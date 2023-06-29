@@ -1,13 +1,31 @@
-import { Box, Flex, HStack, IconButton, Text } from '@chakra-ui/react'
+import {
+  Box,
+  Flex,
+  HStack,
+  IconButton,
+  Text,
+  useDisclosure,
+} from '@chakra-ui/react'
 import { FaBalanceScaleLeft } from 'react-icons/fa'
 import { FiRefreshCw } from 'react-icons/fi'
+import { RiAddFill } from 'react-icons/ri'
 
 import { PageHeader } from '../../components/PageHeader/PageHeader'
 import { useSetting } from '../Settings/useSetting'
+import { AddTickerModal } from './AddTickerModal'
 import { RebalanceTickers } from './RebalanceTickers'
+import { useTicker } from './useTicker'
 
 export const Rebalance = () => {
+  const { tickers, upsertIt, deleteIt, upsertTickerLoadingStatus } =
+    useTicker(false)
   const { setting } = useSetting(false)
+
+  const {
+    isOpen: isAddTickerModalOpen,
+    onOpen: onOpenAddTickerModal,
+    onClose: onCloseAddTickerModal,
+  } = useDisclosure()
 
   const { rebalanceToUSD } = setting
 
@@ -38,18 +56,32 @@ export const Rebalance = () => {
           <IconButton
             icon={<FaBalanceScaleLeft fontSize="1.25rem" />}
             variant="solid"
-            aria-label="Rebalance"
-            colorScheme="green"
+            aria-label="rebalance"
           />
           <IconButton
             icon={<FiRefreshCw fontSize="1.25rem" />}
             variant="ghost"
-            aria-label="Rebalance"
+            aria-label="refresh"
+          />
+          <IconButton
+            icon={<RiAddFill fontSize="1.25rem" />}
+            variant="outline"
+            aria-label="add ticker"
+            onClick={onOpenAddTickerModal}
           />
         </HStack>
       </Flex>
 
-      <RebalanceTickers />
+      <RebalanceTickers tickers={tickers} deleteTicker={deleteIt} />
+
+      {isAddTickerModalOpen && (
+        <AddTickerModal
+          upsertTicker={upsertIt}
+          upsertTickerLoadingStatus={upsertTickerLoadingStatus}
+          isOpen={isAddTickerModalOpen}
+          onClose={onCloseAddTickerModal}
+        />
+      )}
     </>
   )
 }

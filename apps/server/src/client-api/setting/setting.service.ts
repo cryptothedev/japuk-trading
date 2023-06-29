@@ -7,7 +7,7 @@ import { SettingDocument } from '../../database/setting/setting.schema'
 @Injectable()
 export class SettingService {
   constructor(private settingRepo: SettingRepo) {}
-  async getSetting() {
+  async getOne() {
     const setting = await this.settingRepo.findOne()
     if (!setting) {
       return null
@@ -16,7 +16,7 @@ export class SettingService {
     return this.toSettingResponse(setting)
   }
 
-  async upsertSetting(upsertSettingDto: UpsertSettingDto) {
+  async upsert(upsertSettingDto: UpsertSettingDto) {
     const upserted = await this.settingRepo.upsert(upsertSettingDto)
     return this.toSettingResponse(upserted)
   }

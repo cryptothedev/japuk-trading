@@ -7,6 +7,8 @@ import { AlertLog, AlertLogSchema } from './alert-log/alert-log.schema'
 import { MongooseConfigService } from './mongoose-config.service'
 import { SettingRepo } from './setting/setting.repo'
 import { Setting, SettingSchema } from './setting/setting.schema'
+import { TickerRepo } from './ticker/ticker.repo'
+import { Ticker, TickerSchema } from './ticker/ticker.schema'
 
 @Module({
   imports: [
@@ -18,9 +20,10 @@ import { Setting, SettingSchema } from './setting/setting.schema'
     MongooseModule.forFeature([
       { name: AlertLog.name, schema: AlertLogSchema },
       { name: Setting.name, schema: SettingSchema },
+      { name: Ticker.name, schema: TickerSchema },
     ]),
   ],
-  providers: [MongooseConfigService, AlertLogRepo, SettingRepo],
-  exports: [AlertLogRepo, SettingRepo],
+  providers: [MongooseConfigService, AlertLogRepo, SettingRepo, TickerRepo],
+  exports: [AlertLogRepo, SettingRepo, TickerRepo],
 })
 export class DatabaseModule {}

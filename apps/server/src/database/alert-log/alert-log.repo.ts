@@ -11,7 +11,7 @@ export class AlertLogRepo {
     @InjectModel(AlertLog.name) private alertLogModel: Model<AlertLogDocument>,
   ) {}
 
-  create(tradingviewAlertDto: TradingviewAlertDto) {
+  create(tradingviewAlertDto: TradingviewAlertDto): Promise<AlertLogDocument> {
     const creating: AlertLog = {
       ...tradingviewAlertDto,
       dismissed: false,
@@ -19,11 +19,11 @@ export class AlertLogRepo {
     return this.alertLogModel.create(creating)
   }
 
-  findAll() {
-    return this.alertLogModel.find().exec()
+  findAll(): Promise<AlertLogDocument[]> {
+    return this.alertLogModel.find({}).exec()
   }
 
-  async dismiss(id: string) {
+  async dismiss(id: string): Promise<AlertLogDocument | null> {
     return this.alertLogModel
       .findByIdAndUpdate(
         id,
