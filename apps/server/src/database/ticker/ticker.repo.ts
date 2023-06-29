@@ -16,12 +16,12 @@ export class TickerRepo {
   }
 
   upsert(upsertTickerDto: UpsertTickerDto): Promise<TickerDocument> {
-    const { name } = upsertTickerDto
+    const { pair } = upsertTickerDto
     const upserting: Ticker = {
-      name,
+      pair,
     }
     return this.tickerModel
-      .findOneAndUpdate({ name }, upserting, {
+      .findOneAndUpdate({ pair }, upserting, {
         upsert: true,
         new: true,
       })

@@ -1,8 +1,11 @@
 export interface UpsertTickerDto {
-  name: string
+  pair: string
 }
 
 export interface TickerResponse {
   id: string
-  name: string
+  pair: string
+  price: number
+  amount: number
+  value: number
 }

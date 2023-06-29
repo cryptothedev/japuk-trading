@@ -14,7 +14,6 @@ import {
 } from '@chakra-ui/react'
 import { UpsertTickerDto } from '@japuk/models'
 import { QueryStatus } from '@reduxjs/toolkit/query'
-import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 interface AddTickerModalProps {
@@ -25,7 +24,7 @@ interface AddTickerModalProps {
 }
 
 type AddTickerFormValues = {
-  name: string
+  pair: string
 }
 export const AddTickerModal = ({
   upsertTicker,
@@ -33,27 +32,22 @@ export const AddTickerModal = ({
   isOpen,
   onClose,
 }: AddTickerModalProps) => {
-  const [isLoading, setIsLoading] = useState(false)
-
   const {
     handleSubmit,
     register,
+    reset,
     formState: { errors },
   } = useForm<AddTickerFormValues>({
     mode: 'all',
   })
 
   const handleSave = (formValues: AddTickerFormValues) => {
-    const { name } = formValues
-    upsertTicker({ name })
-    setIsLoading(true)
+    const { pair } = formValues
+    upsertTicker({ pair: pair.toUpperCase() })
+    reset()
   }
 
-  useEffect(() => {
-    if (isLoading && upsertTickerLoadingStatus === QueryStatus.fulfilled) {
-      onClose()
-    }
-  }, [upsertTickerLoadingStatus, onClose, isLoading])
+  const isLoading = upsertTickerLoadingStatus === QueryStatus.pending
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -63,17 +57,17 @@ export const AddTickerModal = ({
         <ModalCloseButton />
         <ModalBody pb={6}>
           <form onSubmit={handleSubmit(handleSave)}>
-            <FormControl isInvalid={Boolean(errors.name)}>
+            <FormControl isInvalid={Boolean(errors.pair)}>
               <FormLabel htmlFor="rebalanceTo">Name</FormLabel>
               <Input
                 id="rebalanceTo"
                 placeholder="BTCUSDT"
-                {...register('name', {
+                {...register('pair', {
                   required: 'Please input ticker name',
                 })}
               />
-              {errors.name && errors.name.message && (
-                <FormErrorMessage>{errors.name.message}</FormErrorMessage>
+              {errors.pair && errors.pair.message && (
+                <FormErrorMessage>{errors.pair.message}</FormErrorMessage>
               )}
             </FormControl>
           </form>

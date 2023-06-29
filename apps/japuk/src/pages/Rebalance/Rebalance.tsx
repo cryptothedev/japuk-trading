@@ -29,6 +29,10 @@ export const Rebalance = () => {
 
   const { rebalanceToUSD } = setting
 
+  const numTickers = tickers.length
+  const totalValue = tickers.reduce((total, ticker) => total + ticker.value, 0)
+  const gain = totalValue - 8000 * numTickers
+
   return (
     <>
       <Flex justifyContent="space-between">
@@ -39,16 +43,16 @@ export const Rebalance = () => {
 
         <Box>
           <Text>
-            <b>3</b> pairs
+            <b>{numTickers}</b> pairs
           </Text>
           <Text>
             Each to <b>${rebalanceToUSD.toLocaleString()}</b>
           </Text>
           <Text>
-            Total <b>$23,924.35</b>
+            Total <b>${totalValue.toLocaleString()}</b>
           </Text>
-          <Text color="red.500">
-            <b>(-$75.65)</b>
+          <Text color={gain > 0 ? 'primary.500' : 'danger.500'}>
+            <b>(${gain.toLocaleString()})</b>
           </Text>
         </Box>
 

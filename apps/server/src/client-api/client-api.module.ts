@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common'
 
+import { BinanceModule } from '../binance/binance.module'
 import { CoreModule } from '../core/core.module'
 import { DatabaseModule } from '../database/database.module'
 import { AlertLogController } from './alert-log/alert-log.controller'
@@ -11,7 +12,7 @@ import { TickerController } from './ticker/ticker.controller'
 import { TickerService } from './ticker/ticker.service'
 
 @Module({
-  imports: [CoreModule, DatabaseModule],
+  imports: [CoreModule, DatabaseModule, BinanceModule],
   controllers: [AlertLogController, SettingController, TickerController],
   providers: [AlertLogGateway, AlertLogService, SettingService, TickerService],
   exports: [AlertLogGateway, AlertLogService],

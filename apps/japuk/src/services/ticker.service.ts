@@ -18,6 +18,6 @@ export class TickerService {
 
   static deleteTicker = (id: string) => {
     const url = BASE_URL + `/ticker/${id}`
-    return axios.delete<TickerResponse>(url).then((response) => response.data)
+    return axios.delete<string>(url).then((response) => response.data)
   }
 }

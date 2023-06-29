@@ -7,7 +7,7 @@ export type TickerDocument = HydratedDocument<Ticker, WithTimestamp>
 @Schema({ timestamps: true })
 export class Ticker {
   @Prop({ type: String, required: true, unique: true })
-  name: string
+  pair: string
 }
 
 export const TickerSchema = SchemaFactory.createForClass(Ticker)

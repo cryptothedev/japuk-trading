@@ -23,8 +23,19 @@ export const useTicker = (fetch: boolean) => {
   )
 
   useEffect(() => {
+    let intervalId: NodeJS.Timer
+
     if (fetch) {
       dispatch(fetchTickers())
+      intervalId = setInterval(() => {
+        dispatch(fetchTickers())
+      }, 7500)
+    }
+
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId)
+      }
     }
   }, [dispatch, fetch])
 

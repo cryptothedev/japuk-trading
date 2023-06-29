@@ -33,17 +33,21 @@ export const RebalanceTickers = ({
       <Thead>
         <Tr>
           <Th>Pair</Th>
+          <Th>Amount</Th>
+          <Th>Price ($)</Th>
           <Th>Value ($)</Th>
           <Th></Th>
         </Tr>
       </Thead>
       <Tbody>
         {tickers.map((ticker) => {
-          const { id, name } = ticker
+          const { id, pair, amount, price, value } = ticker
           return (
             <Tr key={id}>
-              <Td>{name}</Td>
-              <Td>{id}</Td>
+              <Td>{pair}</Td>
+              <Td>{amount}</Td>
+              <Td>{price}</Td>
+              <Td>{value.toLocaleString()}</Td>
               <Td>
                 <HStack spacing="4">
                   <IconButton

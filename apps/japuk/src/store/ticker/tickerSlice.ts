@@ -83,7 +83,7 @@ export const tickerSlice = createSlice({
     builder.addCase(deleteTicker.fulfilled, (state, action) => {
       state.deleteTickerLoadingStatus = QueryStatus.fulfilled
       const { payload } = action
-      state.tickers = state.tickers.filter((ticker) => ticker.id !== payload.id)
+      state.tickers = state.tickers.filter((ticker) => ticker.id !== payload)
     })
   },
 })
