@@ -9,20 +9,19 @@ import {
   Tr,
 } from '@chakra-ui/react'
 import { TickerResponse } from '@japuk/models'
-import {
-  FaBalanceScale,
-  FaBalanceScaleLeft,
-  FaBalanceScaleRight,
-} from 'react-icons/fa'
 import { MdDelete } from 'react-icons/md'
+
+import { RebalanceIcon } from './RebalanceIcon'
 
 interface RebalanceTickersProps {
   tickers: TickerResponse[]
   deleteTicker: (id: string) => void
+  rebalanceToUSD: number
 }
 export const RebalanceTickers = ({
   tickers,
   deleteTicker,
+  rebalanceToUSD,
 }: RebalanceTickersProps) => {
   const handleDelete = (id: string) => {
     deleteTicker(id)
@@ -42,6 +41,7 @@ export const RebalanceTickers = ({
       <Tbody>
         {tickers.map((ticker) => {
           const { id, pair, amount, price, value } = ticker
+          const gain = value - rebalanceToUSD
           return (
             <Tr key={id}>
               <Td>{pair}</Td>
@@ -49,13 +49,8 @@ export const RebalanceTickers = ({
               <Td>{price}</Td>
               <Td>{value.toLocaleString()}</Td>
               <Td>
-                <HStack spacing="4">
-                  <IconButton
-                    icon={<FaBalanceScaleRight fontSize="1.25rem" />}
-                    variant="solid"
-                    aria-label="rebalance"
-                    colorScheme="danger"
-                  />
+                <HStack spacing="6">
+                  <RebalanceIcon gain={gain} />
                   <IconButton
                     icon={<MdDelete fontSize="1.25rem" />}
                     variant="ghost"

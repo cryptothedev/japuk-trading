@@ -6,13 +6,12 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react'
-import { FaBalanceScaleLeft } from 'react-icons/fa'
-import { FiRefreshCw } from 'react-icons/fi'
 import { RiAddFill } from 'react-icons/ri'
 
 import { PageHeader } from '../../components/PageHeader/PageHeader'
 import { useSetting } from '../Settings/useSetting'
 import { AddTickerModal } from './AddTickerModal'
+import { RebalanceIcon } from './RebalanceIcon'
 import { RebalanceTickers } from './RebalanceTickers'
 import { useTicker } from './useTicker'
 
@@ -56,17 +55,8 @@ export const Rebalance = () => {
           </Text>
         </Box>
 
-        <HStack spacing={2} alignSelf="flex-end">
-          <IconButton
-            icon={<FaBalanceScaleLeft fontSize="1.25rem" />}
-            variant="solid"
-            aria-label="rebalance"
-          />
-          <IconButton
-            icon={<FiRefreshCw fontSize="1.25rem" />}
-            variant="ghost"
-            aria-label="refresh"
-          />
+        <HStack spacing={6} alignSelf="flex-end">
+          <RebalanceIcon gain={gain} />
           <IconButton
             icon={<RiAddFill fontSize="1.25rem" />}
             variant="outline"
@@ -76,7 +66,11 @@ export const Rebalance = () => {
         </HStack>
       </Flex>
 
-      <RebalanceTickers tickers={tickers} deleteTicker={deleteIt} />
+      <RebalanceTickers
+        tickers={tickers}
+        deleteTicker={deleteIt}
+        rebalanceToUSD={setting.rebalanceToUSD}
+      />
 
       {isAddTickerModalOpen && (
         <AddTickerModal
