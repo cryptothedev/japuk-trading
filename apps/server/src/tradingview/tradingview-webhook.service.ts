@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common'
 
-import { AlertLogGateway } from '../client-api/alert-log.gateway'
-import { AlertLogService } from '../client-api/alert-log.service'
-import { AlertLogRepo } from '../database/alert-log-repo'
+import { AlertLogGateway } from '../client-api/alert-log/alert-log.gateway'
+import { AlertLogService } from '../client-api/alert-log/alert-log.service'
+import { AlertLogRepo } from '../database/alert-log/alert-log.repo'
 
 @Injectable()
 export class TradingviewWebhookService {
@@ -14,7 +14,7 @@ export class TradingviewWebhookService {
   async processWebhookFromTradingview(actionBody: string) {
     const [coin, price, reason] = actionBody.split(':')
 
-    const alertLogDoc = await this.alertLogRepo.createOne({
+    const alertLogDoc = await this.alertLogRepo.create({
       coin,
       price,
       reason,

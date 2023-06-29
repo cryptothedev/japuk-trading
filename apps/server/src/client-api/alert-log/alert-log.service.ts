@@ -1,16 +1,16 @@
 import { AlertLogResponse } from '@japuk/models'
 import { BadRequestException, Injectable } from '@nestjs/common'
 
-import { LogService } from '../core/log.service'
-import { AlertLogRepo } from '../database/alert-log-repo'
-import { AlertLogDocument } from '../database/alert-log.schema'
+import { LogService } from '../../core/log.service'
+import { AlertLogRepo } from '../../database/alert-log/alert-log.repo'
+import { AlertLogDocument } from '../../database/alert-log/alert-log.schema'
 
 @Injectable()
 export class AlertLogService {
   constructor(private logger: LogService, private alertLogRepo: AlertLogRepo) {}
 
-  async getAllAlertLogs() {
-    const alertLogDocs = await this.alertLogRepo.getAll()
+  async getAll() {
+    const alertLogDocs = await this.alertLogRepo.findAll()
     return alertLogDocs.map(this.toAlertLogResponse)
   }
 

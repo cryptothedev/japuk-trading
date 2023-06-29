@@ -7,8 +7,8 @@ export class AlertLogController {
   constructor(private alertLogService: AlertLogService) {}
 
   @Get()
-  getAllAlertLogs() {
-    return this.alertLogService.getAllAlertLogs()
+  getAll() {
+    return this.alertLogService.getAll()
   }
 
   @Patch(':id')

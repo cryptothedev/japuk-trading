@@ -1,4 +1,4 @@
-import { IsoString } from './shared'
+import { IsoString } from '../shared'
 
 export const enum AlertLogEvent {
   New = 'new',

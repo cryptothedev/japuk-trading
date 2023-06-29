@@ -5,7 +5,8 @@
   "types": "dist/index.d.ts",
   "private": false,
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "build:watch": "tsc --watch"
   },
   "devDependencies": {
     "typescript": "^5.1.3"
