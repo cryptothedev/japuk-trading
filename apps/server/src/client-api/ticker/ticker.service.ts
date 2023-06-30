@@ -23,6 +23,11 @@ export class TickerService {
     )
   }
 
+  async getPairs() {
+    const tickers = await this.tickerRepo.find()
+    return tickers.map((ticker) => ticker.pair)
+  }
+
   async upsert(upsertTickerDto: UpsertTickerDto) {
     const upserted = await this.tickerRepo.upsert(upsertTickerDto)
     const myBalancesDict = await this.binanceSpotService.getMyBalancesDict()

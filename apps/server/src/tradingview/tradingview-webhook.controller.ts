@@ -6,10 +6,11 @@ import {
   Post,
 } from '@nestjs/common'
 
+import { TickerService } from '../client-api/ticker/ticker.service'
 import { ConfigService } from '../core/config.service'
 import { LogService } from '../core/log.service'
 import { wait } from '../utils/wait'
-import { BinanceSpotTradingService } from './binance-spot-trading.service'
+import { BinanceSpotStrategyService } from '../binance/binance-spot-strategy.service'
 import { WebhookAction } from './models/WebhookAction'
 import { TradingviewWebhookService } from './tradingview-webhook.service'
 import { getWebhookAction } from './utils/getWebhookAction'
@@ -21,7 +22,8 @@ export class TradingviewWebhookController {
   constructor(
     private configService: ConfigService,
     private tradingviewWebhookService: TradingviewWebhookService,
-    private binanceSpotTradingService: BinanceSpotTradingService,
+    private binanceSpotTradingService: BinanceSpotStrategyService,
+    private tickerService: TickerService,
     private logger: LogService,
   ) {}
 
@@ -36,6 +38,7 @@ export class TradingviewWebhookController {
     }
 
     this.logger.info('processing webhook from tradingview', rawMessage)
+    const pairs = await this.tickerService.getPairs()
 
     const messages = rawMessage.split('\n').filter(Boolean)
     for (const message of messages) {
@@ -64,19 +67,19 @@ export class TradingviewWebhookController {
             const rebalanceToUSD = Number(actionBody)
             await this.binanceSpotTradingService.rebalance(
               rebalanceToUSD,
-              [],
+              pairs,
               true,
             )
             break
           }
           case WebhookAction.DCA: {
             const amountUSD = Number(actionBody)
-            await this.binanceSpotTradingService.dca(amountUSD, [])
+            await this.binanceSpotTradingService.dca(amountUSD, pairs)
             break
           }
           case WebhookAction.SellPercent: {
             const sellPercent = Number(actionBody)
-            await this.binanceSpotTradingService.sellDCA(sellPercent, [])
+            await this.binanceSpotTradingService.sellDCA(sellPercent, pairs)
             break
           }
         }

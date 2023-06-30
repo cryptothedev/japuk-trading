@@ -15,6 +15,6 @@ import { TickerService } from './ticker/ticker.service'
   imports: [CoreModule, DatabaseModule, BinanceModule],
   controllers: [AlertLogController, SettingController, TickerController],
   providers: [AlertLogGateway, AlertLogService, SettingService, TickerService],
-  exports: [AlertLogGateway, AlertLogService],
+  exports: [AlertLogGateway, AlertLogService, TickerService],
 })
 export class ClientApiModule {}

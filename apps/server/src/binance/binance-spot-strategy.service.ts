@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common'
 
-import { BinanceSpotService } from '../binance/binance-spot.service'
 import { LogService } from '../core/log.service'
+import { removeStable } from '../tradingview/utils/removeStable'
 import { wait } from '../utils/wait'
-import { removeStable } from './utils/removeStable'
+import { BinanceSpotService } from './binance-spot.service'
 
 @Injectable()
-export class BinanceSpotTradingService {
+export class BinanceSpotStrategyService {
   constructor(
     private binanceSpotService: BinanceSpotService,
     private logger: LogService,
