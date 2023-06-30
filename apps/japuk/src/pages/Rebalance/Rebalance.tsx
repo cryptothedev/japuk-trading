@@ -6,9 +6,11 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react'
+import { useState } from 'react'
 import { RiAddFill } from 'react-icons/ri'
 
 import { PageHeader } from '../../components/PageHeader/PageHeader'
+import { RebalanceService } from '../../services/rebalance.service'
 import { useSetting } from '../Settings/useSetting'
 import { AddTickerModal } from './AddTickerModal'
 import { RebalanceIcon } from './RebalanceIcon'
@@ -16,6 +18,8 @@ import { RebalanceTickers } from './RebalanceTickers'
 import { useTicker } from './useTicker'
 
 export const Rebalance = () => {
+  const [isRebalancing, setIsRebalancing] = useState(false)
+
   const { tickers, upsertIt, deleteIt, upsertTickerLoadingStatus } =
     useTicker(false)
   const { setting } = useSetting(false)
@@ -25,6 +29,12 @@ export const Rebalance = () => {
     onOpen: onOpenAddTickerModal,
     onClose: onCloseAddTickerModal,
   } = useDisclosure()
+
+  const rebalanceAll = async () => {
+    setIsRebalancing(true)
+    await RebalanceService.rebalanceAll()
+    setIsRebalancing(false)
+  }
 
   const { rebalanceToUSD } = setting
 
@@ -56,7 +66,11 @@ export const Rebalance = () => {
         </Box>
 
         <HStack spacing={6} alignSelf="flex-end">
-          <RebalanceIcon gain={gain} />
+          <RebalanceIcon
+            gain={gain}
+            onClick={rebalanceAll}
+            isDisabled={isRebalancing}
+          />
           <IconButton
             icon={<RiAddFill fontSize="1.25rem" />}
             variant="outline"

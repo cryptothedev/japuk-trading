@@ -1,4 +1,4 @@
-import { SuccessResponse, TickerResponse, UpsertTickerDto } from '@japuk/models'
+import { SuccessResponse } from '@japuk/models'
 import axios from 'axios'
 
 import { BASE_URL } from '../configs/constants'
