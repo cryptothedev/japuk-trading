@@ -11,6 +11,7 @@ import {
 import { TickerResponse } from '@japuk/models'
 import { MdDelete } from 'react-icons/md'
 
+import { RebalanceService } from '../../services/rebalance.service'
 import { RebalanceIcon } from './RebalanceIcon'
 
 interface RebalanceTickersProps {
@@ -25,6 +26,11 @@ export const RebalanceTickers = ({
 }: RebalanceTickersProps) => {
   const handleDelete = (id: string) => {
     deleteTicker(id)
+  }
+
+  const rebalance = async (id: string) => {
+    console.log('test')
+    await RebalanceService.rebalanceOne(id)
   }
 
   return (
@@ -50,7 +56,7 @@ export const RebalanceTickers = ({
               <Td>{value.toLocaleString()}</Td>
               <Td>
                 <HStack spacing="6">
-                  <RebalanceIcon gain={gain} />
+                  <RebalanceIcon gain={gain} onClick={() => rebalance(id)} />
                   <IconButton
                     icon={<MdDelete fontSize="1.25rem" />}
                     variant="ghost"

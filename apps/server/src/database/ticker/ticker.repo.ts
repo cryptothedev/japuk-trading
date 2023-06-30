@@ -31,4 +31,8 @@ export class TickerRepo {
   delete(id: string): Promise<TickerDocument | null> {
     return this.tickerModel.findByIdAndDelete(id).exec()
   }
+
+  findById(id: string): Promise<TickerDocument | null> {
+    return this.tickerModel.findById(id).exec()
+  }
 }

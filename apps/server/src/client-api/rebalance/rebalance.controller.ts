@@ -1,4 +1,4 @@
-import { UpsertSettingDto } from '@japuk/models'
+import { SuccessResponse, UpsertSettingDto } from '@japuk/models'
 import { Body, Controller, Param, Post } from '@nestjs/common'
 
 import { RebalanceService } from './rebalance.service'
@@ -7,12 +7,14 @@ import { RebalanceService } from './rebalance.service'
 export class RebalanceController {
   constructor(private rebalanceService: RebalanceService) {}
   @Post()
-  rebalanceAll(@Body() upsertSettingDto: UpsertSettingDto) {
-    return this.rebalanceService.rebalanceAll()
+  async rebalanceAll(@Body() upsertSettingDto: UpsertSettingDto) {
+    await this.rebalanceService.rebalanceAll()
+    return SuccessResponse
   }
 
-  @Post(':pair')
-  rebalanceOne(@Param('pair') pair: string) {
-    return this.rebalanceService.rebalanceOne(pair)
+  @Post(':id')
+  async rebalanceOne(@Param('id') id: string) {
+    await this.rebalanceService.rebalanceOne(id)
+    return SuccessResponse
   }
 }

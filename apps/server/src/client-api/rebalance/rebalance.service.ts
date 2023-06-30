@@ -35,12 +35,14 @@ export class RebalanceService {
     )
   }
 
-  async rebalanceOne(pair: string) {
+  async rebalanceOne(id: string) {
     const setting = await this.settingService.getOne()
     if (!setting) {
       this.logger.info('cannot rebalance setting is not found')
       throw new InternalServerErrorException()
     }
+
+    const pair = await this.tickerService.getPairById(id)
     this.logger.info('setting', setting)
     this.logger.info('pair', pair)
 

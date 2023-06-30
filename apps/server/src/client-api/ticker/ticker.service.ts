@@ -46,6 +46,17 @@ export class TickerService {
     return id
   }
 
+  async getPairById(id: string) {
+    const found = await this.tickerRepo.findById(id)
+    if (!found) {
+      this.logger.error('failed to find ticker', {
+        id,
+      })
+      throw new BadRequestException()
+    }
+    return found.pair
+  }
+
   toTickerResponse(
     tickerDoc: TickerDocument,
     myBalancesDict: Record<string, number>,
