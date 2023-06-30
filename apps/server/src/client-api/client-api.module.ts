@@ -10,11 +10,13 @@ import { SettingController } from './setting/setting.controller'
 import { SettingService } from './setting/setting.service'
 import { TickerController } from './ticker/ticker.controller'
 import { TickerService } from './ticker/ticker.service'
+import { RebalanceController } from './rebalance/rebalance.controller';
+import { RebalanceService } from './rebalance/rebalance.service';
 
 @Module({
   imports: [CoreModule, DatabaseModule, BinanceModule],
-  controllers: [AlertLogController, SettingController, TickerController],
-  providers: [AlertLogGateway, AlertLogService, SettingService, TickerService],
+  controllers: [AlertLogController, SettingController, TickerController, RebalanceController],
+  providers: [AlertLogGateway, AlertLogService, SettingService, TickerService, RebalanceService],
   exports: [AlertLogGateway, AlertLogService, TickerService],
 })
 export class ClientApiModule {}

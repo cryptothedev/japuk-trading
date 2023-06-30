@@ -56,43 +56,62 @@ export class BinanceSpotStrategyService {
     const pricesDict = await this.binanceSpotService.getPricesDict()
 
     for (const pair of pairs) {
-      try {
-        const currentPrice = pricesDict[pair]
+      await this.rebalancePair(
+        rebalanceToUSD,
+        pair,
+        alsoBuy,
+        balancesDict,
+        pricesDict,
+      )
+    }
+  }
 
-        const pairCoin = removeStable(pair)
-        const currentAmount = balancesDict[pairCoin]
+  async rebalancePair(
+    rebalanceToUSD: number,
+    pair: string,
+    alsoBuy: boolean,
+    balancesDict: Record<string, number>,
+    pricesDict: Record<string, number>,
+  ) {
+    try {
+      const currentPrice = pricesDict[pair]
 
-        if (!currentPrice || !currentAmount) {
-          this.logger.info('skipped', pair)
-          continue
-        }
+      const pairCoin = removeStable(pair)
+      const currentAmount = balancesDict[pairCoin]
 
-        const marketValueUSD = currentPrice * currentAmount
-        const amount = Math.floor(marketValueUSD - rebalanceToUSD)
-        const buy = amount < 0
-        const sell = !buy
-        if (buy && !alsoBuy) {
-          this.logger.info(
-            'skipped. does not need to do anything',
-            pair,
-            amount,
-            alsoBuy,
-          )
-          continue
-        } else if (buy) {
-          const buyAmount = amount * -1
-          this.logger.info('buying amount', buyAmount)
-          await this.binanceSpotService.buy(pair, buyAmount)
-        } else if (sell) {
-          this.logger.info('selling amount', amount)
-          await this.binanceSpotService.sell(pair, amount)
-        }
-        this.logger.info('rebalance', pair, amount)
-      } catch (e) {
-        this.logger.error('failed to rebalance', pair, e)
-      } finally {
-        await wait(1)
+      if (!currentPrice || !currentAmount) {
+        this.logger.info('skipped', pair)
+        return
       }
+
+      this.logger.info('currentPrice', currentPrice)
+      this.logger.info('currentAmount', currentAmount)
+
+      const marketValueUSD = currentPrice * currentAmount
+      const amount = Math.floor(marketValueUSD - rebalanceToUSD)
+      const buy = amount < 0
+      const sell = !buy
+      if (buy && !alsoBuy) {
+        this.logger.info(
+          'skipped. does not need to do anything',
+          pair,
+          amount,
+          alsoBuy,
+        )
+        return
+      } else if (buy) {
+        const buyAmount = amount * -1
+        this.logger.info('buying amount', buyAmount)
+        await this.binanceSpotService.buy(pair, buyAmount)
+      } else if (sell) {
+        this.logger.info('selling amount', amount)
+        await this.binanceSpotService.sell(pair, amount)
+      }
+      this.logger.info('rebalance', pair, amount)
+    } catch (e) {
+      this.logger.error('failed to rebalance', pair, e)
+    } finally {
+      await wait(1)
     }
   }
 }
