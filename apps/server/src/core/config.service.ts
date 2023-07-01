@@ -6,6 +6,13 @@ dotenv.config()
 
 @Injectable()
 export class ConfigService {
+  getWebAppTokenConfig() {
+    return {
+      webPassword: process.env['WEBAPP_PASSWORD'],
+      apiToken: process.env['WEBAPP_API_TOKEN'],
+    }
+  }
+
   getTradingViewToken() {
     return process.env['TRADINGVIEW_WEBHOOK_TOKEN'] as string
   }
