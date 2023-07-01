@@ -18,24 +18,12 @@ export class BinanceFuturesService {
     this.client = new USDMClient({ api_key: apiKey, api_secret: apiSecret })
   }
 
-  getMyBalances() {
-    return this.client
-      .getBalance()
-      .then((balances) =>
-        balances.filter((balance) => Number(balance.balance) > 0),
-      )
-  }
-
   async setupTrade(command: TradingCommandDto) {
-    const { symbol, onlyOneOrder, leverage } = command
+    const { symbol, leverage } = command
 
-    const positionOrders = await this.getPositionOrders(command)
-    if (onlyOneOrder && positionOrders.length > 0) {
-      this.logger.info('skipping')
-      return false
-    }
+    const openOrders = await this.getOpenOrders(command)
 
-    await this.cancelOpenOrders(command, positionOrders)
+    await this.cancelOpenOrders(command, openOrders)
 
     await this.client.setLeverage({
       symbol,
@@ -61,36 +49,20 @@ export class BinanceFuturesService {
           process.exit()
         }
       })
-
-    return true
   }
 
-  async long(command: TradingCommandDto, quantity: number) {
-    const { symbol, side, setTp, tp, sl } = command
+  async getDecimalsInfo(symbol: string) {
+    const exchangeInfo = await this.client.getExchangeInfo()
+    const foundSymbolInfo = exchangeInfo.symbols.find(
+      (symbolInfo) => symbolInfo.symbol === symbol,
+    )
 
-    await this.client.submitNewOrder({
-      symbol,
-      quantity,
-      side: 'BUY',
-      positionSide: 'LONG',
-      type: 'MARKET',
-    })
+    if (!foundSymbolInfo) {
+      throw new BadRequestException('symbol info is not found')
+    }
 
-    await wait(0.1)
-  }
-
-  async short(command: TradingCommandDto, quantity: number) {
-    const { symbol, side, setTp, tp, sl } = command
-
-    await this.client.submitNewOrder({
-      symbol,
-      quantity: quantity,
-      side: 'SELL',
-      positionSide: 'SHORT',
-      type: 'MARKET',
-    })
-
-    await wait(0.1)
+    const { pricePrecision, quantityPrecision } = foundSymbolInfo
+    return { pricePrecision, quantityPrecision }
   }
 
   async calculateQuantity(
@@ -117,18 +89,32 @@ export class BinanceFuturesService {
     return Number(quantity)
   }
 
-  async getDecimalsInfo(symbol: string) {
-    const exchangeInfo = await this.client.getExchangeInfo()
-    const foundSymbolInfo = exchangeInfo.symbols.find(
-      (symbolInfo) => symbolInfo.symbol === symbol,
-    )
+  async long(command: TradingCommandDto, quantity: number) {
+    const { symbol } = command
 
-    if (!foundSymbolInfo) {
-      throw new BadRequestException('symbol info is not found')
-    }
+    await this.client.submitNewOrder({
+      symbol,
+      quantity,
+      side: 'BUY',
+      positionSide: 'LONG',
+      type: 'MARKET',
+    })
 
-    const { pricePrecision, quantityPrecision } = foundSymbolInfo
-    return { pricePrecision, quantityPrecision }
+    await wait(0.1)
+  }
+
+  async short(command: TradingCommandDto, quantity: number) {
+    const { symbol } = command
+
+    await this.client.submitNewOrder({
+      symbol,
+      quantity: quantity,
+      side: 'SELL',
+      positionSide: 'SHORT',
+      type: 'MARKET',
+    })
+
+    await wait(0.1)
   }
 
   async getLeverages(symbol: string) {
@@ -146,7 +132,7 @@ export class BinanceFuturesService {
       .map((bracket) => bracket.initialLeverage)
   }
 
-  private async getPositionOrders(command: TradingCommandDto) {
+  private async getOpenOrders(command: TradingCommandDto) {
     const { symbol, side } = command
 
     const openOrders = await this.client.getAllOpenOrders({ symbol })
@@ -170,5 +156,13 @@ export class BinanceFuturesService {
       .filter((symbol) => !symbol.startsWith('1') && symbol.endsWith('USDT'))
       .map((symbol) => `BINANCE:${symbol}`)
       .join(',')
+  }
+
+  private getMyBalances() {
+    return this.client
+      .getBalance()
+      .then((balances) =>
+        balances.filter((balance) => Number(balance.balance) > 0),
+      )
   }
 }

@@ -1,4 +1,8 @@
-import { TradingInfoResponse } from '@japuk/models'
+import {
+  PositionSide,
+  TradingCommandDto,
+  TradingInfoResponse,
+} from '@japuk/models'
 import { Injectable } from '@nestjs/common'
 
 import { BinanceFuturesService } from '../../binance/binance-futures.service'
@@ -16,5 +20,27 @@ export class SmartTradingService {
     const leverages = await this.binanceFuturesService.getLeverages(ticker)
 
     return { highest, lowest, currentPrice, leverages }
+  }
+
+  async futuresTrade(tradingCommandDto: TradingCommandDto) {
+    const { symbol, side } = tradingCommandDto
+
+    await this.binanceFuturesService.setupTrade(tradingCommandDto)
+
+    const { quantityPrecision } =
+      await this.binanceFuturesService.getDecimalsInfo(symbol)
+    const quantity = await this.binanceFuturesService.calculateQuantity(
+      tradingCommandDto,
+      quantityPrecision,
+    )
+
+    switch (side) {
+      case PositionSide.LONG: {
+        return this.binanceFuturesService.long(tradingCommandDto, quantity)
+      }
+      case PositionSide.SHORT: {
+        return this.binanceFuturesService.short(tradingCommandDto, quantity)
+      }
+    }
   }
 }

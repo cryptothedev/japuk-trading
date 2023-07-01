@@ -8,10 +8,6 @@ export interface TradingCommandDto {
   symbol: string
   side: PositionSide
   amountUSD: number
-  setTp: boolean | null
-  tp: number | null
-  sl: number | null
-  onlyOneOrder: boolean
   leverage: number
 }
 

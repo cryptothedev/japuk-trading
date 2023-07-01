@@ -17,10 +17,15 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react'
-import { AlertLogResponse } from '@japuk/models'
-import { useEffect } from 'react'
+import {
+  AlertLogResponse,
+  PositionSide,
+  TradingCommandDto,
+} from '@japuk/models'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
+import { SmartTradingService } from '../../services/smart-trading.service'
 import { useSmartTrading } from './useSmartTrading'
 
 type TradingFormValues = {
@@ -39,6 +44,8 @@ export const TradingModal = ({
   onClose,
   alertLog,
 }: TradingModalProps) => {
+  const [isLoading, setIsLoading] = useState(false)
+
   const {
     handleSubmit,
     register,
@@ -61,12 +68,38 @@ export const TradingModal = ({
     })
   }
 
-  const handleShort = (formValues: TradingFormValues) => {
-    console.log(formValues)
+  const getTradingCommand = (
+    formValues: TradingFormValues,
+    alertLog: AlertLogResponse,
+    positionSide: PositionSide,
+  ): TradingCommandDto => {
+    const { amountUSD, leverage } = formValues
+    const { coin } = alertLog
+    return {
+      symbol: coin,
+      amountUSD: Number(amountUSD),
+      leverage,
+      side: positionSide,
+    }
   }
 
-  const handleLong = (formValues: TradingFormValues) => {
-    console.log(formValues)
+  const handleLong = async (formValues: TradingFormValues) => {
+    await futuresTrade(formValues, PositionSide.LONG)
+  }
+
+  const handleShort = async (formValues: TradingFormValues) => {
+    await futuresTrade(formValues, PositionSide.SHORT)
+  }
+
+  const futuresTrade = async (
+    formValues: TradingFormValues,
+    side: PositionSide,
+  ) => {
+    setIsLoading(true)
+    const tradingCommand = getTradingCommand(formValues, alertLog, side)
+    await SmartTradingService.futuresTrade(tradingCommand)
+    setIsLoading(false)
+    onClose()
   }
 
   const { coin, price, reason } = alertLog
@@ -193,6 +226,7 @@ export const TradingModal = ({
             colorScheme="danger"
             mr={3}
             onClick={handleSubmit(handleShort)}
+            isDisabled={isLoading}
           >
             Short
           </Button>
@@ -200,10 +234,15 @@ export const TradingModal = ({
             colorScheme="primary"
             mr={3}
             onClick={handleSubmit(handleLong)}
+            isDisabled={isLoading}
           >
             Long
           </Button>
-          <Button onClick={onClose} colorScheme="neutral">
+          <Button
+            onClick={onClose}
+            colorScheme="neutral"
+            isDisabled={isLoading}
+          >
             Cancel
           </Button>
         </ModalFooter>
