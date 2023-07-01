@@ -26,7 +26,6 @@ export const Rebalance = () => {
     true,
   )
   const { setting } = useSetting(true)
-  useAlertLog(true, false)
 
   const {
     isOpen: isAddTickerModalOpen,

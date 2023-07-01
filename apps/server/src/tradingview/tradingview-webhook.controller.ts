@@ -4,16 +4,25 @@ import {
   ForbiddenException,
   Param,
   Post,
+  Req,
 } from '@nestjs/common'
+import { Request } from 'express'
 
+import { BinanceSpotStrategyService } from '../binance/binance-spot-strategy.service'
 import { TickerService } from '../client-api/ticker/ticker.service'
 import { ConfigService } from '../core/config.service'
 import { LogService } from '../core/log.service'
 import { wait } from '../utils/wait'
-import { BinanceSpotStrategyService } from '../binance/binance-spot-strategy.service'
 import { WebhookAction } from './models/WebhookAction'
 import { TradingviewWebhookService } from './tradingview-webhook.service'
 import { getWebhookAction } from './utils/getWebhookAction'
+
+const TRADINGVIEW_IPS = [
+  '52.89.214.238',
+  '34.212.75.30',
+  '54.218.53.128',
+  '52.32.178.7',
+]
 
 @Controller('tradingview-webhook')
 export class TradingviewWebhookController {
@@ -31,7 +40,10 @@ export class TradingviewWebhookController {
   async webhookFromTradingview(
     @Param('token') token: string,
     @Body() rawMessage: string,
+    @Req() request: Request,
   ) {
+    console.log(request.headers)
+
     if (token !== this.configService.getTradingViewToken()) {
       this.logger.error('token is invalid', token)
       throw new ForbiddenException()
