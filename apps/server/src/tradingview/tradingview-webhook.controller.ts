@@ -43,7 +43,7 @@ export class TradingviewWebhookController {
     @Body() rawMessage: string,
     @Req() request: Request,
   ) {
-    console.log(requestIp.getClientIp(request.headers))
+    console.log(requestIp.getClientIp(request))
 
     if (token !== this.configService.getTradingViewToken()) {
       this.logger.error('token is invalid', token)
