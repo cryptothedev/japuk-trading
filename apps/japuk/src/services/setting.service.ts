@@ -1,19 +1,18 @@
 import { SettingResponse, UpsertSettingDto } from '@japuk/models'
-import axios from 'axios'
 
-import { BASE_URL } from '../configs/constants'
+import { httpClient } from '../configs/httpClient'
 
 export class SettingService {
   static fetchSetting = () => {
-    const url = BASE_URL + '/setting'
-    return axios
+    const url = '/setting'
+    return httpClient
       .get<SettingResponse | null>(url)
       .then((response) => response.data)
   }
 
   static upsertSetting = (dto: UpsertSettingDto) => {
-    const url = BASE_URL + '/setting'
-    return axios
+    const url = '/setting'
+    return httpClient
       .post<SettingResponse>(url, dto)
       .then((response) => response.data)
   }

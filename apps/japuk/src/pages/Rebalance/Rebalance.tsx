@@ -11,6 +11,7 @@ import { RiAddFill } from 'react-icons/ri'
 
 import { PageHeader } from '../../components/PageHeader/PageHeader'
 import { RebalanceService } from '../../services/rebalance.service'
+import { useAlertLog } from '../AlertLogs/useAlertLog'
 import { useSetting } from '../Settings/useSetting'
 import { AddTickerModal } from './AddTickerModal'
 import { RebalanceIcon } from './RebalanceIcon'
@@ -21,10 +22,11 @@ export const Rebalance = () => {
   const [isRebalancing, setIsRebalancing] = useState(false)
 
   const { tickers, upsertIt, deleteIt, upsertTickerLoadingStatus } = useTicker(
-    false,
+    true,
     true,
   )
-  const { setting } = useSetting(false)
+  const { setting } = useSetting(true)
+  useAlertLog(true)
 
   const {
     isOpen: isAddTickerModalOpen,

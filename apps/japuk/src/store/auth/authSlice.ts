@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { QueryStatus } from '@reduxjs/toolkit/query'
 
+import { API_TOKEN } from '../../configs/httpClient'
 import { AuthService } from '../../services/auth.service'
 
 export const fetchApiToken = createAsyncThunk(
@@ -32,6 +33,7 @@ export const authSlice = createSlice({
     builder.addCase(fetchApiToken.fulfilled, (state, action) => {
       state.apiTokenLoadingStatus = QueryStatus.fulfilled
       state.apiToken = action.payload
+      sessionStorage.setItem(API_TOKEN, action.payload)
     })
   },
 })

@@ -1,23 +1,24 @@
 import { TickerResponse, UpsertTickerDto } from '@japuk/models'
-import axios from 'axios'
 
-import { BASE_URL } from '../configs/constants'
+import { httpClient } from '../configs/httpClient'
 
 export class TickerService {
   static fetchTickers = () => {
-    const url = BASE_URL + '/ticker'
-    return axios.get<TickerResponse[]>(url).then((response) => response.data)
+    const url = '/ticker'
+    return httpClient
+      .get<TickerResponse[]>(url)
+      .then((response) => response.data)
   }
 
   static upsertTicker = (dto: UpsertTickerDto) => {
-    const url = BASE_URL + '/ticker'
-    return axios
+    const url = '/ticker'
+    return httpClient
       .post<TickerResponse>(url, dto)
       .then((response) => response.data)
   }
 
   static deleteTicker = (id: string) => {
-    const url = BASE_URL + `/ticker/${id}`
-    return axios.delete<string>(url).then((response) => response.data)
+    const url = `/ticker/${id}`
+    return httpClient.delete<string>(url).then((response) => response.data)
   }
 }
