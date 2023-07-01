@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   ForbiddenException,
@@ -43,7 +44,13 @@ export class TradingviewWebhookController {
     @Body() rawMessage: string,
     @Req() request: Request,
   ) {
-    console.log(requestIp.getClientIp(request))
+    const senderIp: string = requestIp.getClientIp(request)
+    const validIp = TRADINGVIEW_IPS.some((tradingviewIp) =>
+      senderIp.includes(tradingviewIp),
+    )
+    if (!validIp) {
+      throw new BadRequestException(senderIp)
+    }
 
     if (token !== this.configService.getTradingViewToken()) {
       this.logger.error('token is invalid', token)
