@@ -72,10 +72,25 @@ export class BinanceSpotService {
     })
   }
 
-  getHighestPrice(symbol: string) {
+  getHighestLowestPrice(symbol: string) {
     return this.client
-      .getKlines({ symbol, interval: '1d', limit: 7 })
-      .then((kLines) => kLines.map((kLine) => Number(kLine[2])))
-      .then((highs) => Math.max(...highs))
+      .getKlines({ symbol, interval: '1d', limit: 2 })
+      .then((kLines) => {
+        return kLines.map((kLine) => {
+          return {
+            open: Number(kLine[1]),
+            high: Number(kLine[2]),
+            low: Number(kLine[3]),
+            close: Number(kLine[4]),
+          }
+        })
+      })
+      .then((prices) => {
+        return {
+          highest: Math.max(...prices.map((price) => price.high)),
+          lowest: Math.min(...prices.map((price) => price.low)),
+          currentPrice: prices[prices.length - 1].close,
+        }
+      })
   }
 }

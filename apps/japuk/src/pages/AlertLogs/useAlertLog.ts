@@ -6,6 +6,7 @@ import { BASE_URL } from '../../configs/constants'
 import { AlertLogSelector } from '../../store/alert-log/alertLogSelector'
 import {
   addAlertLog,
+  dismissAlertLog,
   fetchAlertLogs,
 } from '../../store/alert-log/alertLogSlice'
 import { useAppDispatch, useAppSelector } from '../../store/store'
@@ -16,6 +17,10 @@ export const useAlertLog = (fetch: boolean) => {
   const alertLogsLoadingStatus = useAppSelector(
     AlertLogSelector.alertLogsLoadingStatus,
   )
+
+  const dismissIt = (id: string) => {
+    dispatch(dismissAlertLog(id))
+  }
 
   useEffect(() => {
     if (!fetch) {
@@ -48,5 +53,6 @@ export const useAlertLog = (fetch: boolean) => {
   return {
     alertLogs,
     alertLogsLoadingStatus,
+    dismissIt,
   }
 }

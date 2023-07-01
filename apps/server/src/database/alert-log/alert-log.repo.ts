@@ -20,7 +20,7 @@ export class AlertLogRepo {
   }
 
   findAll(): Promise<AlertLogDocument[]> {
-    return this.alertLogModel.find({}).exec()
+    return this.alertLogModel.find({ dismissed: false }).exec()
   }
 
   async dismiss(id: string): Promise<AlertLogDocument | null> {

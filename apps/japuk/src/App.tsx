@@ -9,7 +9,7 @@ import { useAlertLog } from './pages/AlertLogs/useAlertLog'
 export const App = () => {
   useAlertLog(true)
   useSetting(true)
-  useTicker(true)
+  useTicker(true, false)
 
   return (
     <Box height="100vh" overflow="hidden" position="relative">

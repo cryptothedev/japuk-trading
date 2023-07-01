@@ -8,4 +8,9 @@ export class AlertLogService {
     const url = BASE_URL + '/alert-log'
     return axios.get<AlertLogResponse[]>(url).then((response) => response.data)
   }
+
+  static dismissAlertLog = (id: string) => {
+    const url = BASE_URL + `/alert-log/${id}`
+    return axios.patch<AlertLogResponse>(url).then((response) => response.data)
+  }
 }

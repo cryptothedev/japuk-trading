@@ -21,6 +21,13 @@ export class ConfigService {
     }
   }
 
+  getBinanceFuturesConfig() {
+    return {
+      apiKey: process.env['BINANCE_API_KEY'] as string,
+      apiSecret: process.env['BINANCE_API_SECRET'] as string,
+    }
+  }
+
   getDCAPairs() {
     const dcaPairsText = process.env['DCA_PAIRS'] as string
     return dcaPairsText.split(',').map((pair) => pair.trim())

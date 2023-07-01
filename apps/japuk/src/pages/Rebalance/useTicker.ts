@@ -9,7 +9,7 @@ import {
   upsertTicker,
 } from '../../store/ticker/tickerSlice'
 
-export const useTicker = (fetch: boolean) => {
+export const useTicker = (fetch: boolean, polling: boolean) => {
   const dispatch = useAppDispatch()
   const tickers = useAppSelector(TickerSelector.tickers)
   const tickersLoadingStatus = useAppSelector(
@@ -23,13 +23,18 @@ export const useTicker = (fetch: boolean) => {
   )
 
   useEffect(() => {
-    let intervalId: NodeJS.Timer
-
     if (fetch) {
       dispatch(fetchTickers())
+    }
+  }, [dispatch, fetch])
+
+  useEffect(() => {
+    let intervalId: NodeJS.Timer
+
+    if (polling) {
       intervalId = setInterval(() => {
         dispatch(fetchTickers())
-      }, 7500)
+      }, 3000)
     }
 
     return () => {
@@ -37,7 +42,7 @@ export const useTicker = (fetch: boolean) => {
         clearInterval(intervalId)
       }
     }
-  }, [dispatch, fetch])
+  }, [dispatch, polling])
 
   const upsertIt = (upsertTickerDto: UpsertTickerDto) => {
     dispatch(upsertTicker(upsertTickerDto))

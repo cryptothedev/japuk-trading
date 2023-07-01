@@ -20,8 +20,10 @@ import { useTicker } from './useTicker'
 export const Rebalance = () => {
   const [isRebalancing, setIsRebalancing] = useState(false)
 
-  const { tickers, upsertIt, deleteIt, upsertTickerLoadingStatus } =
-    useTicker(false)
+  const { tickers, upsertIt, deleteIt, upsertTickerLoadingStatus } = useTicker(
+    false,
+    true,
+  )
   const { setting } = useSetting(false)
 
   const {
@@ -40,7 +42,7 @@ export const Rebalance = () => {
 
   const numTickers = tickers.length
   const totalValue = tickers.reduce((total, ticker) => total + ticker.value, 0)
-  const gain = totalValue - 8000 * numTickers
+  const gain = totalValue - rebalanceToUSD * numTickers
 
   return (
     <>

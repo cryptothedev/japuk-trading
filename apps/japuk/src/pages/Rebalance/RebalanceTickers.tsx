@@ -28,6 +28,7 @@ export const RebalanceTickers = ({
         {tickers.map((ticker) => {
           return (
             <RebalanceTicker
+              key={ticker.id}
               ticker={ticker}
               rebalanceToUSD={rebalanceToUSD}
               deleteTicker={deleteTicker}

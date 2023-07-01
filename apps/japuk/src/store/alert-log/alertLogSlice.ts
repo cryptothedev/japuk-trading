@@ -9,14 +9,21 @@ export const fetchAlertLogs = createAsyncThunk(
   AlertLogService.fetchAlertLogs,
 )
 
+export const dismissAlertLog = createAsyncThunk(
+  'alertLog/dismissAlertLog',
+  AlertLogService.dismissAlertLog,
+)
+
 export interface AlertLogState {
   alertLogs: AlertLogResponse[]
   alertLogsLoadingStatus: QueryStatus
+  dismissAlertLogLoadingStatus: QueryStatus
 }
 
 const initialState: AlertLogState = {
   alertLogs: [],
   alertLogsLoadingStatus: QueryStatus.uninitialized,
+  dismissAlertLogLoadingStatus: QueryStatus.uninitialized,
 }
 
 export const alertLogSlice = createSlice({
@@ -40,6 +47,21 @@ export const alertLogSlice = createSlice({
 
       const { payload } = action
       state.alertLogs = payload
+    })
+
+    builder.addCase(dismissAlertLog.pending, (state) => {
+      state.dismissAlertLogLoadingStatus = QueryStatus.pending
+    })
+    builder.addCase(dismissAlertLog.rejected, (state) => {
+      state.dismissAlertLogLoadingStatus = QueryStatus.rejected
+    })
+    builder.addCase(dismissAlertLog.fulfilled, (state, action) => {
+      state.dismissAlertLogLoadingStatus = QueryStatus.fulfilled
+
+      const { payload } = action
+      state.alertLogs = state.alertLogs.filter(
+        (alertLog) => alertLog.id !== payload.id,
+      )
     })
   },
 })
