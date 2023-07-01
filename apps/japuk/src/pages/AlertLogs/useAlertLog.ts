@@ -11,7 +11,7 @@ import {
 } from '../../store/alert-log/alertLogSlice'
 import { useAppDispatch, useAppSelector } from '../../store/store'
 
-export const useAlertLog = (fetch: boolean) => {
+export const useAlertLog = (fetch: boolean, ws: boolean) => {
   const dispatch = useAppDispatch()
   const alertLogs = useAppSelector(AlertLogSelector.alertLogs)
   const alertLogsLoadingStatus = useAppSelector(
@@ -23,10 +23,12 @@ export const useAlertLog = (fetch: boolean) => {
   }
 
   useEffect(() => {
-    if (!fetch) {
-      return
+    if (fetch) {
+      dispatch(fetchAlertLogs())
     }
+  }, [dispatch, fetch])
 
+  useEffect(() => {
     const wsURL = BASE_URL + '/alert-log'
     const socket = io(wsURL)
 
@@ -42,13 +44,11 @@ export const useAlertLog = (fetch: boolean) => {
       dispatch(addAlertLog(newAlertLog))
     })
 
-    dispatch(fetchAlertLogs())
-
     return () => {
       console.log('disconnect')
       socket.disconnect()
     }
-  }, [dispatch, fetch])
+  }, [dispatch, ws])
 
   return {
     alertLogs,

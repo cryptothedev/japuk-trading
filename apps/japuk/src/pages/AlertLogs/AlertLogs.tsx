@@ -20,7 +20,7 @@ import { useAlertLog } from './useAlertLog'
 export const AlertLogs = () => {
   const [selectedAlertLog, setSelectedAlertLog] = useState<AlertLogResponse>()
 
-  const { alertLogs, dismissIt } = useAlertLog(false)
+  const { alertLogs, dismissIt } = useAlertLog(false, true)
 
   const {
     isOpen: isTradingModalOpen,
