@@ -4,7 +4,6 @@ import { OrderResult, USDMClient } from 'binance'
 
 import { ConfigService } from '../core/config.service'
 import { LogService } from '../core/log.service'
-import { wait } from '../utils/wait'
 
 @Injectable()
 export class BinanceFuturesService {
@@ -99,8 +98,6 @@ export class BinanceFuturesService {
       positionSide: 'LONG',
       type: 'MARKET',
     })
-
-    await wait(0.1)
   }
 
   async short(command: TradingCommandDto, quantity: number) {
@@ -113,8 +110,6 @@ export class BinanceFuturesService {
       positionSide: 'SHORT',
       type: 'MARKET',
     })
-
-    await wait(0.1)
   }
 
   async getLeverages(symbol: string) {
@@ -122,8 +117,6 @@ export class BinanceFuturesService {
       await this.client.getNotionalAndLeverageBrackets({
         symbol,
       })
-
-    this.logger.info(JSON.stringify(notionalAndLeverageBrackets, null, 2))
 
     return notionalAndLeverageBrackets
       .flatMap(
