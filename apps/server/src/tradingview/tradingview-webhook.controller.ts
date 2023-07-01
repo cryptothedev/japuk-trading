@@ -7,6 +7,7 @@ import {
   Req,
 } from '@nestjs/common'
 import { Request } from 'express'
+import * as requestIp from 'request-ip'
 
 import { BinanceSpotStrategyService } from '../binance/binance-spot-strategy.service'
 import { TickerService } from '../client-api/ticker/ticker.service'
@@ -42,7 +43,7 @@ export class TradingviewWebhookController {
     @Body() rawMessage: string,
     @Req() request: Request,
   ) {
-    console.log(request.headers)
+    console.log(requestIp.getClientIp(request.headers))
 
     if (token !== this.configService.getTradingViewToken()) {
       this.logger.error('token is invalid', token)
