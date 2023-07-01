@@ -1,15 +1,26 @@
 import { Box, Flex } from '@chakra-ui/react'
-import { Outlet } from 'react-router-dom'
+import { Navigate, Outlet, useLocation } from 'react-router-dom'
 
 import { LeftNav } from './components/LeftNav/LeftNav'
-import { useSetting } from './pages/Settings/useSetting'
-import { useTicker } from './pages/Rebalance/useTicker'
+import { routes } from './configs/routes'
 import { useAlertLog } from './pages/AlertLogs/useAlertLog'
+import { useTicker } from './pages/Rebalance/useTicker'
+import { useSetting } from './pages/Settings/useSetting'
+import { AuthSelector } from './store/auth/authSelector'
+import { useAppSelector } from './store/store'
 
 export const App = () => {
   useAlertLog(true)
   useSetting(true)
   useTicker(true, false)
+
+  const { pathname } = useLocation()
+
+  const apiToken = useAppSelector(AuthSelector.apiToken)
+
+  if (!apiToken && pathname !== routes.login.path) {
+    return <Navigate to="/login" />
+  }
 
   return (
     <Box height="100vh" overflow="hidden" position="relative">

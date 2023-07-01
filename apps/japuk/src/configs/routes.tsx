@@ -2,10 +2,16 @@ import { FaBalanceScale, FaList } from 'react-icons/fa'
 import { FiSettings } from 'react-icons/fi'
 
 import { AlertLogs } from '../pages/AlertLogs/AlertLogs'
+import { Login } from '../pages/Login/Login'
 import { Rebalance } from '../pages/Rebalance/Rebalance'
 import { Settings } from '../pages/Settings/Settings'
 
 export const routes = {
+  login: {
+    label: 'Login',
+    path: '/login',
+    element: <Login />,
+  },
   rebalance: {
     label: 'Rebalance',
     path: '/rebalance',

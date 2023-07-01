@@ -9,6 +9,10 @@ export const router = createBrowserRouter([
     element: <App />,
     children: [
       {
+        path: routes.login.path,
+        element: routes.login.element,
+      },
+      {
         path: routes.rebalance.path,
         element: routes.rebalance.element,
       },
