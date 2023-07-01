@@ -9,6 +9,6 @@ async function bootstrap() {
 
   app.use('/tradingview-webhook', bodyParser.text())
 
-  await app.listen(3003)
+  await app.listen(80)
 }
 bootstrap()
