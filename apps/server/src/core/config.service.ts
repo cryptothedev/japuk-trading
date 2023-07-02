@@ -34,4 +34,25 @@ export class ConfigService {
       apiSecret: process.env['BINANCE_API_SECRET'] as string,
     }
   }
+
+  getTgClientConfig() {
+    return {
+      apiId: Number(process.env['TG_CLIENT_API_ID']),
+      alertUserId: process.env['TG_CLIENT_ALERT_USER_ID'] as string,
+      apiHash: process.env['TG_CLIENT_API_HASH'] as string,
+      stringSession: process.env['TG_CLIENT_STRING_SESSION'] as string,
+      phoneNumber: process.env['TG_CLIENT_PHONE_NUMBER'] as string,
+    }
+  }
+
+  getTgBotToken() {
+    return process.env['TG_BOT_TOKEN'] as string
+  }
+
+  getNukZingBotTradeAlertThreadConfig() {
+    return {
+      chatId: process.env['NUKZING_CHAT_ID'] as string,
+      threadId: Number(process.env['NUKZING_BOT_TRADING_ALERT_THREAD_ID']),
+    }
+  }
 }
