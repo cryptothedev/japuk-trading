@@ -27,16 +27,16 @@ export class TradingviewWebhookService {
     })
 
     await this.telegramClientService.callToAlert(
-      `<b>${coin}</b> ณ ราคา <b>${price}</b>
-เหตุผล <b>${reason}</b>`,
+      `${coin} price: ${price}
+reason: ${reason}`,
     )
 
     const { chatId, threadId } =
       this.configService.getNukZingBotTradeAlertThreadConfig()
 
     await this.telegramBotService.sendMessage(
-      `<b>${coin}</b>> ณ ราคา <b>${price}</b>
-เหตุผล <b>${reason}</b>`,
+      `<b>${coin}</b> price: <b>${price}</b>
+reason: <b>${reason}</b>`,
       chatId,
       threadId,
     )
