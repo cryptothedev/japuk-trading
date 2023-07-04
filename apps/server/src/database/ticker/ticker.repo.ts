@@ -1,4 +1,3 @@
-import { UpsertTickerDto } from '@japuk/models'
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
@@ -15,8 +14,7 @@ export class TickerRepo {
     return this.tickerModel.find({}).exec()
   }
 
-  upsert(upsertTickerDto: UpsertTickerDto): Promise<TickerDocument> {
-    const { pair } = upsertTickerDto
+  upsert(pair: string): Promise<TickerDocument> {
     const upserting: Ticker = {
       pair,
     }

@@ -1,4 +1,4 @@
-import { TickerResponse, UpsertTickerDto } from '@japuk/models'
+import { TickerResponse, UpsertTickersDto } from '@japuk/models'
 
 import { httpClient } from '../configs/httpClient'
 
@@ -10,10 +10,10 @@ export const TickerService = {
       .then((response) => response.data)
   },
 
-  upsertTicker: (dto: UpsertTickerDto) => {
+  upsertTickers: (dto: UpsertTickersDto) => {
     const url = '/ticker'
     return httpClient
-      .post<TickerResponse>(url, dto)
+      .post<TickerResponse[]>(url, dto)
       .then((response) => response.data)
   },
 

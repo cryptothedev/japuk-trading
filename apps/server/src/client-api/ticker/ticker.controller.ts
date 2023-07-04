@@ -1,4 +1,4 @@
-import { UpsertTickerDto } from '@japuk/models'
+import { UpsertTickersDto } from '@japuk/models'
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common'
 
 import { TickerService } from './ticker.service'
@@ -13,8 +13,8 @@ export class TickerController {
   }
 
   @Post()
-  upsert(@Body() upsertTickerDto: UpsertTickerDto) {
-    return this.tickerService.upsert(upsertTickerDto)
+  upsert(@Body() upsertTickersDto: UpsertTickersDto) {
+    return this.tickerService.upsert(upsertTickersDto)
   }
 
   @Delete(':id')

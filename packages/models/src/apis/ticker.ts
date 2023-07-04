@@ -1,5 +1,5 @@
-export interface UpsertTickerDto {
-  pair: string
+export interface UpsertTickersDto {
+  pairs: string[]
 }
 
 export interface TickerResponse {

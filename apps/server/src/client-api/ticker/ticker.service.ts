@@ -1,4 +1,4 @@
-import { TickerResponse, UpsertTickerDto } from '@japuk/models'
+import { TickerResponse, UpsertTickersDto } from '@japuk/models'
 import { BadRequestException, Injectable } from '@nestjs/common'
 
 import { BinanceSpotService } from '../../binance/binance-spot.service'
@@ -28,11 +28,17 @@ export class TickerService {
     return tickers.map((ticker) => ticker.pair)
   }
 
-  async upsert(upsertTickerDto: UpsertTickerDto) {
-    const upserted = await this.tickerRepo.upsert(upsertTickerDto)
+  async upsert(upsertTickerDto: UpsertTickersDto) {
+    const { pairs } = upsertTickerDto
+    const upserteds: TickerDocument[] = []
+    for (const pair of pairs) {
+      upserteds.push(await this.tickerRepo.upsert(pair))
+    }
     const myBalancesDict = await this.binanceSpotService.getMyBalancesDict()
     const pricesDict = await this.binanceSpotService.getPricesDict()
-    return this.toTickerResponse(upserted, myBalancesDict, pricesDict)
+    return upserteds.map((upserted) =>
+      this.toTickerResponse(upserted, myBalancesDict, pricesDict),
+    )
   }
 
   async delete(id: string) {

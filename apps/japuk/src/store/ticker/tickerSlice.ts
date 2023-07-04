@@ -23,16 +23,12 @@ export const tickerSlice = createSlice({
   name: 'ticker',
   initialState,
   reducers: {
-    updateTicker: (state, action: PayloadAction<TickerResponse>) => {
-      const updatedTicker = action.payload
-      const replacingIdx = state.tickers.findIndex(
-        (ticker) => ticker.id === updatedTicker.id,
-      )
-      if (replacingIdx === -1) {
-        state.tickers.push(updatedTicker)
-        return
-      }
-      state.tickers[replacingIdx] = updatedTicker
+    updateTickers: (state, action: PayloadAction<TickerResponse[]>) => {
+      const upserteds = action.payload
+      const upsertedIds = upserteds.map((upserted) => upserted.id)
+      state.tickers = state.tickers
+        .filter((ticker) => !upsertedIds.includes(ticker.id))
+        .concat(upserteds)
     },
     removeTicker: (state, action: PayloadAction<string>) => {
       const id = action.payload
@@ -56,4 +52,4 @@ export const tickerSlice = createSlice({
 })
 
 export const tickerReducer = tickerSlice.reducer
-export const { updateTicker, removeTicker } = tickerSlice.actions
+export const { updateTickers, removeTicker } = tickerSlice.actions

@@ -12,11 +12,11 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/react'
-import { UpsertTickerDto } from '@japuk/models'
+import { UpsertTickersDto } from '@japuk/models'
 import { useForm } from 'react-hook-form'
 
 interface AddTickerModalProps {
-  upsertTicker: (upsertTickerDto: UpsertTickerDto) => void
+  upsertTicker: (upsertTickersDto: UpsertTickersDto) => void
   isLoading: boolean
   isOpen: boolean
   onClose: () => void
@@ -42,7 +42,7 @@ export const AddTickerModal = ({
 
   const handleSave = (formValues: AddTickerFormValues) => {
     const { pair } = formValues
-    upsertTicker({ pair: pair.toUpperCase() })
+    upsertTicker({ pairs: pair.toUpperCase().split(',') })
     reset()
   }
 

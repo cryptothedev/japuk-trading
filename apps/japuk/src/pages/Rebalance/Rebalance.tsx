@@ -6,7 +6,7 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react'
-import { UpsertTickerDto } from '@japuk/models'
+import { UpsertTickersDto } from '@japuk/models'
 import { sortBy } from 'lodash'
 import { useState } from 'react'
 import { RiAddFill } from 'react-icons/ri'
@@ -15,7 +15,7 @@ import { PageHeader } from '../../components/PageHeader/PageHeader'
 import { RebalanceService } from '../../services/rebalance.service'
 import { TickerService } from '../../services/ticker.service'
 import { useAppDispatch } from '../../store/store'
-import { removeTicker, updateTicker } from '../../store/ticker/tickerSlice'
+import { removeTicker, updateTickers } from '../../store/ticker/tickerSlice'
 import { useSetting } from '../Settings/useSetting'
 import { AddTickerModal } from './AddTickerModal'
 import { RebalanceIcon } from './RebalanceIcon'
@@ -61,10 +61,10 @@ export const Rebalance = () => {
     dispatch(removeTicker(id))
   }
 
-  const handleUpsertTicker = async (upsertTickerDto: UpsertTickerDto) => {
+  const handleUpsertTicker = async (upsertTickersDto: UpsertTickersDto) => {
     setIsLoading(true)
-    const upserted = await TickerService.upsertTicker(upsertTickerDto)
-    dispatch(updateTicker(upserted))
+    const upserteds = await TickerService.upsertTickers(upsertTickersDto)
+    dispatch(updateTickers(upserteds))
     setIsLoading(false)
   }
 
