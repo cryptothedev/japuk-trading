@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   ForbiddenException,
+  InternalServerErrorException,
   Param,
   Post,
   Req,
@@ -11,6 +12,8 @@ import { Request } from 'express'
 import * as requestIp from 'request-ip'
 
 import { BinanceSpotStrategyService } from '../binance/binance-spot-strategy.service'
+import { BinanceSpotService } from '../binance/binance-spot.service'
+import { SettingService } from '../client-api/setting/setting.service'
 import { TickerService } from '../client-api/ticker/ticker.service'
 import { ConfigService } from '../core/config.service'
 import { LogService } from '../core/log.service'
@@ -34,7 +37,9 @@ export class TradingviewWebhookController {
     private configService: ConfigService,
     private tradingviewWebhookService: TradingviewWebhookService,
     private binanceSpotTradingService: BinanceSpotStrategyService,
+    private binanceSpotService: BinanceSpotService,
     private tickerService: TickerService,
+    private settingService: SettingService,
     private logger: LogService,
   ) {}
 
@@ -57,8 +62,18 @@ export class TradingviewWebhookController {
       throw new ForbiddenException()
     }
 
+    const setting = await this.settingService.getOne()
+    if (!setting) {
+      this.logger.error(
+        'cannot process, please go to setup your setting',
+        token,
+      )
+      throw new InternalServerErrorException()
+    }
+
     this.logger.info('processing webhook from tradingview', rawMessage)
     const pairs = await this.tickerService.getPairs()
+    const { rebalanceToUSD: rebalanceToUSDFromSetting } = setting
 
     const messages = rawMessage.split('\n').filter(Boolean)
     for (const message of messages) {
@@ -83,12 +98,31 @@ export class TradingviewWebhookController {
             )
             break
           }
+
+          // SPOT
           case WebhookAction.RebalanceTo: {
-            const rebalanceToUSD = Number(actionBody)
+            const rebalanceToUSD =
+              Number(actionBody) ?? rebalanceToUSDFromSetting
             await this.binanceSpotTradingService.rebalance(
               rebalanceToUSD,
               pairs,
               true,
+            )
+            break
+          }
+          case WebhookAction.Rebalance: {
+            const [pair, rebalanceToUSDFromRequest] = actionBody.split('_')
+            const rebalanceToUSD =
+              Number(rebalanceToUSDFromRequest) ?? rebalanceToUSDFromSetting
+            const balancesDict =
+              await this.binanceSpotService.getMyBalancesDict()
+            const pricesDict = await this.binanceSpotService.getPricesDict()
+            await this.binanceSpotTradingService.rebalancePair(
+              rebalanceToUSD,
+              pair,
+              true,
+              balancesDict,
+              pricesDict,
             )
             break
           }
@@ -100,6 +134,14 @@ export class TradingviewWebhookController {
           case WebhookAction.SellPercent: {
             const sellPercent = Number(actionBody)
             await this.binanceSpotTradingService.sellDCA(sellPercent, pairs)
+            break
+          }
+
+          // FUTURES
+          case WebhookAction.SmartLong: {
+            break
+          }
+          case WebhookAction.SmartShort: {
             break
           }
         }

@@ -17,6 +17,15 @@ export const getWebhookAction = (message: string) => {
     case WebhookAction.SellPercent: {
       return WebhookAction.SellPercent
     }
+    case WebhookAction.SmartShort: {
+      return WebhookAction.SmartShort
+    }
+    case WebhookAction.SmartLong: {
+      return WebhookAction.SmartLong
+    }
+    case WebhookAction.Rebalance: {
+      return WebhookAction.Rebalance
+    }
     default: {
       throw new SwitchNotMatchError(`${message}:${webhookAction}`)
     }
