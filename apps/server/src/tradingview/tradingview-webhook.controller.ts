@@ -112,11 +112,11 @@ export class TradingviewWebhookController {
             const rebalanceToUSD = rebalanceToUSDFromRequest
               ? Number(rebalanceToUSDFromRequest)
               : rebalanceToUSDFromSetting
-            await this.binanceSpotTradingService.rebalance(
-              rebalanceToUSD,
-              pairs,
-              true,
-            )
+            // await this.binanceSpotTradingService.rebalance(
+            //   rebalanceToUSD,
+            //   pairs,
+            //   true,
+            // )
             break
           }
           case WebhookAction.Rebalance: {
@@ -127,13 +127,13 @@ export class TradingviewWebhookController {
             const balancesDict =
               await this.binanceSpotService.getMyBalancesDict()
             const pricesDict = await this.binanceSpotService.getPricesDict()
-            await this.binanceSpotTradingService.rebalancePair(
-              rebalanceToUSD,
-              pair,
-              true,
-              balancesDict,
-              pricesDict,
-            )
+            // await this.binanceSpotTradingService.rebalancePair(
+            //   rebalanceToUSD,
+            //   pair,
+            //   true,
+            //   balancesDict,
+            //   pricesDict,
+            // )
             break
           }
           case WebhookAction.DCA: {
