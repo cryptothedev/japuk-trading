@@ -1,3 +1,4 @@
+import { PositionSide, TradingCommandDto } from '@japuk/models'
 import {
   BadRequestException,
   Body,
@@ -14,6 +15,7 @@ import * as requestIp from 'request-ip'
 import { BinanceSpotStrategyService } from '../binance/binance-spot-strategy.service'
 import { BinanceSpotService } from '../binance/binance-spot.service'
 import { SettingService } from '../client-api/setting/setting.service'
+import { SmartTradingService } from '../client-api/smart-trading/smart-trading.service'
 import { TickerService } from '../client-api/ticker/ticker.service'
 import { ConfigService } from '../core/config.service'
 import { LogService } from '../core/log.service'
@@ -38,6 +40,7 @@ export class TradingviewWebhookController {
     private tradingviewWebhookService: TradingviewWebhookService,
     private binanceSpotTradingService: BinanceSpotStrategyService,
     private binanceSpotService: BinanceSpotService,
+    private smartTradingService: SmartTradingService,
     private tickerService: TickerService,
     private settingService: SettingService,
     private logger: LogService,
@@ -73,7 +76,10 @@ export class TradingviewWebhookController {
 
     this.logger.info('processing webhook from tradingview', rawMessage)
     const pairs = await this.tickerService.getPairs()
-    const { rebalanceToUSD: rebalanceToUSDFromSetting } = setting
+    const {
+      rebalanceToUSD: rebalanceToUSDFromSetting,
+      futuresAmountUSD: futuresAmountUSDFromSetting,
+    } = setting
 
     const messages = rawMessage.split('\n').filter(Boolean)
     for (const message of messages) {
@@ -139,9 +145,23 @@ export class TradingviewWebhookController {
 
           // FUTURES
           case WebhookAction.SmartLong: {
+            const dto: TradingCommandDto = {
+              symbol: actionBody,
+              side: PositionSide.LONG,
+              amountUSD: futuresAmountUSDFromSetting,
+              leverage: 5,
+            }
+            await this.smartTradingService.futuresTrade(dto)
             break
           }
           case WebhookAction.SmartShort: {
+            const dto: TradingCommandDto = {
+              symbol: actionBody,
+              side: PositionSide.SHORT,
+              amountUSD: futuresAmountUSDFromSetting,
+              leverage: 5,
+            }
+            await this.smartTradingService.futuresTrade(dto)
             break
           }
         }

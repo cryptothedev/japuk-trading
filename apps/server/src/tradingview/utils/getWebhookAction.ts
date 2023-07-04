@@ -8,6 +8,9 @@ export const getWebhookAction = (message: string) => {
     case WebhookAction.Alert: {
       return WebhookAction.Alert
     }
+    case WebhookAction.Rebalance: {
+      return WebhookAction.Rebalance
+    }
     case WebhookAction.RebalanceTo: {
       return WebhookAction.RebalanceTo
     }
@@ -22,9 +25,6 @@ export const getWebhookAction = (message: string) => {
     }
     case WebhookAction.SmartLong: {
       return WebhookAction.SmartLong
-    }
-    case WebhookAction.Rebalance: {
-      return WebhookAction.Rebalance
     }
     default: {
       throw new SwitchNotMatchError(`${message}:${webhookAction}`)

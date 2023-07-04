@@ -6,6 +6,7 @@ import { DatabaseModule } from '../database/database.module'
 import { AlertLogController } from './alert-log/alert-log.controller'
 import { AlertLogGateway } from './alert-log/alert-log.gateway'
 import { AlertLogService } from './alert-log/alert-log.service'
+import { AuthController } from './auth/auth.controller'
 import { RebalanceController } from './rebalance/rebalance.controller'
 import { RebalanceService } from './rebalance/rebalance.service'
 import { SettingController } from './setting/setting.controller'
@@ -14,7 +15,6 @@ import { SmartTradingController } from './smart-trading/smart-trading.controller
 import { SmartTradingService } from './smart-trading/smart-trading.service'
 import { TickerController } from './ticker/ticker.controller'
 import { TickerService } from './ticker/ticker.service'
-import { AuthController } from './auth/auth.controller';
 
 @Module({
   imports: [CoreModule, DatabaseModule, BinanceModule],
@@ -34,6 +34,12 @@ import { AuthController } from './auth/auth.controller';
     RebalanceService,
     SmartTradingService,
   ],
-  exports: [AlertLogGateway, AlertLogService, TickerService],
+  exports: [
+    AlertLogGateway,
+    AlertLogService,
+    TickerService,
+    SmartTradingService,
+    SettingService,
+  ],
 })
 export class ClientApiModule {}

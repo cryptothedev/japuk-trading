@@ -15,11 +15,16 @@ import { useSetting } from './useSetting'
 
 type SettingsFormValues = {
   rebalanceTo: string
+  futuresAmount: string
 }
 
 export const Settings = () => {
-  const { setting, upsertIt, settingLoadingStatus, upsertSettingLoadingStatus } =
-    useSetting(false)
+  const {
+    setting,
+    upsertIt,
+    settingLoadingStatus,
+    upsertSettingLoadingStatus,
+  } = useSetting(false)
 
   const {
     handleSubmit,
@@ -31,11 +36,16 @@ export const Settings = () => {
   })
 
   const onSubmit = async (formValues: SettingsFormValues) => {
-    await upsertIt({ rebalanceToUSD: Number(formValues.rebalanceTo) })
+    const { rebalanceTo, futuresAmount } = formValues
+    await upsertIt({
+      rebalanceToUSD: Number(rebalanceTo),
+      futuresAmountUSD: Number(futuresAmount),
+    })
   }
 
   useEffect(() => {
     setValue('rebalanceTo', setting.rebalanceToUSD.toString())
+    setValue('futuresAmount', setting.futuresAmountUSD.toString())
   }, [setValue, setting])
 
   const canSave = isValid && isDirty
@@ -72,6 +82,20 @@ export const Settings = () => {
           />
           {errors.rebalanceTo && errors.rebalanceTo.message && (
             <FormErrorMessage>{errors.rebalanceTo.message}</FormErrorMessage>
+          )}
+        </FormControl>
+
+        <FormControl isInvalid={Boolean(errors.futuresAmount)} maxW="sm">
+          <FormLabel htmlFor="futuresAmount">Futures Amount (USD)</FormLabel>
+          <Input
+            id="futuresAmount"
+            placeholder="0"
+            {...register('futuresAmount', {
+              required: 'Please input amount in USD',
+            })}
+          />
+          {errors.futuresAmount && errors.futuresAmount.message && (
+            <FormErrorMessage>{errors.futuresAmount.message}</FormErrorMessage>
           )}
         </FormControl>
       </form>

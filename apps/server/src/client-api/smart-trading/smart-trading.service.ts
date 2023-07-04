@@ -22,6 +22,13 @@ export class SmartTradingService {
     return { highest, lowest, currentPrice, leverages }
   }
 
+  async getAutoLeverage(
+    ticker: string,
+    side: PositionSide,
+    min: number,
+    max: number,
+  ) {}
+
   async futuresTrade(tradingCommandDto: TradingCommandDto) {
     const { symbol, side } = tradingCommandDto
 

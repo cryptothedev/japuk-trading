@@ -49,6 +49,10 @@ export class TelegramClientService {
       phoneNumber,
     } = this.configService.getTgClientConfig()
 
+    if (!stringSessionString) {
+      return
+    }
+
     const stringSession = new StringSession(stringSessionString)
 
     this.client = new TelegramClient(stringSession, apiId, apiHash, {

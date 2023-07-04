@@ -8,6 +8,9 @@ export type SettingDocument = HydratedDocument<Setting, WithTimestamp>
 export class Setting {
   @Prop({ type: Number, required: true })
   rebalanceToUSD: number
+
+  @Prop({ type: Number, required: true })
+  futuresAmountUSD: number
 }
 
 export const SettingSchema = SchemaFactory.createForClass(Setting)

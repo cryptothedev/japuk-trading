@@ -22,7 +22,7 @@ export class SettingService {
   }
 
   toSettingResponse(settingDoc: SettingDocument): SettingResponse {
-    const { _id, rebalanceToUSD } = settingDoc
-    return { id: _id.toString(), rebalanceToUSD }
+    const { _id, rebalanceToUSD, futuresAmountUSD } = settingDoc
+    return { id: _id.toString(), rebalanceToUSD, futuresAmountUSD }
   }
 }
