@@ -11,6 +11,9 @@ export class Setting {
 
   @Prop({ type: Number, required: true })
   futuresAmountUSD: number
+
+  @Prop({ type: Number, required: true })
+  maxLeverage: number
 }
 
 export const SettingSchema = SchemaFactory.createForClass(Setting)

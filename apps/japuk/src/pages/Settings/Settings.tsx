@@ -16,6 +16,7 @@ import { useSetting } from './useSetting'
 type SettingsFormValues = {
   rebalanceTo: string
   futuresAmount: string
+  maxLeverage: string
 }
 
 export const Settings = () => {
@@ -36,16 +37,19 @@ export const Settings = () => {
   })
 
   const onSubmit = async (formValues: SettingsFormValues) => {
-    const { rebalanceTo, futuresAmount } = formValues
+    const { rebalanceTo, futuresAmount, maxLeverage } = formValues
     await upsertIt({
       rebalanceToUSD: Number(rebalanceTo),
       futuresAmountUSD: Number(futuresAmount),
+      maxLeverage: Number(maxLeverage),
     })
   }
 
   useEffect(() => {
-    setValue('rebalanceTo', setting.rebalanceToUSD.toString())
-    setValue('futuresAmount', setting.futuresAmountUSD.toString())
+    const { rebalanceToUSD, futuresAmountUSD, maxLeverage } = setting
+    setValue('rebalanceTo', rebalanceToUSD.toString())
+    setValue('futuresAmount', futuresAmountUSD.toString())
+    setValue('futuresAmount', maxLeverage.toString())
   }, [setValue, setting])
 
   const canSave = isValid && isDirty
@@ -96,6 +100,20 @@ export const Settings = () => {
           />
           {errors.futuresAmount && errors.futuresAmount.message && (
             <FormErrorMessage>{errors.futuresAmount.message}</FormErrorMessage>
+          )}
+        </FormControl>
+
+        <FormControl isInvalid={Boolean(errors.maxLeverage)} maxW="sm">
+          <FormLabel htmlFor="maxLeverage">Max Leverage</FormLabel>
+          <Input
+            id="maxLeverage"
+            placeholder="0"
+            {...register('maxLeverage', {
+              required: 'Please input max leverage',
+            })}
+          />
+          {errors.maxLeverage && errors.maxLeverage.message && (
+            <FormErrorMessage>{errors.maxLeverage.message}</FormErrorMessage>
           )}
         </FormControl>
       </form>

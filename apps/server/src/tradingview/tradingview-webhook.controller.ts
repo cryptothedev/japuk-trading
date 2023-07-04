@@ -145,22 +145,38 @@ export class TradingviewWebhookController {
 
           // FUTURES
           case WebhookAction.SmartLong: {
+            const ticker = actionBody
+            const leverage = await this.smartTradingService.getAutoLeverage(
+              ticker,
+              PositionSide.LONG,
+              0,
+              25,
+            )
             const dto: TradingCommandDto = {
-              symbol: actionBody,
+              symbol: ticker,
               side: PositionSide.LONG,
               amountUSD: futuresAmountUSDFromSetting,
-              leverage: 5,
+              leverage,
             }
+
             await this.smartTradingService.futuresTrade(dto)
             break
           }
           case WebhookAction.SmartShort: {
+            const ticker = actionBody
+            const leverage = await this.smartTradingService.getAutoLeverage(
+              ticker,
+              PositionSide.SHORT,
+              0,
+              25,
+            )
             const dto: TradingCommandDto = {
-              symbol: actionBody,
+              symbol: ticker,
               side: PositionSide.SHORT,
               amountUSD: futuresAmountUSDFromSetting,
-              leverage: 5,
+              leverage,
             }
+
             await this.smartTradingService.futuresTrade(dto)
             break
           }

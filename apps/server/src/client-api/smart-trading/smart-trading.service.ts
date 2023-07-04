@@ -27,7 +27,9 @@ export class SmartTradingService {
     side: PositionSide,
     min: number,
     max: number,
-  ) {}
+  ) {
+    return 0
+  }
 
   async futuresTrade(tradingCommandDto: TradingCommandDto) {
     const { symbol, side } = tradingCommandDto

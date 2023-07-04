@@ -21,7 +21,7 @@ export interface SettingState {
 }
 
 const initialState: SettingState = {
-  setting: { rebalanceToUSD: 0, id: '', futuresAmountUSD: 0 },
+  setting: { rebalanceToUSD: 0, id: '', futuresAmountUSD: 0, maxLeverage: 0 },
   settingLoadingStatus: QueryStatus.uninitialized,
   upsertSettingLoadingStatus: QueryStatus.uninitialized,
 }

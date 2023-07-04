@@ -12,10 +12,11 @@ export class SettingRepo {
   ) {}
 
   upsert(dto: UpsertSettingDto): Promise<SettingDocument> {
-    const { rebalanceToUSD, futuresAmountUSD } = dto
+    const { rebalanceToUSD, futuresAmountUSD, maxLeverage } = dto
     const upserting: Setting = {
       rebalanceToUSD,
       futuresAmountUSD,
+      maxLeverage,
     }
     return this.settingModel
       .findOneAndUpdate({}, upserting, {
