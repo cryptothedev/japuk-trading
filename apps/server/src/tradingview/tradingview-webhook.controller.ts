@@ -1,4 +1,4 @@
-import { PositionSide, TradingCommandDto } from '@japuk/models'
+import { PositionSide } from '@japuk/models'
 import {
   BadRequestException,
   Body,
@@ -12,10 +12,7 @@ import {
 import { Request } from 'express'
 import * as requestIp from 'request-ip'
 
-import { BinanceSpotStrategyService } from '../binance/binance-spot-strategy.service'
-import { BinanceSpotService } from '../binance/binance-spot.service'
 import { SettingService } from '../client-api/setting/setting.service'
-import { SmartTradingService } from '../client-api/smart-trading/smart-trading.service'
 import { TickerService } from '../client-api/ticker/ticker.service'
 import { ConfigService } from '../core/config.service'
 import { LogService } from '../core/log.service'

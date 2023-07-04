@@ -3,13 +3,6 @@ import { MainClient } from 'binance'
 
 import { ConfigService } from '../core/config.service'
 
-export interface Product {
-  symbol: string
-  circulatingSupply: number
-  marketCap: number
-  price: number
-}
-
 @Injectable()
 export class BinanceSpotService {
   private client: MainClient
