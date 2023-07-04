@@ -49,7 +49,7 @@ export const Settings = () => {
     const { rebalanceToUSD, futuresAmountUSD, maxLeverage } = setting
     setValue('rebalanceTo', rebalanceToUSD.toString())
     setValue('futuresAmount', futuresAmountUSD.toString())
-    setValue('futuresAmount', maxLeverage.toString())
+    setValue('maxLeverage', maxLeverage.toString())
   }, [setValue, setting])
 
   const canSave = isValid && isDirty

@@ -14,7 +14,7 @@ export class SmartTradingService {
   constructor(
     private binanceSpotService: BinanceSpotService,
     private binanceFuturesService: BinanceFuturesService,
-    private logger: LogService
+    private logger: LogService,
   ) {}
   async getTradingInfo(ticker: string): Promise<TradingInfoResponse> {
     const { highest, lowest, currentPrice } =
@@ -55,13 +55,11 @@ export class SmartTradingService {
       toLowestLeverage,
     )
 
-
-
-    const usedLeverage =  [...leverages.reverse()].find(
+    const usedLeverage = leverages.find(
       (leverage) => attemptLeverage >= leverage,
     ) as number
 
-    this.logger.info('usedLeverage', leverages)
+    this.logger.info('leverages', leverages)
     this.logger.info('attemptLeverage', attemptLeverage)
     this.logger.info('usedLeverage', usedLeverage)
 
