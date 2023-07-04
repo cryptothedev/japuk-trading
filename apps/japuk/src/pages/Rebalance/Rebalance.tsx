@@ -6,17 +6,19 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react'
+import { sortBy } from 'lodash'
 import { useState } from 'react'
 import { RiAddFill } from 'react-icons/ri'
 
 import { PageHeader } from '../../components/PageHeader/PageHeader'
 import { RebalanceService } from '../../services/rebalance.service'
-import { useAlertLog } from '../AlertLogs/useAlertLog'
 import { useSetting } from '../Settings/useSetting'
 import { AddTickerModal } from './AddTickerModal'
 import { RebalanceIcon } from './RebalanceIcon'
 import { RebalanceTickers } from './RebalanceTickers'
 import { useTicker } from './useTicker'
+
+const WATCH_LIST = ['BINANCE:BTCUSDT', 'BINANCE:ETHUSDT', 'OTHERS.D', 'BTC.D']
 
 export const Rebalance = () => {
   const [isRebalancing, setIsRebalancing] = useState(false)
@@ -44,6 +46,12 @@ export const Rebalance = () => {
   const numTickers = tickers.length
   const totalValue = tickers.reduce((total, ticker) => total + ticker.value, 0)
   const gain = totalValue - rebalanceToUSD * numTickers
+
+  const tradingviewImport = WATCH_LIST.concat(
+    sortBy(tickers, (ticker) => ticker.pair).map(
+      (ticker) => `BINANCE:${ticker.pair}`,
+    ),
+  ).join(',')
 
   return (
     <>
@@ -97,6 +105,8 @@ export const Rebalance = () => {
           onClose={onCloseAddTickerModal}
         />
       )}
+
+      <Text mt={8}>{tradingviewImport}</Text>
     </>
   )
 }
