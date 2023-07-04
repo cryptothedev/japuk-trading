@@ -1,28 +1,22 @@
-import { PositionSide, TradingCommandDto } from '@japuk/models'
-import {
-  BadRequestException,
-  Body,
-  Controller,
-  ForbiddenException,
-  InternalServerErrorException,
-  Param,
-  Post,
-  Req,
-} from '@nestjs/common'
-import { Request } from 'express'
-import * as requestIp from 'request-ip'
+import { PositionSide, TradingCommandDto } from '@japuk/models';
+import { BadRequestException, Body, Controller, ForbiddenException, InternalServerErrorException, Param, Post, Req } from '@nestjs/common';
+import { Request } from 'express';
+import * as requestIp from 'request-ip';
 
-import { BinanceSpotStrategyService } from '../binance/binance-spot-strategy.service'
-import { BinanceSpotService } from '../binance/binance-spot.service'
-import { SettingService } from '../client-api/setting/setting.service'
-import { SmartTradingService } from '../client-api/smart-trading/smart-trading.service'
-import { TickerService } from '../client-api/ticker/ticker.service'
-import { ConfigService } from '../core/config.service'
-import { LogService } from '../core/log.service'
-import { wait } from '../utils/wait'
-import { WebhookAction } from './models/WebhookAction'
-import { TradingviewWebhookService } from './tradingview-webhook.service'
-import { getWebhookAction } from './utils/getWebhookAction'
+
+
+import { BinanceSpotStrategyService } from '../binance/binance-spot-strategy.service';
+import { BinanceSpotService } from '../binance/binance-spot.service';
+import { SettingService } from '../client-api/setting/setting.service';
+import { SmartTradingService } from '../client-api/smart-trading/smart-trading.service';
+import { TickerService } from '../client-api/ticker/ticker.service';
+import { ConfigService } from '../core/config.service';
+import { LogService } from '../core/log.service';
+import { wait } from '../utils/wait';
+import { WebhookAction } from './models/WebhookAction';
+import { TradingviewWebhookService } from './tradingview-webhook.service';
+import { getWebhookAction } from './utils/getWebhookAction';
+
 
 const TRADINGVIEW_IPS = [
   '52.89.214.238',
@@ -112,11 +106,11 @@ export class TradingviewWebhookController {
             const rebalanceToUSD = rebalanceToUSDFromRequest
               ? Number(rebalanceToUSDFromRequest)
               : rebalanceToUSDFromSetting
-            // await this.binanceSpotTradingService.rebalance(
-            //   rebalanceToUSD,
-            //   pairs,
-            //   true,
-            // )
+            await this.binanceSpotTradingService.rebalance(
+              rebalanceToUSD,
+              pairs,
+              true,
+            )
             console.log('rebalanceToUSD', rebalanceToUSD)
             break
           }
@@ -129,13 +123,13 @@ export class TradingviewWebhookController {
               await this.binanceSpotService.getMyBalancesDict()
             const pricesDict = await this.binanceSpotService.getPricesDict()
             console.log('rebalanceToUSD', rebalanceToUSD)
-            // await this.binanceSpotTradingService.rebalancePair(
-            //   rebalanceToUSD,
-            //   pair,
-            //   true,
-            //   balancesDict,
-            //   pricesDict,
-            // )
+            await this.binanceSpotTradingService.rebalancePair(
+              rebalanceToUSD,
+              pair,
+              true,
+              balancesDict,
+              pricesDict,
+            )
             break
           }
           case WebhookAction.DCA: {
