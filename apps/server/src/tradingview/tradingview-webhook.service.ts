@@ -1,7 +1,11 @@
+import { PositionSide, SettingResponse, TradingCommandDto } from '@japuk/models'
 import { Injectable } from '@nestjs/common'
 
+import { BinanceSpotStrategyService } from '../binance/binance-spot-strategy.service'
+import { BinanceSpotService } from '../binance/binance-spot.service'
 import { AlertLogGateway } from '../client-api/alert-log/alert-log.gateway'
 import { AlertLogService } from '../client-api/alert-log/alert-log.service'
+import { SmartTradingService } from '../client-api/smart-trading/smart-trading.service'
 import { ConfigService } from '../core/config.service'
 import { AlertLogRepo } from '../database/alert-log/alert-log.repo'
 import { TelegramBotService } from '../telegram/telegram-bot.service'
@@ -16,8 +20,11 @@ export class TradingviewWebhookService {
     private telegramClientService: TelegramClientService,
     private telegramBotService: TelegramBotService,
     private configService: ConfigService,
+    private binanceSpotStrategyService: BinanceSpotStrategyService,
+    private binanceSpotService: BinanceSpotService,
+    private smartTradingService: SmartTradingService,
   ) {}
-  async processWebhookFromTradingview(actionBody: string) {
+  async processAlert(actionBody: string) {
     const [coin, price, reason] = actionBody.split(':')
 
     const alertLogDoc = await this.alertLogRepo.create({
@@ -44,5 +51,69 @@ reason: <b>${reason}</b>`,
     await this.alertLogGateway.newAlertLog(
       this.alertLogService.toAlertLogResponse(alertLogDoc),
     )
+  }
+
+  async rebalanceTo(
+    actionBody: string,
+    setting: SettingResponse,
+    pairs: string[],
+  ) {
+    const rebalanceToUSDFromRequest = actionBody
+    const { rebalanceToUSD: rebalanceToUSDFromSetting } = setting
+
+    const rebalanceToUSD = rebalanceToUSDFromRequest
+      ? Number(rebalanceToUSDFromRequest)
+      : rebalanceToUSDFromSetting
+    await this.binanceSpotStrategyService.rebalance(rebalanceToUSD, pairs, true)
+  }
+
+  async rebalancePair(actionBody: string, setting: SettingResponse) {
+    const { rebalanceToUSD: rebalanceToUSDFromSetting } = setting
+    const [pair, rebalanceToUSDFromRequest] = actionBody.split('_')
+    const rebalanceToUSD = rebalanceToUSDFromRequest
+      ? Number(rebalanceToUSDFromRequest)
+      : rebalanceToUSDFromSetting
+    const balancesDict = await this.binanceSpotService.getMyBalancesDict()
+    const pricesDict = await this.binanceSpotService.getPricesDict()
+    await this.binanceSpotStrategyService.rebalancePair(
+      rebalanceToUSD,
+      pair,
+      true,
+      balancesDict,
+      pricesDict,
+    )
+  }
+
+  async dca(actionBody: string, pairs: string[]) {
+    const amountUSD = Number(actionBody)
+    await this.binanceSpotStrategyService.dca(amountUSD, pairs)
+  }
+
+  async sellPercent(actionBody: string, pairs: string[]) {
+    const sellPercent = Number(actionBody)
+    await this.binanceSpotStrategyService.sellDCA(sellPercent, pairs)
+  }
+
+  async smartFuturesTrade(
+    actionBody: string,
+    side: PositionSide,
+    setting: SettingResponse,
+  ) {
+    const ticker = actionBody
+    const { maxLeverage, futuresAmountUSD } = setting
+    const leverage = await this.smartTradingService.getAutoLeverage(
+      ticker,
+      side,
+      0,
+      maxLeverage,
+    )
+    const dto: TradingCommandDto = {
+      symbol: ticker,
+      side,
+      amountUSD: futuresAmountUSD,
+      leverage,
+    }
+
+    await this.smartTradingService.futuresTrade(dto)
   }
 }

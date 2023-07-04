@@ -37,7 +37,7 @@ export const AlertLogs = () => {
     <>
       <PageHeader
         title="Alert Logs"
-        description="Logs triggered from Tradingview"
+        description="Cut your losses short and let your profits run, and you may succeed."
       />
       <Table variant="striped">
         <Thead>
