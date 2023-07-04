@@ -56,3 +56,4 @@ export const tickerSlice = createSlice({
 })
 
 export const tickerReducer = tickerSlice.reducer
+export const { updateTicker, removeTicker } = tickerSlice.actions
