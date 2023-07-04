@@ -110,12 +110,16 @@ export const TradingModal = ({
     return null
   }
 
-  const { currentPrice, lowest, highest, leverages } = tradingInfo
-
-  const toHighestPercent = ((highest - currentPrice) / currentPrice) * 100
-  const toLowestPercent = ((currentPrice - lowest) / currentPrice) * 100
-  const toHighestLeverage = Math.floor(100 / toHighestPercent)
-  const toLowestLeverage = Math.floor(100 / toLowestPercent)
+  const {
+    currentPrice,
+    lowest,
+    highest,
+    leverages,
+    toHighestLeverage,
+    toLowestLeverage,
+    toHighestPercent,
+    toLowestPercent,
+  } = tradingInfo
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="2xl">

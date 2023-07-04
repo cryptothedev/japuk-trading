@@ -16,4 +16,8 @@ export interface TradingInfoResponse {
   lowest: number
   currentPrice: number
   leverages: number[]
+  toHighestPercent: number
+  toLowestPercent: number
+  toHighestLeverage: number
+  toLowestLeverage: number
 }

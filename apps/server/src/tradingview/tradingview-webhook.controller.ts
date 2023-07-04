@@ -79,6 +79,7 @@ export class TradingviewWebhookController {
     const {
       rebalanceToUSD: rebalanceToUSDFromSetting,
       futuresAmountUSD: futuresAmountUSDFromSetting,
+      maxLeverage: maxLeverageFromSetting,
     } = setting
 
     const messages = rawMessage.split('\n').filter(Boolean)
@@ -150,7 +151,7 @@ export class TradingviewWebhookController {
               ticker,
               PositionSide.LONG,
               0,
-              25,
+              maxLeverageFromSetting,
             )
             const dto: TradingCommandDto = {
               symbol: ticker,
@@ -168,7 +169,7 @@ export class TradingviewWebhookController {
               ticker,
               PositionSide.SHORT,
               0,
-              25,
+              maxLeverageFromSetting,
             )
             const dto: TradingCommandDto = {
               symbol: ticker,
