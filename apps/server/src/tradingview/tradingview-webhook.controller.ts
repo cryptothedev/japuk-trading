@@ -108,8 +108,10 @@ export class TradingviewWebhookController {
 
           // SPOT
           case WebhookAction.RebalanceTo: {
-            const rebalanceToUSD =
-              Number(actionBody) ?? rebalanceToUSDFromSetting
+            const rebalanceToUSDFromRequest = actionBody
+            const rebalanceToUSD = rebalanceToUSDFromRequest
+              ? Number(rebalanceToUSDFromRequest)
+              : rebalanceToUSDFromSetting
             await this.binanceSpotTradingService.rebalance(
               rebalanceToUSD,
               pairs,
@@ -119,8 +121,9 @@ export class TradingviewWebhookController {
           }
           case WebhookAction.Rebalance: {
             const [pair, rebalanceToUSDFromRequest] = actionBody.split('_')
-            const rebalanceToUSD =
-              Number(rebalanceToUSDFromRequest) ?? rebalanceToUSDFromSetting
+            const rebalanceToUSD = rebalanceToUSDFromRequest
+              ? Number(rebalanceToUSDFromRequest)
+              : rebalanceToUSDFromSetting
             const balancesDict =
               await this.binanceSpotService.getMyBalancesDict()
             const pricesDict = await this.binanceSpotService.getPricesDict()

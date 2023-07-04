@@ -5,6 +5,7 @@ import {
   FormErrorMessage,
   FormLabel,
   Input,
+  Stack,
 } from '@chakra-ui/react'
 import { QueryStatus } from '@reduxjs/toolkit/query'
 import { useEffect } from 'react'
@@ -75,47 +76,51 @@ export const Settings = () => {
       </Flex>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl isInvalid={Boolean(errors.rebalanceTo)} maxW="sm">
-          <FormLabel htmlFor="rebalanceTo">Rebalance To (USD)</FormLabel>
-          <Input
-            id="rebalanceTo"
-            placeholder="0"
-            {...register('rebalanceTo', {
-              required: 'Please input amount in USD',
-            })}
-          />
-          {errors.rebalanceTo && errors.rebalanceTo.message && (
-            <FormErrorMessage>{errors.rebalanceTo.message}</FormErrorMessage>
-          )}
-        </FormControl>
+        <Stack spacing={8}>
+          <FormControl isInvalid={Boolean(errors.rebalanceTo)} maxW="sm">
+            <FormLabel htmlFor="rebalanceTo">Rebalance To (USD)</FormLabel>
+            <Input
+              id="rebalanceTo"
+              placeholder="0"
+              {...register('rebalanceTo', {
+                required: 'Please input amount in USD',
+              })}
+            />
+            {errors.rebalanceTo && errors.rebalanceTo.message && (
+              <FormErrorMessage>{errors.rebalanceTo.message}</FormErrorMessage>
+            )}
+          </FormControl>
 
-        <FormControl isInvalid={Boolean(errors.futuresAmount)} maxW="sm">
-          <FormLabel htmlFor="futuresAmount">Futures Amount (USD)</FormLabel>
-          <Input
-            id="futuresAmount"
-            placeholder="0"
-            {...register('futuresAmount', {
-              required: 'Please input amount in USD',
-            })}
-          />
-          {errors.futuresAmount && errors.futuresAmount.message && (
-            <FormErrorMessage>{errors.futuresAmount.message}</FormErrorMessage>
-          )}
-        </FormControl>
+          <FormControl isInvalid={Boolean(errors.futuresAmount)} maxW="sm">
+            <FormLabel htmlFor="futuresAmount">Futures Amount (USD)</FormLabel>
+            <Input
+              id="futuresAmount"
+              placeholder="0"
+              {...register('futuresAmount', {
+                required: 'Please input amount in USD',
+              })}
+            />
+            {errors.futuresAmount && errors.futuresAmount.message && (
+              <FormErrorMessage>
+                {errors.futuresAmount.message}
+              </FormErrorMessage>
+            )}
+          </FormControl>
 
-        <FormControl isInvalid={Boolean(errors.maxLeverage)} maxW="sm">
-          <FormLabel htmlFor="maxLeverage">Max Leverage</FormLabel>
-          <Input
-            id="maxLeverage"
-            placeholder="0"
-            {...register('maxLeverage', {
-              required: 'Please input max leverage',
-            })}
-          />
-          {errors.maxLeverage && errors.maxLeverage.message && (
-            <FormErrorMessage>{errors.maxLeverage.message}</FormErrorMessage>
-          )}
-        </FormControl>
+          <FormControl isInvalid={Boolean(errors.maxLeverage)} maxW="sm">
+            <FormLabel htmlFor="maxLeverage">Max Leverage</FormLabel>
+            <Input
+              id="maxLeverage"
+              placeholder="0"
+              {...register('maxLeverage', {
+                required: 'Please input max leverage',
+              })}
+            />
+            {errors.maxLeverage && errors.maxLeverage.message && (
+              <FormErrorMessage>{errors.maxLeverage.message}</FormErrorMessage>
+            )}
+          </FormControl>
+        </Stack>
       </form>
     </>
   )
