@@ -13,12 +13,11 @@ import {
   ModalOverlay,
 } from '@chakra-ui/react'
 import { UpsertTickerDto } from '@japuk/models'
-import { QueryStatus } from '@reduxjs/toolkit/query'
 import { useForm } from 'react-hook-form'
 
 interface AddTickerModalProps {
   upsertTicker: (upsertTickerDto: UpsertTickerDto) => void
-  upsertTickerLoadingStatus: QueryStatus
+  isLoading: boolean
   isOpen: boolean
   onClose: () => void
 }
@@ -28,7 +27,7 @@ type AddTickerFormValues = {
 }
 export const AddTickerModal = ({
   upsertTicker,
-  upsertTickerLoadingStatus,
+  isLoading,
   isOpen,
   onClose,
 }: AddTickerModalProps) => {
@@ -46,8 +45,6 @@ export const AddTickerModal = ({
     upsertTicker({ pair: pair.toUpperCase() })
     reset()
   }
-
-  const isLoading = upsertTickerLoadingStatus === QueryStatus.pending
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

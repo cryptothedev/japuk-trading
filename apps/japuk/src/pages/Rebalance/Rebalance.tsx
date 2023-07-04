@@ -6,12 +6,14 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react'
+import { UpsertTickerDto } from '@japuk/models'
 import { sortBy } from 'lodash'
 import { useState } from 'react'
 import { RiAddFill } from 'react-icons/ri'
 
 import { PageHeader } from '../../components/PageHeader/PageHeader'
 import { RebalanceService } from '../../services/rebalance.service'
+import { TickerService } from '../../services/ticker.service'
 import { useSetting } from '../Settings/useSetting'
 import { AddTickerModal } from './AddTickerModal'
 import { RebalanceIcon } from './RebalanceIcon'
@@ -22,11 +24,9 @@ const WATCH_LIST = ['BINANCE:BTCUSDT', 'BINANCE:ETHUSDT', 'OTHERS.D', 'BTC.D']
 
 export const Rebalance = () => {
   const [isRebalancing, setIsRebalancing] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
-  const { tickers, upsertIt, deleteIt, upsertTickerLoadingStatus } = useTicker(
-    true,
-    true,
-  )
+  const { tickers } = useTicker(true, true)
   const { setting } = useSetting(true)
 
   const {
@@ -52,6 +52,16 @@ export const Rebalance = () => {
       (ticker) => `BINANCE:${ticker.pair}`,
     ),
   ).join(',')
+
+  const handleDeleteTicker = async (id: string) => {
+    await TickerService.deleteTicker(id)
+  }
+
+  const handleUpsertTicker = async (upsertTickerDto: UpsertTickerDto) => {
+    setIsLoading(true)
+    await TickerService.upsertTicker(upsertTickerDto)
+    setIsLoading(false)
+  }
 
   return (
     <>
@@ -93,14 +103,14 @@ export const Rebalance = () => {
 
       <RebalanceTickers
         tickers={tickers}
-        deleteTicker={deleteIt}
+        deleteTicker={handleDeleteTicker}
         rebalanceToUSD={setting.rebalanceToUSD}
       />
 
       {isAddTickerModalOpen && (
         <AddTickerModal
-          upsertTicker={upsertIt}
-          upsertTickerLoadingStatus={upsertTickerLoadingStatus}
+          upsertTicker={handleUpsertTicker}
+          isLoading={isLoading}
           isOpen={isAddTickerModalOpen}
           onClose={onCloseAddTickerModal}
         />

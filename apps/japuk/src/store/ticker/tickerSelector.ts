@@ -7,10 +7,4 @@ export class TickerSelector {
     orderBy(state.ticker.tickers, [(ticker) => ticker.value], ['desc'])
   static tickersLoadingStatus = (state: RootState) =>
     state.ticker.tickersLoadingStatus
-
-  static upsertTickerLoadingStatus = (state: RootState) =>
-    state.ticker.upsertTickerLoadingStatus
-
-  static deleteTickerLoadingStatus = (state: RootState) =>
-    state.ticker.deleteTickerLoadingStatus
 }

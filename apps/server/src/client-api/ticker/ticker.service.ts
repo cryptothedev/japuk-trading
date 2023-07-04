@@ -64,8 +64,8 @@ export class TickerService {
   ): TickerResponse {
     const { _id, pair } = tickerDoc
     const coin = removeStable(pair)
-    const currentPrice = pricesDict[pair]
-    const currentAmount = myBalancesDict[coin]
+    const currentPrice = pricesDict[pair] ?? 0
+    const currentAmount = myBalancesDict[coin] ?? 0
 
     return {
       id: _id.toString(),
