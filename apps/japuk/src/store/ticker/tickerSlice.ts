@@ -1,4 +1,4 @@
-import { TickerResponse } from '@japuk/models'
+import { TickerPriceWs, TickerResponse } from '@japuk/models'
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { QueryStatus } from '@reduxjs/toolkit/query'
 
@@ -34,6 +34,18 @@ export const tickerSlice = createSlice({
       const id = action.payload
       state.tickers = state.tickers.filter((ticker) => ticker.id !== id)
     },
+    updatePrices: (
+      state,
+      action: PayloadAction<Record<string, TickerPriceWs>>,
+    ) => {
+      const pricesDict = action.payload
+      state.tickers.forEach((ticker) => {
+        const { pair } = ticker
+        if (pricesDict[pair]) {
+          ticker.price = pricesDict[pair].close
+        }
+      })
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchTickers.pending, (state) => {
@@ -52,4 +64,4 @@ export const tickerSlice = createSlice({
 })
 
 export const tickerReducer = tickerSlice.reducer
-export const { updateTickers, removeTicker } = tickerSlice.actions
+export const { updateTickers, removeTicker, updatePrices } = tickerSlice.actions

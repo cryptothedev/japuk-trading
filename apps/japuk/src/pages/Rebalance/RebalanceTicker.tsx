@@ -10,12 +10,14 @@ interface RebalanceTickerProps {
   ticker: TickerResponse
   deleteTicker: (id: string) => void
   rebalanceToUSD: number
+  refreshTicker: () => void
 }
 
 export const RebalanceTicker = ({
   ticker,
   rebalanceToUSD,
   deleteTicker,
+  refreshTicker,
 }: RebalanceTickerProps) => {
   const [isLoading, setIsLoading] = useState(false)
   const handleDelete = (id: string) => {
@@ -26,6 +28,7 @@ export const RebalanceTicker = ({
     setIsLoading(true)
     await RebalanceService.rebalanceOne(id)
     setIsLoading(false)
+    refreshTicker()
   }
 
   const { id, pair, amount, price, value } = ticker

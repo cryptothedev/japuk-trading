@@ -15,6 +15,7 @@ import { SmartTradingController } from './smart-trading/smart-trading.controller
 import { SmartTradingService } from './smart-trading/smart-trading.service'
 import { TickerController } from './ticker/ticker.controller'
 import { TickerService } from './ticker/ticker.service'
+import { TickerPricesGateway } from './ticker/ticker-prices.gateway';
 
 @Module({
   imports: [CoreModule, DatabaseModule, BinanceModule],
@@ -28,6 +29,7 @@ import { TickerService } from './ticker/ticker.service'
   ],
   providers: [
     AlertLogGateway,
+    TickerPricesGateway,
     AlertLogService,
     SettingService,
     TickerService,

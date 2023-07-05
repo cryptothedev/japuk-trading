@@ -29,7 +29,7 @@ export const Rebalance = () => {
   const [isLoading, setIsLoading] = useState(false)
   const dispatch = useAppDispatch()
 
-  const { tickers } = useTicker(true, true)
+  const { tickers, refreshTicker } = useTicker(true)
   const { setting } = useSetting(true)
 
   const {
@@ -42,6 +42,7 @@ export const Rebalance = () => {
     setIsRebalancing(true)
     await RebalanceService.rebalanceAll()
     setIsRebalancing(false)
+    refreshTicker()
   }
 
   const { rebalanceToUSD } = setting
@@ -59,6 +60,7 @@ export const Rebalance = () => {
   const handleDeleteTicker = async (id: string) => {
     await TickerService.deleteTicker(id)
     dispatch(removeTicker(id))
+    refreshTicker()
   }
 
   const handleUpsertTicker = async (upsertTickersDto: UpsertTickersDto) => {
@@ -66,6 +68,7 @@ export const Rebalance = () => {
     const upserteds = await TickerService.upsertTickers(upsertTickersDto)
     dispatch(updateTickers(upserteds))
     setIsLoading(false)
+    refreshTicker()
   }
 
   return (
@@ -110,6 +113,7 @@ export const Rebalance = () => {
         tickers={tickers}
         deleteTicker={handleDeleteTicker}
         rebalanceToUSD={setting.rebalanceToUSD}
+        refreshTicker={refreshTicker}
       />
 
       {isAddTickerModalOpen && (

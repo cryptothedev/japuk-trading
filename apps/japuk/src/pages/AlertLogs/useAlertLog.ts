@@ -11,7 +11,7 @@ import {
 } from '../../store/alert-log/alertLogSlice'
 import { useAppDispatch, useAppSelector } from '../../store/store'
 
-export const useAlertLog = (fetch: boolean, ws: boolean) => {
+export const useAlertLog = (fetch: boolean) => {
   const dispatch = useAppDispatch()
   const alertLogs = useAppSelector(AlertLogSelector.alertLogs)
   const alertLogsLoadingStatus = useAppSelector(
@@ -48,7 +48,7 @@ export const useAlertLog = (fetch: boolean, ws: boolean) => {
       console.log('disconnect')
       socket.disconnect()
     }
-  }, [dispatch, ws])
+  }, [dispatch])
 
   return {
     alertLogs,

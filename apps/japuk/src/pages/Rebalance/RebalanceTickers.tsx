@@ -7,11 +7,13 @@ interface RebalanceTickersProps {
   tickers: TickerResponse[]
   deleteTicker: (id: string) => void
   rebalanceToUSD: number
+  refreshTicker: () => void
 }
 export const RebalanceTickers = ({
   tickers,
   deleteTicker,
   rebalanceToUSD,
+                                   refreshTicker
 }: RebalanceTickersProps) => {
   return (
     <Table variant="striped">
@@ -32,6 +34,7 @@ export const RebalanceTickers = ({
               ticker={ticker}
               rebalanceToUSD={rebalanceToUSD}
               deleteTicker={deleteTicker}
+              refreshTicker={refreshTicker}
             />
           )
         })}
