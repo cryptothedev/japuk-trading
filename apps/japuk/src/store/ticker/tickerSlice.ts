@@ -39,11 +39,13 @@ export const tickerSlice = createSlice({
       action: PayloadAction<Record<string, TickerPriceWs>>,
     ) => {
       const pricesDict = action.payload
-      state.tickers.forEach((ticker) => {
-        const { pair } = ticker
+      state.tickers = state.tickers.map((ticker) => {
+        const { pair, amount } = ticker
         if (pricesDict[pair]) {
-          ticker.price = pricesDict[pair].close
+          const newPrice = pricesDict[pair].close
+          return { ...ticker, price: newPrice, value: amount * newPrice }
         }
+        return ticker
       })
     },
   },

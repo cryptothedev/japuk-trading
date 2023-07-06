@@ -98,7 +98,7 @@ export const Rebalance = () => {
           <RebalanceIcon
             gain={gain}
             onClick={rebalanceAll}
-            isDisabled={isRebalancing}
+            isRebalancing={isRebalancing}
           />
           <IconButton
             icon={<RiAddFill fontSize="1.25rem" />}

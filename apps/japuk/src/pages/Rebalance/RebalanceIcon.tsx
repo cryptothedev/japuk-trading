@@ -9,13 +9,13 @@ const EXCEED_AMOUNT = 20
 
 interface RebalanceIconProps {
   gain: number
-  isDisabled?: boolean
+  isRebalancing?: boolean
   onClick?: (...params: any) => any
 }
 export const RebalanceIcon = ({
   gain,
   onClick,
-  isDisabled,
+  isRebalancing,
 }: RebalanceIconProps) => {
   const noNeedToRebalance = Math.abs(gain) < EXCEED_AMOUNT
 
@@ -27,6 +27,7 @@ export const RebalanceIcon = ({
         colorScheme="neutral"
         aria-label="rebalance"
         onClick={onClick}
+        isLoading={isRebalancing}
         isDisabled
       />
     )
@@ -40,7 +41,7 @@ export const RebalanceIcon = ({
         colorScheme="danger"
         aria-label="rebalance"
         onClick={onClick}
-        isDisabled={isDisabled}
+        isLoading={isRebalancing}
       />
     )
   }
@@ -52,7 +53,7 @@ export const RebalanceIcon = ({
       colorScheme="primary"
       aria-label="rebalance"
       onClick={onClick}
-      isDisabled={isDisabled}
+      isLoading={isRebalancing}
     />
   )
 }

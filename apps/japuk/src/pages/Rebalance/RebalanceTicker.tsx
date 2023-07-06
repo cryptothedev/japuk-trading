@@ -45,7 +45,7 @@ export const RebalanceTicker = ({
           <RebalanceIcon
             gain={gain}
             onClick={() => rebalance(id)}
-            isDisabled={isLoading}
+            isRebalancing={isLoading}
           />
           <IconButton
             icon={<MdDelete fontSize="1.25rem" />}
