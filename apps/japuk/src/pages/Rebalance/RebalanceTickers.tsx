@@ -5,15 +5,17 @@ import { RebalanceTicker } from './RebalanceTicker'
 
 interface RebalanceTickersProps {
   tickers: TickerResponse[]
-  deleteTicker: (id: string) => void
   rebalanceToUSD: number
+  isFetching: boolean
   refreshTicker: () => void
+  deleteTicker: (id: string) => void
 }
 export const RebalanceTickers = ({
   tickers,
-  deleteTicker,
   rebalanceToUSD,
-                                   refreshTicker
+  isFetching,
+  refreshTicker,
+  deleteTicker,
 }: RebalanceTickersProps) => {
   return (
     <Table variant="striped">
@@ -33,6 +35,7 @@ export const RebalanceTickers = ({
               key={ticker.id}
               ticker={ticker}
               rebalanceToUSD={rebalanceToUSD}
+              isFetching={isFetching}
               deleteTicker={deleteTicker}
               refreshTicker={refreshTicker}
             />

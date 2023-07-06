@@ -7,6 +7,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { UpsertTickersDto } from '@japuk/models'
+import { QueryStatus } from '@reduxjs/toolkit/query'
 import { sortBy } from 'lodash'
 import { useState } from 'react'
 import { RiAddFill } from 'react-icons/ri'
@@ -29,7 +30,7 @@ export const Rebalance = () => {
   const [isLoading, setIsLoading] = useState(false)
   const dispatch = useAppDispatch()
 
-  const { tickers, refreshTicker } = useTicker(true)
+  const { tickers, refreshTicker, tickersLoadingStatus } = useTicker(true)
   const { setting } = useSetting(true)
 
   const {
@@ -71,6 +72,8 @@ export const Rebalance = () => {
     refreshTicker()
   }
 
+  const isFetching = tickersLoadingStatus === QueryStatus.pending
+
   return (
     <>
       <Flex justifyContent="space-between">
@@ -98,7 +101,7 @@ export const Rebalance = () => {
           <RebalanceIcon
             gain={gain}
             onClick={rebalanceAll}
-            isRebalancing={isRebalancing}
+            isRebalancing={isRebalancing || isFetching}
           />
           <IconButton
             icon={<RiAddFill fontSize="1.25rem" />}
@@ -114,12 +117,13 @@ export const Rebalance = () => {
         deleteTicker={handleDeleteTicker}
         rebalanceToUSD={setting.rebalanceToUSD}
         refreshTicker={refreshTicker}
+        isFetching={isFetching}
       />
 
       {isAddTickerModalOpen && (
         <AddTickerModal
           upsertTicker={handleUpsertTicker}
-          isLoading={isLoading}
+          isLoading={isLoading || isFetching}
           isOpen={isAddTickerModalOpen}
           onClose={onCloseAddTickerModal}
         />

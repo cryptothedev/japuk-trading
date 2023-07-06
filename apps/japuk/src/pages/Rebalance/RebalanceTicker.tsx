@@ -8,14 +8,16 @@ import { RebalanceIcon } from './RebalanceIcon'
 
 interface RebalanceTickerProps {
   ticker: TickerResponse
-  deleteTicker: (id: string) => void
   rebalanceToUSD: number
+  isFetching: boolean
+  deleteTicker: (id: string) => void
   refreshTicker: () => void
 }
 
 export const RebalanceTicker = ({
   ticker,
   rebalanceToUSD,
+  isFetching,
   deleteTicker,
   refreshTicker,
 }: RebalanceTickerProps) => {
@@ -45,7 +47,7 @@ export const RebalanceTicker = ({
           <RebalanceIcon
             gain={gain}
             onClick={() => rebalance(id)}
-            isRebalancing={isLoading}
+            isRebalancing={isLoading || isFetching}
           />
           <IconButton
             icon={<MdDelete fontSize="1.25rem" />}
