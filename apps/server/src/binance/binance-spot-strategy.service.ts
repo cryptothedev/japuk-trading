@@ -111,7 +111,7 @@ export class BinanceSpotStrategyService {
     } catch (e) {
       this.logger.error('failed to rebalance', pair, e)
     } finally {
-      await wait(1)
+      await wait(0.2)
     }
   }
 }
