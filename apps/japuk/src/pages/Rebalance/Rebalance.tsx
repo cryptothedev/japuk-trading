@@ -10,7 +10,7 @@ import { UpsertTickersDto } from '@japuk/models'
 import { QueryStatus } from '@reduxjs/toolkit/query'
 import { sortBy } from 'lodash'
 import { useState } from 'react'
-import { RiAddFill } from 'react-icons/ri'
+import { RiAddFill, RiRefreshLine } from 'react-icons/ri'
 
 import { PageHeader } from '../../components/PageHeader/PageHeader'
 import { RebalanceService } from '../../services/rebalance.service'
@@ -98,6 +98,13 @@ export const Rebalance = () => {
         </Box>
 
         <HStack spacing={6} alignSelf="flex-end">
+          <IconButton
+            icon={<RiRefreshLine fontSize="1.25rem" />}
+            variant="outline"
+            aria-label="refresh tickers"
+            onClick={refreshTicker}
+            isLoading={isFetching}
+          />
           <RebalanceIcon
             gain={gain}
             onClick={rebalanceAll}

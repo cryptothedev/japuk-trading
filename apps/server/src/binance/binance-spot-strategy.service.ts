@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common'
+import { chunk } from 'lodash'
 
 import { LogService } from '../core/log.service'
 import { removeStable } from '../tradingview/utils/removeStable'
@@ -55,13 +56,18 @@ export class BinanceSpotStrategyService {
     const balancesDict = await this.binanceSpotService.getMyBalancesDict()
     const pricesDict = await this.binanceSpotService.getPricesDict()
 
-    for (const pair of pairs) {
-      await this.rebalancePair(
-        rebalanceToUSD,
-        pair,
-        alsoBuy,
-        balancesDict,
-        pricesDict,
+    const pairsChunks = chunk(pairs, 5)
+    for (const pairs of pairsChunks) {
+      await Promise.all(
+        pairs.map((pair) =>
+          this.rebalancePair(
+            rebalanceToUSD,
+            pair,
+            alsoBuy,
+            balancesDict,
+            pricesDict,
+          ),
+        ),
       )
     }
   }
