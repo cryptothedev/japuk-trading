@@ -56,7 +56,7 @@ export class BinanceSpotStrategyService {
     const balancesDict = await this.binanceSpotService.getMyBalancesDict()
     const pricesDict = await this.binanceSpotService.getPricesDict()
 
-    const pairsChunks = chunk(pairs, 5)
+    const pairsChunks = chunk(pairs, 10)
     for (const pairs of pairsChunks) {
       await Promise.all(
         pairs.map((pair) =>
