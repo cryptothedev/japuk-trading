@@ -15,9 +15,11 @@ export class TickerService {
     private binanceSpotService: BinanceSpotService,
   ) {}
   async get() {
-    const tickers = await this.tickerRepo.find()
-    const myBalancesDict = await this.binanceSpotService.getMyBalancesDict()
-    const pricesDict = await this.binanceSpotService.getPricesDict()
+    const [tickers, myBalancesDict, pricesDict] = await Promise.all([
+      this.tickerRepo.find(),
+      this.binanceSpotService.getMyBalancesDict(),
+      this.binanceSpotService.getPricesDict(),
+    ])
     return tickers.map((ticker) =>
       this.toTickerResponse(ticker, myBalancesDict, pricesDict),
     )
