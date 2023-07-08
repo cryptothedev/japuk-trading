@@ -56,7 +56,8 @@ export class BinanceSpotStrategyService {
     const balancesDict = await this.binanceSpotService.getMyBalancesDict()
     const pricesDict = await this.binanceSpotService.getPricesDict()
 
-    const pairsChunks = chunk(pairs, 10)
+    const size = Math.ceil(pairs.length / 2)
+    const pairsChunks = chunk(pairs, size)
     for (const pairs of pairsChunks) {
       await Promise.all(
         pairs.map((pair) =>
@@ -117,7 +118,7 @@ export class BinanceSpotStrategyService {
     } catch (e) {
       this.logger.error('failed to rebalance', pair, e)
     } finally {
-      await wait(0.1)
+      await wait(0.01)
     }
   }
 }

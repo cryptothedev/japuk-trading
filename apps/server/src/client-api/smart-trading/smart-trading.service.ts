@@ -17,9 +17,10 @@ export class SmartTradingService {
     private logger: LogService,
   ) {}
   async getTradingInfo(ticker: string): Promise<TradingInfoResponse> {
-    const { highest, lowest, currentPrice } =
-      await this.binanceSpotService.getHighestLowestPrice(ticker)
-    const leverages = await this.binanceFuturesService.getLeverages(ticker)
+    const [{ highest, lowest, currentPrice }, leverages] = await Promise.all([
+      this.binanceSpotService.getHighestLowestPrice(ticker),
+      this.binanceFuturesService.getLeverages(ticker),
+    ])
 
     const toHighestPercent = ((highest - currentPrice) / currentPrice) * 100
     const toLowestPercent = ((currentPrice - lowest) / currentPrice) * 100
