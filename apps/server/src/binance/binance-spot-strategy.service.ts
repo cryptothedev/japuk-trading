@@ -84,7 +84,7 @@ export class BinanceSpotStrategyService {
       const currentPrice = pricesDict[pair]
 
       const pairCoin = removeStable(pair)
-      const currentAmount = balancesDict[pairCoin]
+      const currentAmount = balancesDict[pairCoin] ?? 0
 
       if (!currentPrice || !currentAmount) {
         this.logger.info('skipped', pair)
