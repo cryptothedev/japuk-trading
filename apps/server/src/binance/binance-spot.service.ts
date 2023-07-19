@@ -12,7 +12,7 @@ export class BinanceSpotService {
     this.client = new MainClient({ api_key: apiKey, api_secret: apiSecret })
   }
 
-  buy(symbol: string, amountUSD: number) {
+  buyUSDAmount(symbol: string, amountUSD: number) {
     return this.client.submitNewOrder({
       symbol,
       side: 'BUY',
@@ -21,12 +21,30 @@ export class BinanceSpotService {
     })
   }
 
-  sell(symbol: string, amountUSD: number) {
+  sellUSDAmount(symbol: string, amountUSD: number) {
     return this.client.submitNewOrder({
       symbol,
       side: 'SELL',
       type: 'MARKET',
       quoteOrderQty: amountUSD,
+    })
+  }
+
+  buyAmount(symbol: string, amount: number) {
+    return this.client.submitNewOrder({
+      symbol,
+      side: 'BUY',
+      type: 'MARKET',
+      quantity: amount,
+    })
+  }
+
+  sellAmount(symbol: string, amount: number) {
+    return this.client.submitNewOrder({
+      symbol,
+      side: 'SELL',
+      type: 'MARKET',
+      quantity: amount,
     })
   }
 
