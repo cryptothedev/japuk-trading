@@ -15,7 +15,7 @@ export class BinanceSpotStrategyService {
 
   async dca(amountUSD: number, pairs: string[]) {
     for (const pair of pairs) {
-      await this.binanceSpotService.buyUSDAmount(pair, amountUSD)
+      await this.binanceSpotService.buy(pair, amountUSD)
       this.logger.info(`dca ${pair} amount ${amountUSD}`)
       await wait(1)
     }
@@ -42,7 +42,7 @@ export class BinanceSpotStrategyService {
         )
         this.logger.info('selling amount', amountUSD)
 
-        await this.binanceSpotService.sellUSDAmount(pair, amountUSD)
+        await this.binanceSpotService.sell(pair, amountUSD)
         this.logger.info(`dca sell ${pair} amount ${amountUSD}`)
       } catch (e) {
         this.logger.error('failed to dca sell', pair, e)
@@ -95,9 +95,7 @@ export class BinanceSpotStrategyService {
       this.logger.info('currentAmount', currentAmount)
 
       const marketValueUSD = currentPrice * currentAmount
-      const amount = Math.floor(
-        (marketValueUSD - rebalanceToUSD) / currentPrice,
-      )
+      const amount = Math.floor(marketValueUSD - rebalanceToUSD)
       const buy = amount < 0
       const sell = !buy
       if (buy && !alsoBuy) {
@@ -111,10 +109,10 @@ export class BinanceSpotStrategyService {
       } else if (buy) {
         const buyAmount = amount * -1
         this.logger.info('buying amount', buyAmount)
-        await this.binanceSpotService.buyAmount(pair, buyAmount)
+        await this.binanceSpotService.buy(pair, buyAmount)
       } else if (sell) {
         this.logger.info('selling amount', amount)
-        await this.binanceSpotService.sellAmount(pair, amount)
+        await this.binanceSpotService.sell(pair, amount)
       }
       this.logger.info('rebalance', pair, amount)
     } catch (e) {
