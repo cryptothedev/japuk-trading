@@ -71,6 +71,11 @@ export class BinanceSpotStrategyService {
         ),
       )
 
+      if (quantity === 0) {
+        this.logger.info(pair, 'skipped. quantity === 0', quantity, alsoBuy)
+        return
+      }
+
       const buy = quantity < 0
       const sell = !buy
       if (buy && !alsoBuy) {
