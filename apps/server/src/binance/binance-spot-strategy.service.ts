@@ -96,7 +96,7 @@ export class BinanceSpotStrategyService {
       if (
         currentPrice === undefined ||
         currentAmount === undefined ||
-        quantityPrecision !== undefined
+        quantityPrecision === undefined
       ) {
         this.logger.info('skipped', pair)
         return
