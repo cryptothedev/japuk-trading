@@ -31,7 +31,7 @@ export class BinanceSpotService {
     })
   }
 
-  buyAmount(symbol: string, amount: number) {
+  buyQuantity(symbol: string, amount: number) {
     return this.client.submitNewOrder({
       symbol,
       side: 'BUY',
@@ -40,7 +40,7 @@ export class BinanceSpotService {
     })
   }
 
-  sellAmount(symbol: string, amount: number) {
+  sellQuantity(symbol: string, amount: number) {
     return this.client.submitNewOrder({
       symbol,
       side: 'SELL',
