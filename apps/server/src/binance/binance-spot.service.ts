@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { MainClient } from 'binance'
+import { SymbolLotSizeFilter } from 'binance/lib/types/shared'
 
 import { ConfigService } from '../core/config.service'
 
@@ -81,6 +82,28 @@ export class BinanceSpotService {
           return dict
         }, {} as Record<string, number>)
     })
+  }
+
+  async getQuantityPrecisionDict() {
+    const { symbols, exchangeFilters } = await this.client.getExchangeInfo()
+
+    return symbols.reduce((dict, symbol) => {
+      const { filters, symbol: symbolName } = symbol
+
+      const lotSize = filters.find(
+        (filter) => filter.filterType === 'LOT_SIZE',
+      ) as SymbolLotSizeFilter
+
+      if (lotSize) {
+        dict[symbolName] =
+          String(lotSize.minQty)
+            .split('.')[1]
+            .split('')
+            .findIndex((i) => i !== '0') + 1
+      }
+
+      return dict
+    }, {} as Record<string, number>)
   }
 
   getHighestLowestPrice(symbol: string) {

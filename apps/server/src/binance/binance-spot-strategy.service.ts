@@ -55,6 +55,10 @@ export class BinanceSpotStrategyService {
   async rebalance(rebalanceToUSD: number, pairs: string[], alsoBuy: boolean) {
     const balancesDict = await this.binanceSpotService.getMyBalancesDict()
     const pricesDict = await this.binanceSpotService.getPricesDict()
+    const quantityPrecisionDict =
+      await this.binanceSpotService.getQuantityPrecisionDict()
+
+    console.log(JSON.stringify(quantityPrecisionDict))
 
     const size = Math.ceil(pairs.length / 2)
     const pairsChunks = chunk(pairs, size)
@@ -67,6 +71,7 @@ export class BinanceSpotStrategyService {
             alsoBuy,
             balancesDict,
             pricesDict,
+            quantityPrecisionDict,
           ),
         ),
       )
@@ -79,14 +84,20 @@ export class BinanceSpotStrategyService {
     alsoBuy: boolean,
     balancesDict: Record<string, number>,
     pricesDict: Record<string, number>,
+    quantityPrecisionDict: Record<string, number>,
   ) {
     try {
       const currentPrice = pricesDict[pair]
+      const quantityPrecision = quantityPrecisionDict[pair]
 
       const pairCoin = removeStable(pair)
       const currentAmount = balancesDict[pairCoin] ?? 0
 
-      if (currentPrice === undefined || currentAmount === undefined) {
+      if (
+        currentPrice === undefined ||
+        currentAmount === undefined ||
+        quantityPrecision !== undefined
+      ) {
         this.logger.info('skipped', pair)
         return
       }
@@ -95,9 +106,12 @@ export class BinanceSpotStrategyService {
       this.logger.info('currentAmount', currentAmount)
 
       const marketValueUSD = currentPrice * currentAmount
-      const amount = Math.floor(
-        (marketValueUSD - rebalanceToUSD) / currentPrice,
+      const amount = Number(
+        ((marketValueUSD - rebalanceToUSD) / currentPrice).toFixed(
+          quantityPrecision,
+        ),
       )
+
       const buy = amount < 0
       const sell = !buy
       if (buy && !alsoBuy) {

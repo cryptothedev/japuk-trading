@@ -75,12 +75,15 @@ reason: <b>${reason}</b>`,
       : rebalanceToUSDFromSetting
     const balancesDict = await this.binanceSpotService.getMyBalancesDict()
     const pricesDict = await this.binanceSpotService.getPricesDict()
+    const getQuantityPrecisionDict =
+      await this.binanceSpotService.getQuantityPrecisionDict()
     await this.binanceSpotStrategyService.rebalancePair(
       rebalanceToUSD,
       pair,
       true,
       balancesDict,
       pricesDict,
+      getQuantityPrecisionDict,
     )
   }
 

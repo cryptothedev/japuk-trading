@@ -48,6 +48,8 @@ export class RebalanceService {
 
     const balancesDict = await this.binanceSpotService.getMyBalancesDict()
     const pricesDict = await this.binanceSpotService.getPricesDict()
+    const getQuantityPrecisionDict =
+      await this.binanceSpotService.getQuantityPrecisionDict()
 
     await this.binanceSpotStrategyService.rebalancePair(
       setting.rebalanceToUSD,
@@ -55,6 +57,7 @@ export class RebalanceService {
       true,
       balancesDict,
       pricesDict,
+      getQuantityPrecisionDict,
     )
   }
 }
