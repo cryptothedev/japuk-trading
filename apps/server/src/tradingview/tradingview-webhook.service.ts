@@ -87,16 +87,6 @@ reason: <b>${reason}</b>`,
     )
   }
 
-  async dca(actionBody: string, pairs: string[]) {
-    const amountUSD = Number(actionBody)
-    await this.binanceSpotStrategyService.dca(amountUSD, pairs)
-  }
-
-  async sellPercent(actionBody: string, pairs: string[]) {
-    const sellPercent = Number(actionBody)
-    await this.binanceSpotStrategyService.sellDCA(sellPercent, pairs)
-  }
-
   async smartFuturesTrade(
     actionBody: string,
     side: PositionSide,

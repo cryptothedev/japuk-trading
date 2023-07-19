@@ -3,10 +3,6 @@ export enum WebhookAction {
   Alert = 'alert',
   // rbto or rbto_7000
   RebalanceTo = 'rbto',
-  // dca_500
-  DCA = 'dca',
-  // sell_5
-  SellPercent = 'sell%',
   // short_{{ticker}}
   SmartShort = 'short',
   // long_{{ticker}}

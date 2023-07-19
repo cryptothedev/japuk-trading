@@ -116,16 +116,6 @@ export class TradingviewWebhookController {
             break
           }
 
-          case WebhookAction.DCA: {
-            await this.tradingviewWebhookService.dca(actionBody, pairs)
-            break
-          }
-
-          case WebhookAction.SellPercent: {
-            await this.tradingviewWebhookService.sellPercent(actionBody, pairs)
-            break
-          }
-
           // FUTURES
           case WebhookAction.SmartLong: {
             await this.tradingviewWebhookService.smartFuturesTrade(

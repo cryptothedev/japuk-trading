@@ -14,12 +14,6 @@ export const getWebhookAction = (message: string) => {
     case WebhookAction.RebalanceTo: {
       return WebhookAction.RebalanceTo
     }
-    case WebhookAction.DCA: {
-      return WebhookAction.DCA
-    }
-    case WebhookAction.SellPercent: {
-      return WebhookAction.SellPercent
-    }
     case WebhookAction.SmartShort: {
       return WebhookAction.SmartShort
     }
