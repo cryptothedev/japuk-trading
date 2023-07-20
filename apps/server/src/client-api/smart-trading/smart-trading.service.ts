@@ -48,20 +48,20 @@ export class SmartTradingService {
     const { toHighestLeverage, toLowestLeverage, leverages } =
       await this.getTradingInfo(ticker)
 
-    const attemptLeverage = this.getAttemptLeverage(
-      side,
-      min,
-      max,
-      toHighestLeverage,
-      toLowestLeverage,
-    )
+    // const attemptLeverage = this.getAttemptLeverage(
+    //   side,
+    //   min,
+    //   max,
+    //   toHighestLeverage,
+    //   toLowestLeverage,
+    // )
 
     const usedLeverage = leverages.find(
-      (leverage) => attemptLeverage >= leverage,
+      (leverage) => toHighestLeverage >= leverage,
     ) as number
 
     this.logger.info('leverages', leverages)
-    this.logger.info('attemptLeverage', attemptLeverage)
+    this.logger.info('attemptLeverage', toHighestLeverage)
     this.logger.info('usedLeverage', usedLeverage)
 
     return usedLeverage
