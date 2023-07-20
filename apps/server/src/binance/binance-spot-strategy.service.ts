@@ -14,11 +14,13 @@ export class BinanceSpotStrategyService {
   ) {}
 
   async rebalance(rebalanceToUSD: number, pairs: string[], alsoBuy: boolean) {
-    const balancesDict = await this.binanceSpotService.getMyBalancesDict()
-    const pricesDict = await this.binanceSpotService.getPricesDict()
-    const quantityPrecisionDict =
-      await this.binanceSpotService.getQuantityPrecisionDict()
-
+    const [balancesDict, pricesDict, quantityPrecisionDict] = await Promise.all(
+      [
+        this.binanceSpotService.getMyBalancesDict(),
+        this.binanceSpotService.getPricesDict(),
+        this.binanceSpotService.getQuantityPrecisionDict(),
+      ],
+    )
     const size = Math.ceil(pairs.length / 2)
     const pairsChunks = chunk(pairs, size)
     for (const pairs of pairsChunks) {

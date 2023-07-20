@@ -73,17 +73,22 @@ reason: <b>${reason}</b>`,
     const rebalanceToUSD = rebalanceToUSDFromRequest
       ? Number(rebalanceToUSDFromRequest)
       : rebalanceToUSDFromSetting
-    const balancesDict = await this.binanceSpotService.getMyBalancesDict()
-    const pricesDict = await this.binanceSpotService.getPricesDict()
-    const getQuantityPrecisionDict =
-      await this.binanceSpotService.getQuantityPrecisionDict()
+
+    const [balancesDict, pricesDict, quantityPrecisionDict] = await Promise.all(
+      [
+        this.binanceSpotService.getMyBalancesDict(),
+        this.binanceSpotService.getPricesDict(),
+        this.binanceSpotService.getQuantityPrecisionDict(),
+      ],
+    )
+
     await this.binanceSpotStrategyService.rebalancePair(
       rebalanceToUSD,
       pair,
       true,
       balancesDict,
       pricesDict,
-      getQuantityPrecisionDict,
+      quantityPrecisionDict,
     )
   }
 
