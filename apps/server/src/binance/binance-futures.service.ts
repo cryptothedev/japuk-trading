@@ -173,7 +173,7 @@ export class BinanceFuturesService {
         side: side === 'LONG' ? 'SELL' : 'BUY',
         positionSide: side,
         type: 'MARKET',
-        quantity: Number(position.positionAmt),
+        quantity: Math.abs(Number(position.positionAmt)),
       })
     }
   }
