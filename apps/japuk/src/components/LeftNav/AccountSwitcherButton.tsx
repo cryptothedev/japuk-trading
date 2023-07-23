@@ -7,8 +7,12 @@ import {
   useMenuButton,
 } from '@chakra-ui/react'
 import { HiDotsVertical } from 'react-icons/hi'
+import { useSelector } from 'react-redux'
+
+import { SettingSelector } from '../../store/setting/settingSelector'
 
 export const AccountSwitcherButton = (props: FlexProps) => {
+  const { username, avatarUrl } = useSelector(SettingSelector.setting)
   const buttonProps = useMenuButton(props)
   return (
     <Flex
@@ -35,12 +39,12 @@ export const AccountSwitcherButton = (props: FlexProps) => {
           h="8"
           rounded="md"
           objectFit="cover"
-          src="/cryptodev.png"
+          src={avatarUrl}
           alt="CryptoDev"
         />
         <Box textAlign="start">
           <Box noOfLines={1} fontWeight="semibold">
-            CryptoDev
+            {username}
           </Box>
           <Box fontSize="xs" color="gray.400">
             Japuk Trading

@@ -2,6 +2,8 @@ export interface UpsertSettingDto {
   rebalanceToUSD: number
   futuresAmountUSD: number
   maxLeverage: number
+  username: string
+  avatarUrl: string
 }
 
 export interface SettingResponse {
@@ -9,4 +11,6 @@ export interface SettingResponse {
   rebalanceToUSD: number
   futuresAmountUSD: number
   maxLeverage: number
+  username: string
+  avatarUrl: string
 }

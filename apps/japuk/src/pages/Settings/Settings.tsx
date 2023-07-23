@@ -1,5 +1,6 @@
 import {
   Button,
+  Divider,
   Flex,
   FormControl,
   FormErrorMessage,
@@ -18,6 +19,8 @@ type SettingsFormValues = {
   rebalanceTo: string
   futuresAmount: string
   maxLeverage: string
+  username: string
+  avatarUrl: string
 }
 
 export const Settings = () => {
@@ -38,19 +41,30 @@ export const Settings = () => {
   })
 
   const onSubmit = async (formValues: SettingsFormValues) => {
-    const { rebalanceTo, futuresAmount, maxLeverage } = formValues
+    const { rebalanceTo, futuresAmount, maxLeverage, username, avatarUrl } =
+      formValues
     await upsertIt({
       rebalanceToUSD: Number(rebalanceTo),
       futuresAmountUSD: Number(futuresAmount),
       maxLeverage: Number(maxLeverage),
+      username,
+      avatarUrl,
     })
   }
 
   useEffect(() => {
-    const { rebalanceToUSD, futuresAmountUSD, maxLeverage } = setting
+    const {
+      rebalanceToUSD,
+      futuresAmountUSD,
+      maxLeverage,
+      username,
+      avatarUrl,
+    } = setting
     setValue('rebalanceTo', rebalanceToUSD.toString())
     setValue('futuresAmount', futuresAmountUSD.toString())
     setValue('maxLeverage', maxLeverage.toString())
+    setValue('username', username.toString())
+    setValue('avatarUrl', avatarUrl.toString())
   }, [setValue, setting])
 
   const canSave = isValid && isDirty
@@ -77,6 +91,36 @@ export const Settings = () => {
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={8}>
+          <FormControl isInvalid={Boolean(errors.username)} maxW="sm">
+            <FormLabel htmlFor="username">Username</FormLabel>
+            <Input
+              id="username"
+              placeholder="cryptodev"
+              {...register('username', {
+                required: 'Please input your username',
+              })}
+            />
+            {errors.username && errors.username.message && (
+              <FormErrorMessage>{errors.username.message}</FormErrorMessage>
+            )}
+          </FormControl>
+
+          <FormControl isInvalid={Boolean(errors.avatarUrl)} maxW="sm">
+            <FormLabel htmlFor="avatarUrl">Avatar (URL)</FormLabel>
+            <Input
+              id="avatarUrl"
+              placeholder="http://picture.com/avatar.url"
+              {...register('avatarUrl', {
+                required: 'Please input your avatar url',
+              })}
+            />
+            {errors.avatarUrl && errors.avatarUrl.message && (
+              <FormErrorMessage>{errors.avatarUrl.message}</FormErrorMessage>
+            )}
+          </FormControl>
+
+          <Divider />
+
           <FormControl isInvalid={Boolean(errors.rebalanceTo)} maxW="sm">
             <FormLabel htmlFor="rebalanceTo">Rebalance To (USD)</FormLabel>
             <Input

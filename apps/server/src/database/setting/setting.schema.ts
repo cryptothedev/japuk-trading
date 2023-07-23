@@ -14,6 +14,12 @@ export class Setting {
 
   @Prop({ type: Number, required: true })
   maxLeverage: number
+
+  @Prop({ type: String, required: true })
+  username: string
+
+  @Prop({ type: String, required: true })
+  avatarUrl: string
 }
 
 export const SettingSchema = SchemaFactory.createForClass(Setting)
