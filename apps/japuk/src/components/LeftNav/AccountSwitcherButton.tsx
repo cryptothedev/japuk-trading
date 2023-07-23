@@ -34,20 +34,22 @@ export const AccountSwitcherButton = (props: FlexProps) => {
       _focus={{ shadow: 'outline' }}
     >
       <HStack flex="1" spacing="3">
-        <Img
-          w="8"
-          h="8"
-          rounded="md"
-          objectFit="cover"
-          src={avatarUrl}
-          alt="CryptoDev"
-        />
+        {avatarUrl && (
+          <Img
+            w="8"
+            h="8"
+            rounded="md"
+            objectFit="cover"
+            src={avatarUrl}
+            alt="CryptoDev"
+          />
+        )}
         <Box textAlign="start">
+          <Box fontSize="sm" color="gray.400">
+            Japuk Trading
+          </Box>
           <Box noOfLines={1} fontWeight="semibold">
             {username}
-          </Box>
-          <Box fontSize="xs" color="gray.400">
-            Japuk Trading
           </Box>
         </Box>
       </HStack>
