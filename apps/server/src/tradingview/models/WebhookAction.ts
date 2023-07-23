@@ -15,8 +15,8 @@ export enum WebhookAction {
   SmartLong = 'long',
 
   // closeshort_{{ticker}}
-  CloseShort = 'closeshort',
+  CloseShort = 'cshort',
 
   // closelong_{{ticker}}
-  CloseLong = 'closelong',
+  CloseLong = 'clong',
 }
