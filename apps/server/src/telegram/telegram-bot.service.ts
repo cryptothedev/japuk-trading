@@ -37,5 +37,7 @@ export class TelegramBotService {
     process.once('SIGTERM', () => client.stop('SIGTERM'))
 
     this.client = client
+
+    console.log(this.client)
   }
 }
