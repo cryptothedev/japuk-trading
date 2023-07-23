@@ -5,6 +5,7 @@ import { MdDelete } from 'react-icons/md'
 
 import { RebalanceService } from '../../services/rebalance.service'
 import { RebalanceIcon } from './RebalanceIcon'
+import { wait } from '../../utils/wait'
 
 interface RebalanceTickerProps {
   ticker: TickerResponse
@@ -29,6 +30,7 @@ export const RebalanceTicker = ({
   const rebalance = async (id: string) => {
     setIsLoading(true)
     await RebalanceService.rebalanceOne(id)
+    await wait(3)
     setIsLoading(false)
     refreshTicker()
   }
