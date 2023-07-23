@@ -32,12 +32,10 @@ export class TelegramBotService {
 
   private async startBot(botToken: string) {
     const client = new Telegraf(botToken)
-    await client.launch()
+    this.client = client
     process.once('SIGINT', () => client.stop('SIGINT'))
     process.once('SIGTERM', () => client.stop('SIGTERM'))
-
-    this.client = client
-
-    console.log(this.client)
+    await client.launch()
+    console.log('launch')
   }
 }
