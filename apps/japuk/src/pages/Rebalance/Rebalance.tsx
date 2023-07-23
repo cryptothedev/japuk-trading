@@ -17,6 +17,7 @@ import { RebalanceService } from '../../services/rebalance.service'
 import { TickerService } from '../../services/ticker.service'
 import { useAppDispatch } from '../../store/store'
 import { removeTicker, updateTickers } from '../../store/ticker/tickerSlice'
+import { wait } from '../../utils/wait'
 import { useSetting } from '../Settings/useSetting'
 import { AddTickerModal } from './AddTickerModal'
 import { RebalanceIcon } from './RebalanceIcon'
@@ -42,6 +43,7 @@ export const Rebalance = () => {
   const rebalanceAll = async () => {
     setIsRebalancing(true)
     await RebalanceService.rebalanceAll()
+    await wait(3)
     setIsRebalancing(false)
     refreshTicker()
   }
