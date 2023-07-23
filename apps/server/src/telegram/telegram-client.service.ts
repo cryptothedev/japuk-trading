@@ -10,7 +10,7 @@ import { int256ToBytes } from './utils/int256ToBytes'
 
 @Injectable()
 export class TelegramClientService {
-  private client: TelegramClient
+  private client: TelegramClient | undefined
 
   constructor(
     private configService: ConfigService,
@@ -20,12 +20,16 @@ export class TelegramClientService {
   }
 
   async callToAlert(alertMessage: string) {
+    if (!this.client) {
+      return
+    }
+
     await this.client.invoke(
       new Api.phone.RequestCall({
         video: false,
         userId: this.configService.getTgClientConfig().alertUserId,
         randomId: Math.floor(Math.random() * 10000),
-        gAHash: await this.getShagA(),
+        gAHash: await this.getShagA(this.client),
         protocol: new Api.PhoneCallProtocol({
           minLayer: 92,
           maxLayer: 92,
@@ -68,8 +72,8 @@ export class TelegramClientService {
     this.client.session.save()
   }
 
-  private async getShagA() {
-    const dhc = (await this.client.invoke(
+  private async getShagA(client: TelegramClient) {
+    const dhc = (await client.invoke(
       new Api.messages.GetDhConfig({
         version: 0,
         randomLength: 256,
