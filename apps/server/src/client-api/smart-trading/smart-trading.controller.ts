@@ -1,4 +1,7 @@
-import { SuccessResponse, TradingCommandDto } from '@japuk/models'
+import {
+  SuccessResponse,
+  TradingCommandDto,
+} from '@japuk/models'
 import { Body, Controller, Get, Param, Post } from '@nestjs/common'
 
 import { SmartTradingService } from './smart-trading.service'
