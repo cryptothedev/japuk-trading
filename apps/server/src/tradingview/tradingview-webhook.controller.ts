@@ -134,6 +134,22 @@ export class TradingviewWebhookController {
             )
             break
           }
+
+          case WebhookAction.CloseLong: {
+            await this.tradingviewWebhookService.closeFuturesPosition(
+              actionBody,
+              PositionSide.LONG,
+            )
+            break
+          }
+
+          case WebhookAction.CloseShort: {
+            await this.tradingviewWebhookService.closeFuturesPosition(
+              actionBody,
+              PositionSide.SHORT,
+            )
+            break
+          }
         }
       } catch (e) {
         this.logger.error('failed to process the message', e, message)

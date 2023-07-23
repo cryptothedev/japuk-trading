@@ -1,6 +1,7 @@
 import { PositionSide, SettingResponse, TradingCommandDto } from '@japuk/models'
 import { Injectable } from '@nestjs/common'
 
+import { BinanceFuturesService } from '../binance/binance-futures.service'
 import { BinanceSpotStrategyService } from '../binance/binance-spot-strategy.service'
 import { BinanceSpotService } from '../binance/binance-spot.service'
 import { AlertLogGateway } from '../client-api/alert-log/alert-log.gateway'
@@ -22,6 +23,7 @@ export class TradingviewWebhookService {
     private configService: ConfigService,
     private binanceSpotStrategyService: BinanceSpotStrategyService,
     private binanceSpotService: BinanceSpotService,
+    private binanceFuturesService: BinanceFuturesService,
     private smartTradingService: SmartTradingService,
   ) {}
   async processAlert(actionBody: string) {
@@ -113,5 +115,10 @@ reason: <b>${reason}</b>`,
     }
 
     await this.smartTradingService.futuresTrade(dto)
+  }
+
+  async closeFuturesPosition(actionBody: string, side: PositionSide) {
+    const ticker = actionBody
+    await this.binanceFuturesService.closePosition(ticker, side)
   }
 }

@@ -20,6 +20,12 @@ export const getWebhookAction = (message: string) => {
     case WebhookAction.SmartLong: {
       return WebhookAction.SmartLong
     }
+    case WebhookAction.CloseShort: {
+      return WebhookAction.CloseShort
+    }
+    case WebhookAction.CloseLong: {
+      return WebhookAction.CloseLong
+    }
     default: {
       throw new SwitchNotMatchError(`${message}:${webhookAction}`)
     }
