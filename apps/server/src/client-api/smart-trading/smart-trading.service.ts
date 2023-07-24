@@ -47,13 +47,10 @@ export class SmartTradingService {
   ) {
     const { leverages } = await this.getTradingInfo(ticker)
 
-    // const attemptLeverage = this.getAttemptLeverage(
-    //   side,
-    //   min,
-    //   max,
-    //   toHighestLeverage,
-    //   toLowestLeverage,
-    // )
+    const hasGreaterLeverage = leverages.some((leverage) => leverage > max)
+    if (hasGreaterLeverage) {
+      return max
+    }
 
     const usedLeverage = leverages.find((leverage) => max >= leverage) as number
 
@@ -84,28 +81,5 @@ export class SmartTradingService {
         return this.binanceFuturesService.short(tradingCommandDto, quantity)
       }
     }
-  }
-
-  private getAttemptLeverage(
-    side: PositionSide,
-    min: number,
-    max: number,
-    toHighestLeverage: number,
-    toLowestLeverage: number,
-  ) {
-    let leverage = toLowestLeverage
-    if (side === PositionSide.SHORT) {
-      leverage = toHighestLeverage
-    }
-
-    if (leverage > max) {
-      return max
-    }
-
-    if (leverage < min) {
-      return min
-    }
-
-    return leverage
   }
 }

@@ -5,7 +5,7 @@ import {
   FaBalanceScaleRight,
 } from 'react-icons/fa'
 
-const EXCEED_AMOUNT = 20
+const EXCEED_AMOUNT = 10
 
 interface RebalanceIconProps {
   gain: number
