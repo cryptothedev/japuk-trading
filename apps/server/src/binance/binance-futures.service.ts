@@ -125,6 +125,17 @@ export class BinanceFuturesService {
       .map((bracket) => bracket.initialLeverage)
   }
 
+  async getSymbolsDict() {
+    const exchangeInfo = await this.client.getExchangeInfo()
+    return exchangeInfo.symbols
+      .map((symbol) => symbol.symbol)
+      .filter((symbol) => !symbol.startsWith('1') && symbol.endsWith('USDT'))
+      .reduce((dict, symbol) => {
+        dict[symbol] = true
+        return dict
+      }, {} as Record<string, boolean>)
+  }
+
   private async getOpenOrders(command: TradingCommandDto) {
     const { symbol, side } = command
 

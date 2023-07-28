@@ -9,6 +9,7 @@ import {
 import { WsFormattedMessage, WsMessage24hrTickerFormatted } from 'binance'
 import { Server, Socket } from 'socket.io'
 
+import { BinanceFuturesService } from '../../binance/binance-futures.service'
 import { BinanceWsService } from '../../binance/binance-ws.service'
 import { LogService } from '../../core/log.service'
 
@@ -19,11 +20,18 @@ export class VolumeDetectGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
   @WebSocketServer() wss: Server
+
+  private symbolsDict: Record<string, boolean> = {}
   constructor(
     private binanceWsService: BinanceWsService,
+    private binanceFuturesService: BinanceFuturesService,
     private logger: LogService,
   ) {
     this.binanceWsService.addListener(this.listen)
+
+    this.binanceFuturesService
+      .getSymbolsDict()
+      .then((symbolsDict) => (this.symbolsDict = symbolsDict))
   }
 
   listen = async (event: WsFormattedMessage) => {
@@ -44,6 +52,7 @@ export class VolumeDetectGateway
           !EXCLUDE_PAIRS.includes(event.symbol),
       )
       .filter((event) => event.priceChangePercent > 5)
+      .filter((event) => this.symbolsDict[event.symbol])
       .sort((a, b) => {
         if (a.quoteAssetVolume > b.quoteAssetVolume) {
           return -1

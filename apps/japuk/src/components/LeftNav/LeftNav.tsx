@@ -20,6 +20,11 @@ const navGroups = [
         to: routes.alertLogs.path,
         icon: routes.alertLogs.icon,
       },
+      {
+        label: routes.highVolume.label,
+        to: routes.highVolume.path,
+        icon: routes.highVolume.icon,
+      },
     ],
   },
   {

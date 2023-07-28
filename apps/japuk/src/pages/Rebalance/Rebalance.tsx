@@ -8,7 +8,6 @@ import {
 } from '@chakra-ui/react'
 import { UpsertTickersDto } from '@japuk/models'
 import { QueryStatus } from '@reduxjs/toolkit/query'
-import { sortBy } from 'lodash'
 import { useState } from 'react'
 import { RiAddFill, RiRefreshLine } from 'react-icons/ri'
 
@@ -17,14 +16,13 @@ import { RebalanceService } from '../../services/rebalance.service'
 import { TickerService } from '../../services/ticker.service'
 import { useAppDispatch } from '../../store/store'
 import { removeTicker, updateTickers } from '../../store/ticker/tickerSlice'
+import { getTradingViewImport } from '../../utils/getTradingviewImport'
 import { wait } from '../../utils/wait'
 import { useSetting } from '../Settings/useSetting'
 import { AddTickerModal } from './AddTickerModal'
 import { RebalanceIcon } from './RebalanceIcon'
 import { RebalanceTickers } from './RebalanceTickers'
 import { useTicker } from './useTicker'
-
-const WATCH_LIST = ['BINANCE:BTCUSDT', 'BINANCE:ETHUSDT', 'OTHERS.D', 'BTC.D']
 
 export const Rebalance = () => {
   const [isRebalancing, setIsRebalancing] = useState(false)
@@ -54,11 +52,9 @@ export const Rebalance = () => {
   const totalValue = tickers.reduce((total, ticker) => total + ticker.value, 0)
   const gain = totalValue - rebalanceToUSD * numTickers
 
-  const tradingviewImport = WATCH_LIST.concat(
-    sortBy(tickers, (ticker) => ticker.pair).map(
-      (ticker) => `BINANCE:${ticker.pair}`,
-    ),
-  ).join(',')
+  const tradingviewImport = getTradingViewImport(
+    tickers.map((ticker) => ticker.pair),
+  )
 
   const handleDeleteTicker = async (id: string) => {
     await TickerService.deleteTicker(id)
