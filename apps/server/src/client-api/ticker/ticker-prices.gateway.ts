@@ -1,13 +1,16 @@
-import { TickerEvent, TickerPriceWs } from '@japuk/models';
-import { OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
-import { WsFormattedMessage, WsMessage24hrTickerFormatted } from 'binance';
-import { Server, Socket } from 'socket.io';
+import { TickerEvent, TickerPriceWs } from '@japuk/models'
+import {
+  OnGatewayConnection,
+  OnGatewayDisconnect,
+  OnGatewayInit,
+  WebSocketGateway,
+  WebSocketServer,
+} from '@nestjs/websockets'
+import { WsFormattedMessage, WsMessage24hrTickerFormatted } from 'binance'
+import { Server, Socket } from 'socket.io'
 
-
-
-import { BinanceWsService } from '../../binance/binance-ws.service';
-import { LogService } from '../../core/log.service';
-
+import { BinanceWsService } from '../../binance/binance-ws.service'
+import { LogService } from '../../core/log.service'
 
 const EXCLUDE_PAIRS = ['BUSDUSDT', 'BUSDTRY']
 

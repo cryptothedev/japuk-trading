@@ -13,9 +13,10 @@ import { SettingController } from './setting/setting.controller'
 import { SettingService } from './setting/setting.service'
 import { SmartTradingController } from './smart-trading/smart-trading.controller'
 import { SmartTradingService } from './smart-trading/smart-trading.service'
+import { TickerPricesGateway } from './ticker/ticker-prices.gateway'
 import { TickerController } from './ticker/ticker.controller'
 import { TickerService } from './ticker/ticker.service'
-import { TickerPricesGateway } from './ticker/ticker-prices.gateway';
+import { VolumeDetectGateway } from './volume-detect/volume-detect.gateway'
 
 @Module({
   imports: [CoreModule, DatabaseModule, BinanceModule],
@@ -35,6 +36,7 @@ import { TickerPricesGateway } from './ticker/ticker-prices.gateway';
     TickerService,
     RebalanceService,
     SmartTradingService,
+    VolumeDetectGateway,
   ],
   exports: [
     AlertLogGateway,
