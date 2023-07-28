@@ -51,7 +51,7 @@ export class VolumeDetectGateway
           event.symbol.includes('USDT') &&
           !EXCLUDE_PAIRS.includes(event.symbol),
       )
-      .filter((event) => event.priceChangePercent > 5)
+      .filter((event) => event.priceChangePercent > 5 || event.priceChangePercent < -5)
       .filter((event) => this.symbolsDict[event.symbol])
       .sort((a, b) => {
         if (a.quoteAssetVolume > b.quoteAssetVolume) {

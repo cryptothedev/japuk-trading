@@ -4,7 +4,7 @@ import { io } from 'socket.io-client'
 
 import { BASE_URL } from '../../configs/constants'
 
-const DELAY_SEC = 5
+const DELAY_SEC = 10
 
 export const useHighVolume = () => {
   const [tickers, setTickers] = useState<HighVolumeTicker[]>([])
