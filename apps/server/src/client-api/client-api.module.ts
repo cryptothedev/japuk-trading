@@ -17,6 +17,7 @@ import { TickerPricesGateway } from './ticker/ticker-prices.gateway'
 import { TickerController } from './ticker/ticker.controller'
 import { TickerService } from './ticker/ticker.service'
 import { VolumeDetectGateway } from './volume-detect/volume-detect.gateway'
+import { AutoRiskControlService } from './smart-trading/auto-risk-control.service';
 
 @Module({
   imports: [CoreModule, DatabaseModule, BinanceModule],
@@ -37,6 +38,7 @@ import { VolumeDetectGateway } from './volume-detect/volume-detect.gateway'
     RebalanceService,
     SmartTradingService,
     VolumeDetectGateway,
+    AutoRiskControlService,
   ],
   exports: [
     AlertLogGateway,

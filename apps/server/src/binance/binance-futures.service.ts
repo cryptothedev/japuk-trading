@@ -22,7 +22,7 @@ export class BinanceFuturesService {
 
     const openOrders = await this.getOpenOrders(command)
 
-    await this.cancelOpenOrders(command, openOrders)
+    await this.cancelOpenOrders(symbol, openOrders)
 
     await this.client.setLeverage({
       symbol,
@@ -136,38 +136,10 @@ export class BinanceFuturesService {
       }, {} as Record<string, boolean>)
   }
 
-  private async getOpenOrders(command: TradingCommandDto) {
-    const { symbol, side } = command
-
-    const openOrders = await this.client.getAllOpenOrders({ symbol })
-    return openOrders.filter((order) => order.positionSide == side)
-  }
-
-  private async cancelOpenOrders(
-    command: TradingCommandDto,
-    positionOrders: OrderResult[],
-  ) {
-    const { symbol } = command
+  async cancelOpenOrders(symbol: string, positionOrders: OrderResult[]) {
     for (const order of positionOrders) {
       await this.client.cancelOrder({ symbol, orderId: order.orderId })
     }
-  }
-
-  private async getAllSymbols() {
-    const exchangeInfo = await this.client.getExchangeInfo()
-    return exchangeInfo.symbols
-      .map((symbol) => symbol.symbol)
-      .filter((symbol) => !symbol.startsWith('1') && symbol.endsWith('USDT'))
-      .map((symbol) => `BINANCE:${symbol}`)
-      .join(',')
-  }
-
-  private getMyBalances() {
-    return this.client
-      .getBalance()
-      .then((balances) =>
-        balances.filter((balance) => Number(balance.balance) > 0),
-      )
   }
 
   async closePosition(symbol: string, side: PositionSide) {
@@ -187,5 +159,50 @@ export class BinanceFuturesService {
         quantity: Math.abs(Number(position.positionAmt)),
       })
     }
+  }
+
+  submitStopMarket(symbol, side: PositionSide, stopPrice: number) {
+    return this.client.submitNewOrder({
+      symbol,
+      side: side === 'LONG' ? 'SELL' : 'BUY',
+      positionSide: side,
+      type: 'STOP_MARKET',
+      stopPrice,
+      closePosition: 'true',
+      workingType: 'MARK_PRICE',
+    }).catch(err => console.log(err))
+  }
+
+  async getAllOpenPositions() {
+    const allPositions = await this.client.getPositions()
+    return allPositions.filter((position) => Number(position.entryPrice) !== 0)
+  }
+
+  async getAllOpenOrders() {
+    return this.client.getAllOpenOrders()
+  }
+
+  private async getOpenOrders(command: TradingCommandDto) {
+    const { symbol, side } = command
+
+    const openOrders = await this.client.getAllOpenOrders({ symbol })
+    return openOrders.filter((order) => order.positionSide == side)
+  }
+
+  private async getAllSymbols() {
+    const exchangeInfo = await this.client.getExchangeInfo()
+    return exchangeInfo.symbols
+      .map((symbol) => symbol.symbol)
+      .filter((symbol) => !symbol.startsWith('1') && symbol.endsWith('USDT'))
+      .map((symbol) => `BINANCE:${symbol}`)
+      .join(',')
+  }
+
+  private getMyBalances() {
+    return this.client
+      .getBalance()
+      .then((balances) =>
+        balances.filter((balance) => Number(balance.balance) > 0),
+      )
   }
 }

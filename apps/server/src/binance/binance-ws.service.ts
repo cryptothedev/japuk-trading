@@ -43,6 +43,7 @@ export class BinanceWsService {
 
     await this.websocket.subscribeUsdFuturesUserDataStream()
     await this.websocket.subscribeSpotAll24hrTickers()
+    await this.websocket.subscribeAllMarketMarkPrice('usdm')
   }
 
   addListener(listener: Listener) {
