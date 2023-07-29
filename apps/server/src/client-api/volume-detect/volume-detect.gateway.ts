@@ -51,19 +51,11 @@ export class VolumeDetectGateway
           event.symbol.includes('USDT') &&
           !EXCLUDE_PAIRS.includes(event.symbol),
       )
-      .filter((event) => event.priceChangePercent > 5 || event.priceChangePercent < -5)
+      .filter(
+        (event) =>
+          event.priceChangePercent > 3 || event.priceChangePercent < -3,
+      )
       .filter((event) => this.symbolsDict[event.symbol])
-      .sort((a, b) => {
-        if (a.quoteAssetVolume > b.quoteAssetVolume) {
-          return -1
-        }
-
-        if (a.quoteAssetVolume < b.quoteAssetVolume) {
-          return 1
-        }
-
-        return 0
-      })
       .map((event) => {
         const {
           symbol,
@@ -74,13 +66,30 @@ export class VolumeDetectGateway
         } = event
         return {
           symbol,
+          volume: quoteAssetVolume,
           volumeInUSDT: (quoteAssetVolume / 1_000_000).toLocaleString(),
           priceChange: priceChangePercent,
           close: currentClose,
           averagePrice: weightedAveragePrice,
+          averagePriceDiff: (
+            (Math.abs(weightedAveragePrice - currentClose) /
+              weightedAveragePrice) *
+            100
+          ).toLocaleString(),
         } as HighVolumeTicker
       })
-      .slice(0, 30)
+      .sort((a, b) => {
+        if (a.volume > b.volume) {
+          return -1
+        }
+
+        if (a.volume < b.volume) {
+          return 1
+        }
+
+        return 0
+      })
+      .slice(0, 100)
 
     this.newEvents(highVolumeTickers)
   }

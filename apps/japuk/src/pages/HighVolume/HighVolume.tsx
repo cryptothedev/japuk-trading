@@ -1,11 +1,23 @@
-import { Table, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react'
+import {
+  Flex,
+  HStack,
+  IconButton,
+  Table,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+} from '@chakra-ui/react'
+import { RiRefreshLine } from 'react-icons/ri'
 
 import { PageHeader } from '../../components/PageHeader/PageHeader'
 import { getTradingViewImport } from '../../utils/getTradingviewImport'
 import { useHighVolume } from './useHighVolume'
 
 export const HighVolume = () => {
-  const { tickers } = useHighVolume()
+  const { tickers, refresh } = useHighVolume()
 
   const tradingviewImport = getTradingViewImport(
     tickers.map((ticker) => ticker.symbol),
@@ -14,27 +26,40 @@ export const HighVolume = () => {
 
   return (
     <>
-      <PageHeader
-        title="High Volume"
-        description="High volume tickers with more than 5% change"
-      />
+      <Flex justifyContent="space-between">
+        <PageHeader
+          title="High Volume"
+          description="High volume tickers with more than 5% change"
+        />
+        <HStack spacing={6} alignSelf="flex-end">
+          <IconButton
+            icon={<RiRefreshLine fontSize="1.25rem" />}
+            variant="outline"
+            aria-label="refresh tickers"
+            onClick={refresh}
+          />
+        </HStack>
+      </Flex>
+
       <Table variant="striped">
         <Thead>
           <Tr>
             <Th>Coin</Th>
             <Th>Volume</Th>
             <Th>Price Change(%)</Th>
+            <Th>Average Diff(%)</Th>
           </Tr>
         </Thead>
         <Tbody>
           {tickers.map((ticker) => {
-            const { symbol, volumeInUSDT, priceChange } = ticker
+            const { symbol, volumeInUSDT, priceChange, averagePriceDiff } = ticker
 
             return (
               <Tr key={symbol}>
                 <Td>{symbol}</Td>
                 <Td>{volumeInUSDT}</Td>
                 <Td>{priceChange}</Td>
+                <Td>{averagePriceDiff}</Td>
               </Tr>
             )
           })}

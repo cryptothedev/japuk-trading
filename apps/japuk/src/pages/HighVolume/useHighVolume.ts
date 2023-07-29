@@ -4,18 +4,13 @@ import { io } from 'socket.io-client'
 
 import { BASE_URL } from '../../configs/constants'
 
-const DELAY_SEC = 10
-
 export const useHighVolume = () => {
   const [tickers, setTickers] = useState<HighVolumeTicker[]>([])
+  const [needUpdate, setNeedUpdate] = useState(true)
 
   useEffect(() => {
-    let needUpdate = true
     const wsURL = BASE_URL + '/volume-detect'
     const socket = io(wsURL)
-    const intervalId = setInterval(() => {
-      needUpdate = true
-    }, DELAY_SEC * 1000)
 
     socket.on('connect', () => {
       console.log(socket.id)
@@ -28,16 +23,15 @@ export const useHighVolume = () => {
     socket.on(HighVolumeEvent.New, (highVolumeTickers: HighVolumeTicker[]) => {
       if (needUpdate) {
         setTickers(highVolumeTickers)
-        needUpdate = false
+        setNeedUpdate(false)
       }
     })
 
     return () => {
       console.log('disconnect')
       socket.disconnect()
-      clearInterval(intervalId)
     }
-  }, [])
+  }, [needUpdate])
 
-  return { tickers }
+  return { tickers, refresh: () => setNeedUpdate(true) }
 }
