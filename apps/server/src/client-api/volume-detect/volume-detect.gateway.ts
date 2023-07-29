@@ -51,10 +51,6 @@ export class VolumeDetectGateway
           event.symbol.includes('USDT') &&
           !EXCLUDE_PAIRS.includes(event.symbol),
       )
-      .filter(
-        (event) =>
-          event.priceChangePercent > 3 || event.priceChangePercent < -3,
-      )
       .filter((event) => this.symbolsDict[event.symbol])
       .map((event) => {
         const {
@@ -89,7 +85,20 @@ export class VolumeDetectGateway
 
         return 0
       })
-      .slice(0, 100)
+      .slice(0, 30)
+      .sort((a, b) => {
+        const priceDiffA = Number(a.averagePriceDiff)
+        const priceDiffB = Number(b.averagePriceDiff)
+        if (priceDiffA > priceDiffB) {
+          return -1
+        }
+
+        if (priceDiffA < priceDiffB) {
+          return 1
+        }
+
+        return 0
+      })
 
     this.newEvents(highVolumeTickers)
   }
