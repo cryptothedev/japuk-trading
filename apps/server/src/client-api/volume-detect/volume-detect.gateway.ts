@@ -85,20 +85,7 @@ export class VolumeDetectGateway
 
         return 0
       })
-      .slice(0, 30)
-      .sort((a, b) => {
-        const priceDiffA = Number(a.averagePriceDiff)
-        const priceDiffB = Number(b.averagePriceDiff)
-        if (priceDiffA > priceDiffB) {
-          return -1
-        }
-
-        if (priceDiffA < priceDiffB) {
-          return 1
-        }
-
-        return 0
-      })
+      .slice(0, 40)
 
     this.newEvents(highVolumeTickers)
   }
