@@ -13,7 +13,7 @@ import { BinanceFuturesService } from '../../binance/binance-futures.service'
 import { BinanceWsService } from '../../binance/binance-ws.service'
 import { LogService } from '../../core/log.service'
 
-const EXCLUDE_PAIRS = ['BTCUSDT', 'BUSDUSDT', 'ETHUSDT', 'BUSDTRY']
+const EXCLUDE_PAIRS = ['BTCUSDT', 'BUSDUSDT', 'ETHUSDT', 'BUSDTRY', 'USDCUSDT']
 
 @WebSocketGateway({ namespace: 'volume-detect', cors: true })
 export class VolumeDetectGateway
