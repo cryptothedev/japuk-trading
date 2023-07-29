@@ -9,6 +9,7 @@ import {
 
 import { BinanceFuturesService } from '../../binance/binance-futures.service'
 import { BinanceWsService } from '../../binance/binance-ws.service'
+import { LogService } from '../../core/log.service'
 
 @Injectable()
 export class AutoRiskControlService {
@@ -18,6 +19,7 @@ export class AutoRiskControlService {
   constructor(
     private binanceWsService: BinanceWsService,
     private binanceFuturesService: BinanceFuturesService,
+    private logger: LogService,
   ) {
     this.initData()
 
@@ -32,7 +34,7 @@ export class AutoRiskControlService {
     await this.binanceFuturesService
       .getAllOpenOrders()
       .then((orders) => (this.openOrders = orders))
-    console.log('init data')
+    this.logger.info('init data')
   }
 
   private processTradeFilledEvents = async (event: WsFormattedMessage) => {
@@ -48,7 +50,7 @@ export class AutoRiskControlService {
       event.order.orderStatus === 'FILLED' ||
       event.order.orderStatus === 'CANCELED'
     ) {
-      console.log('update open positions')
+      this.logger.info('update open positions')
       await this.initData()
     }
   }
@@ -172,7 +174,7 @@ export class AutoRiskControlService {
       ).toFixed(pricePrecision),
     )
 
-    console.log(
+    this.logger.info(
       'side',
       side,
       'entryPrice',

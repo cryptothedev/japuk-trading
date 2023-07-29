@@ -170,7 +170,7 @@ export class BinanceFuturesService {
       stopPrice,
       closePosition: 'true',
       workingType: 'MARK_PRICE',
-    }).catch(err => console.log(err))
+    })
   }
 
   async getAllOpenPositions() {
