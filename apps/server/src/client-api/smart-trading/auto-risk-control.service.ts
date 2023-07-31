@@ -120,6 +120,13 @@ export class AutoRiskControlService {
             ((markPrice - stopPrice) / stopPrice) * 100,
           )
 
+          console.log(
+            'trailingPercent',
+            trailingPercent,
+            'stopPriceProfitPercent',
+            stopPriceProfitPercent,
+          )
+
           if (
             trailingPercent < 1 ||
             trailingPercent <= stopPriceProfitPercent
