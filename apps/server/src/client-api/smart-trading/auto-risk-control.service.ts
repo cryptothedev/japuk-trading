@@ -103,6 +103,9 @@ export class AutoRiskControlService {
         const profitFloor = Math.floor(percentProfit)
 
         const trailingPercent = this.getTrailingPercent(profitFloor)
+
+        console.log('trailingPercent', trailingPercent)
+
         if (!trailingPercent) {
           continue
         }
@@ -120,12 +123,7 @@ export class AutoRiskControlService {
             ((markPrice - stopPrice) / stopPrice) * 100,
           )
 
-          console.log(
-            'trailingPercent',
-            trailingPercent,
-            'stopPriceProfitPercent',
-            stopPriceProfitPercent,
-          )
+          console.log('stopPriceProfitPercent', stopPriceProfitPercent)
 
           if (
             trailingPercent < 1 ||
