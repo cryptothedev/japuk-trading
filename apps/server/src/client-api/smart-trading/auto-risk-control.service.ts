@@ -120,7 +120,7 @@ export class AutoRiskControlService {
         if (trailingSlOrder) {
           const stopPrice = Number(trailingSlOrder.stopPrice)
           const stopPriceProfitPercent = Math.abs(
-            ((entryPrice - stopPrice) / stopPrice) * 100,
+            ((markPrice - stopPrice) / stopPrice) * 100,
           )
 
           console.log('stopPriceProfitPercent', stopPriceProfitPercent)
@@ -174,8 +174,8 @@ export class AutoRiskControlService {
     )
     const stopPrice = Number(
       (side === 'LONG'
-        ? entryPrice * (1 + trailingPercent / 100)
-        : entryPrice * (1 - trailingPercent / 100)
+          ? entryPrice * (1 + trailingPercent / 100)
+          : entryPrice * (1 - trailingPercent / 100)
       ).toFixed(pricePrecision),
     )
 
@@ -200,7 +200,7 @@ export class AutoRiskControlService {
     }
 
     if (profit >= 2) {
-      return (profit / 2) - 0.1
+      return profit / 2
     }
   }
 }
