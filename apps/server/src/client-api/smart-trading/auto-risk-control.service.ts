@@ -200,7 +200,7 @@ export class AutoRiskControlService {
     }
 
     if (profit >= 2) {
-      return profit / 2
+      return (profit / 2) - 0.1
     }
   }
 }
