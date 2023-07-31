@@ -120,7 +120,7 @@ export class AutoRiskControlService {
         if (trailingSlOrder) {
           const stopPrice = Number(trailingSlOrder.stopPrice)
           const stopPriceProfitPercent = Math.abs(
-            ((markPrice - stopPrice) / stopPrice) * 100,
+            ((entryPrice - stopPrice) / stopPrice) * 100,
           )
 
           console.log('stopPriceProfitPercent', stopPriceProfitPercent)
