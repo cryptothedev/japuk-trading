@@ -21,10 +21,10 @@ export class AutoRiskControlService {
     private binanceFuturesService: BinanceFuturesService,
     private logger: LogService,
   ) {
-    this.initData()
+    // this.initData()
 
-    this.binanceWsService.addListener(this.processMarkUpdateEvents)
-    this.binanceWsService.addListener(this.processTradeFilledEvents)
+    // this.binanceWsService.addListener(this.processMarkUpdateEvents)
+    // this.binanceWsService.addListener(this.processTradeFilledEvents)
   }
 
   private async initData() {
