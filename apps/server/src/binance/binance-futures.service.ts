@@ -15,6 +15,8 @@ export class BinanceFuturesService {
   ) {
     const { apiKey, apiSecret } = this.configService.getBinanceFuturesConfig()
     this.client = new USDMClient({ api_key: apiKey, api_secret: apiSecret })
+
+    this.getBigPairs()
   }
 
   async setupTrade(command: TradingCommandDto) {
@@ -204,5 +206,29 @@ export class BinanceFuturesService {
       .then((balances) =>
         balances.filter((balance) => Number(balance.balance) > 0),
       )
+  }
+
+  private async getBigPairs() {
+    const symbols = await this.client.getNotionalAndLeverageBrackets()
+
+    const bigSymbols = symbols
+      .filter((symbol) =>
+        symbol.brackets.some((bracket) => {
+          const bigPairCondition =
+            (bracket.initialLeverage === 20 &&
+              bracket.notionalCap >= 150_000) ||
+            (bracket.initialLeverage === 25 && bracket.notionalCap >= 250_000)
+          const notIncludeBTCETH =
+            !symbol.symbol.includes('ETH') && !symbol.symbol.includes('BTC')
+
+          return bigPairCondition && notIncludeBTCETH
+        }),
+      )
+      .map((symbol) => {
+        return 'BINANCE:' + symbol.symbol
+      })
+      .join(',')
+
+    console.log(bigSymbols)
   }
 }
