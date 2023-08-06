@@ -43,12 +43,12 @@ reason: ${reason}`,
     const { chatId, threadId } =
       this.configService.getNukZingBotTradeAlertThreadConfig()
 
-    await this.telegramBotService.sendMessage(
-      `<b>${coin}</b> price: <b>${price}</b>
-reason: <b>${reason}</b>`,
-      chatId,
-      threadId,
-    )
+//     await this.telegramBotService.sendMessage(
+//       `<b>${coin}</b> price: <b>${price}</b>
+// reason: <b>${reason}</b>`,
+//       chatId,
+//       threadId,
+//     )
 
     await this.alertLogGateway.newAlertLog(
       this.alertLogService.toAlertLogResponse(alertLogDoc),
