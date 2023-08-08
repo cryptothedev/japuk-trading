@@ -85,7 +85,7 @@ export class VolumeDetectGateway
 
         return 0
       })
-      .slice(0, 40)
+      .slice(0, 60)
 
     this.newEvents(highVolumeTickers)
   }
