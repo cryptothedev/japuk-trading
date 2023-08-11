@@ -29,7 +29,7 @@ export const HighVolume = () => {
       <Flex justifyContent="space-between">
         <PageHeader
           title="High Volume"
-          description="High volume tickers with more than 5% change"
+          description="High volume tickers in the past 24hrs"
         />
         <HStack spacing={6} alignSelf="flex-end">
           <IconButton
