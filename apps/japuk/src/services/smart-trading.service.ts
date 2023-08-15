@@ -1,4 +1,5 @@
 import {
+  FuturesPositionResponse,
   SuccessResponse,
   TradingCommandDto,
   TradingInfoResponse,
@@ -18,6 +19,13 @@ export class SmartTradingService {
     const url = '/smart-trading/futures-trade'
     return httpClient
       .post<SuccessResponse>(url, dto)
+      .then((response) => response.data)
+  }
+
+  static getAllPositions = () => {
+    const url = '/smart-trading/current-position'
+    return httpClient
+      .get<FuturesPositionResponse[]>(url)
       .then((response) => response.data)
   }
 }

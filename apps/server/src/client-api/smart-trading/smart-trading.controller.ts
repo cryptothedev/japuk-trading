@@ -15,14 +15,14 @@ export class SmartTradingController {
     return this.smartTradingService.getTradingInfo(ticker)
   }
 
+  @Get('current-position')
+  getCurrentPositions(): Promise<FuturesPositionResponse[]> {
+    return this.smartTradingService.getCurrentPositions()
+  }
+
   @Post('futures-trade')
   async futuresTrade(@Body() tradingCommandDto: TradingCommandDto) {
     await this.smartTradingService.futuresTrade(tradingCommandDto)
     return SuccessResponse
-  }
-
-  @Post('current-position')
-  getCurrentPositions(): Promise<FuturesPositionResponse[]> {
-    return this.smartTradingService.getCurrentPositions()
   }
 }
