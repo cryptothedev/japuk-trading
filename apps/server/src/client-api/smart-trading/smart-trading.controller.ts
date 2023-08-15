@@ -17,6 +17,7 @@ export class SmartTradingController {
 
   @Get('current-position')
   getCurrentPositions(): Promise<FuturesPositionResponse[]> {
+    console.log('running')
     return this.smartTradingService.getCurrentPositions()
   }
 

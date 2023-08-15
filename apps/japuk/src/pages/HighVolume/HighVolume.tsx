@@ -14,15 +14,19 @@ import { RiRefreshLine } from 'react-icons/ri'
 
 import { PageHeader } from '../../components/PageHeader/PageHeader'
 import { getTradingViewImport } from '../../utils/getTradingviewImport'
+import { useCurrentPositions } from './useCurrentPositions'
 import { useHighVolume } from './useHighVolume'
 
 export const HighVolume = () => {
   const { tickers, refresh } = useHighVolume()
+  const { positions } = useCurrentPositions()
 
   const tradingviewImport = getTradingViewImport(
     tickers.map((ticker) => ticker.symbol),
     false,
   )
+
+  console.log(positions)
 
   return (
     <>
@@ -52,7 +56,8 @@ export const HighVolume = () => {
         </Thead>
         <Tbody>
           {tickers.map((ticker) => {
-            const { symbol, volumeInUSDT, priceChange, averagePriceDiff } = ticker
+            const { symbol, volumeInUSDT, priceChange, averagePriceDiff } =
+              ticker
 
             return (
               <Tr key={symbol}>
