@@ -176,9 +176,7 @@ export class BinanceFuturesService {
   }
 
   async getAllOpenPositions() {
-    console.log('running')
     const allPositions = await this.client.getPositions()
-    console.log(allPositions)
     return allPositions.filter((position) => Number(position.entryPrice) !== 0)
   }
 

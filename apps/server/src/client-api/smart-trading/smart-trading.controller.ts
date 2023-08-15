@@ -10,15 +10,15 @@ import { SmartTradingService } from './smart-trading.service'
 @Controller('smart-trading')
 export class SmartTradingController {
   constructor(private smartTradingService: SmartTradingService) {}
-  @Get(':ticker')
-  getTradingInfo(@Param('ticker') ticker: string) {
-    return this.smartTradingService.getTradingInfo(ticker)
-  }
 
   @Get('current-position')
   getCurrentPositions(): Promise<FuturesPositionResponse[]> {
-    console.log('running')
     return this.smartTradingService.getCurrentPositions()
+  }
+
+  @Get(':ticker')
+  getTradingInfo(@Param('ticker') ticker: string) {
+    return this.smartTradingService.getTradingInfo(ticker)
   }
 
   @Post('futures-trade')
