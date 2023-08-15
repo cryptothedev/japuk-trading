@@ -21,3 +21,21 @@ export interface TradingInfoResponse {
   toHighestLeverage: number
   toLowestLeverage: number
 }
+
+export interface FuturesPositionResponse {
+  entryPrice: number
+  marginType: 'isolated' | 'cross'
+  isAutoAddMargin: boolean
+  isolatedMargin: number
+  leverage: number
+  liquidationPrice: number
+  markPrice: number
+  maxNotionalValue: number
+  positionAmt: number
+  notional: number
+  isolatedWallet: number
+  symbol: string
+  unRealizedProfit: number
+  positionSide: PositionSide
+  updateTime: number
+}

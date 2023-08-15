@@ -1,4 +1,5 @@
 import {
+  FuturesPositionResponse,
   SuccessResponse,
   TradingCommandDto,
 } from '@japuk/models'
@@ -18,5 +19,10 @@ export class SmartTradingController {
   async futuresTrade(@Body() tradingCommandDto: TradingCommandDto) {
     await this.smartTradingService.futuresTrade(tradingCommandDto)
     return SuccessResponse
+  }
+
+  @Post('current-position')
+  getCurrentPositions(): Promise<FuturesPositionResponse[]> {
+    return this.smartTradingService.getCurrentPositions()
   }
 }

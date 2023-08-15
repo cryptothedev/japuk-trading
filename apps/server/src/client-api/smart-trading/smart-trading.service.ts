@@ -1,4 +1,5 @@
 import {
+  FuturesPositionResponse,
   PositionSide,
   TradingCommandDto,
   TradingInfoResponse,
@@ -81,5 +82,38 @@ export class SmartTradingService {
         return this.binanceFuturesService.short(tradingCommandDto, quantity)
       }
     }
+  }
+
+  async getCurrentPositions(): Promise<FuturesPositionResponse[]> {
+    const allPositions = await this.binanceFuturesService.getAllOpenPositions()
+    return allPositions.map((position) => {
+      const {
+        unRealizedProfit,
+        leverage,
+        entryPrice,
+        positionAmt,
+        markPrice,
+        liquidationPrice,
+        isolatedMargin,
+        isolatedWallet,
+        maxNotionalValue,
+        notional,
+        isAutoAddMargin,
+      } = position
+      return {
+        ...position,
+        unRealizedProfit: Number(unRealizedProfit),
+        leverage: Number(leverage),
+        entryPrice: Number(entryPrice),
+        positionAmt: Number(positionAmt),
+        markPrice: Number(markPrice),
+        liquidationPrice: Number(liquidationPrice),
+        isolatedMargin: Number(isolatedMargin),
+        isolatedWallet: Number(isolatedWallet),
+        maxNotionalValue: Number(maxNotionalValue),
+        notional: Number(notional),
+        isAutoAddMargin: isAutoAddMargin === 'true',
+      } as FuturesPositionResponse
+    })
   }
 }
