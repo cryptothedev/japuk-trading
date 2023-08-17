@@ -17,6 +17,7 @@ export const router = createBrowserRouter([
         element: routes.rebalance.element,
       },
       { path: routes.alertLogs.path, element: routes.alertLogs.element },
+      { path: routes.futuresTrade.path, element: routes.futuresTrade.element },
       { path: routes.highVolume.path, element: routes.highVolume.element },
       { path: routes.settings.path, element: routes.settings.element },
       { path: '/', element: <Navigate to={routes.rebalance.path} /> },

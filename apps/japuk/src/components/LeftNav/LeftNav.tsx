@@ -21,6 +21,11 @@ const navGroups = [
         icon: routes.alertLogs.icon,
       },
       {
+        label: routes.futuresTrade.label,
+        to: routes.futuresTrade.path,
+        icon: routes.futuresTrade.icon,
+      },
+      {
         label: routes.highVolume.label,
         to: routes.highVolume.path,
         icon: routes.highVolume.icon,

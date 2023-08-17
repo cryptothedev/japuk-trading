@@ -6,6 +6,7 @@ import { HighVolume } from '../pages/HighVolume/HighVolume'
 import { Login } from '../pages/Login/Login'
 import { Rebalance } from '../pages/Rebalance/Rebalance'
 import { Settings } from '../pages/Settings/Settings'
+import { FuturesTrade } from '../pages/FuturesTrade/FuturesTrade'
 
 export const routes = {
   login: {
@@ -23,6 +24,12 @@ export const routes = {
     label: 'Alert Logs',
     path: '/alert-logs',
     element: <AlertLogs />,
+    icon: <FaList />,
+  },
+  futuresTrade: {
+    label: 'Futures Trade',
+    path: '/futures-trade',
+    element: <FuturesTrade />,
     icon: <FaList />,
   },
   highVolume: {
