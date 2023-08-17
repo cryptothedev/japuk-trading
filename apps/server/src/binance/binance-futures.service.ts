@@ -1,4 +1,8 @@
-import { PositionSide, TradingCommandDto } from '@japuk/models'
+import {
+  ClosePositionCommandDto,
+  PositionSide,
+  TradingCommandDto,
+} from '@japuk/models'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { OrderResult, USDMClient } from 'binance'
 
@@ -161,6 +165,18 @@ export class BinanceFuturesService {
         quantity: Math.abs(Number(position.positionAmt)),
       })
     }
+  }
+
+  async rawClosePosition(closePositionCommandDto: ClosePositionCommandDto) {
+    const { symbol, side, amount } = closePositionCommandDto
+
+    await this.client.submitNewOrder({
+      symbol,
+      side: side === 'LONG' ? 'SELL' : 'BUY',
+      positionSide: side,
+      type: 'MARKET',
+      quantity: Math.abs(amount),
+    })
   }
 
   submitStopMarket(symbol, side: PositionSide, stopPrice: number) {

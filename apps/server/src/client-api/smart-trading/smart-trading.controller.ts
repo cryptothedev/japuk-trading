@@ -1,4 +1,5 @@
 import {
+  ClosePositionCommandDto,
   FuturesPositionResponse,
   SuccessResponse,
   TradingCommandDto,
@@ -24,6 +25,12 @@ export class SmartTradingController {
   @Post('futures-trade')
   async futuresTrade(@Body() tradingCommandDto: TradingCommandDto) {
     await this.smartTradingService.futuresTrade(tradingCommandDto)
+    return SuccessResponse
+  }
+
+  @Post('futures-close')
+  async futuresClose(@Body() closePositionCommandDto: ClosePositionCommandDto) {
+    await this.smartTradingService.closePosition(closePositionCommandDto)
     return SuccessResponse
   }
 }

@@ -1,4 +1,5 @@
 import {
+  ClosePositionCommandDto,
   FuturesPositionResponse,
   PositionSide,
   TradingCommandDto,
@@ -82,6 +83,10 @@ export class SmartTradingService {
         return this.binanceFuturesService.short(tradingCommandDto, quantity)
       }
     }
+  }
+
+  async closePosition(closePositionCommandDto: ClosePositionCommandDto) {
+    return this.binanceFuturesService.rawClosePosition(closePositionCommandDto)
   }
 
   async getCurrentPositions(): Promise<FuturesPositionResponse[]> {

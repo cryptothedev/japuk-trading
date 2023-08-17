@@ -11,6 +11,12 @@ export interface TradingCommandDto {
   leverage: number
 }
 
+export interface ClosePositionCommandDto {
+  symbol: string
+  side: PositionSide
+  amount: number
+}
+
 export interface TradingInfoResponse {
   highest: number
   lowest: number

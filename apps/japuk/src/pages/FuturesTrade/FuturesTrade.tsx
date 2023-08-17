@@ -12,7 +12,7 @@ import {
   Tr,
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
-import { GoCloudDownload, GoCloudUpload } from 'react-icons/go'
+import { BsDoorClosed, BsDoorOpen } from 'react-icons/bs'
 import { RiRefreshLine } from 'react-icons/ri'
 
 import { PageHeader } from '../../components/PageHeader/PageHeader'
@@ -67,6 +67,30 @@ export const FuturesTrade = () => {
     }
   }
 
+  const closeAll = async () => {
+    setIsRefreshing(true)
+    try {
+      await Promise.all(
+        positions.map((position) => {
+          const { symbol, positionSide, isolatedWallet, positionAmt } = position
+          const afterDot = String(positionAmt).split('.')[1]
+          const decimals = afterDot ? afterDot.length : 0
+          return SmartTradingService.closeFutures({
+            symbol,
+            side: positionSide,
+            amount: Number(
+              Math.abs(
+                (positionAmt * futuresAmountUSD) / isolatedWallet,
+              ).toFixed(decimals),
+            ),
+          })
+        }),
+      )
+    } finally {
+      setIsRefreshing(false)
+    }
+  }
+
   return (
     <>
       <Flex justifyContent="space-between">
@@ -95,7 +119,7 @@ export const FuturesTrade = () => {
             onClick={refresh}
           />
           <IconButton
-            icon={<GoCloudUpload fontSize="1.25rem" />}
+            icon={<BsDoorOpen fontSize="1.25rem" />}
             variant="solid"
             colorScheme="primary"
             aria-label="rebalance"
@@ -103,11 +127,11 @@ export const FuturesTrade = () => {
             isLoading={isRefreshing}
           />
           <IconButton
-            icon={<GoCloudDownload fontSize="1.25rem" />}
+            icon={<BsDoorClosed fontSize="1.25rem" />}
             variant="solid"
             colorScheme="danger"
             aria-label="rebalance"
-            onClick={dcaAll}
+            onClick={closeAll}
             isLoading={isRefreshing}
           />
         </HStack>

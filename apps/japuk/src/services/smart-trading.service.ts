@@ -1,4 +1,5 @@
 import {
+  ClosePositionCommandDto,
   FuturesPositionResponse,
   SuccessResponse,
   TradingCommandDto,
@@ -17,6 +18,13 @@ export class SmartTradingService {
 
   static futuresTrade = (dto: TradingCommandDto) => {
     const url = '/smart-trading/futures-trade'
+    return httpClient
+      .post<SuccessResponse>(url, dto)
+      .then((response) => response.data)
+  }
+
+  static closeFutures = (dto: ClosePositionCommandDto) => {
+    const url = '/smart-trading/futures-close'
     return httpClient
       .post<SuccessResponse>(url, dto)
       .then((response) => response.data)
