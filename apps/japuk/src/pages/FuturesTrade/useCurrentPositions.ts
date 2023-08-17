@@ -6,11 +6,15 @@ import { SmartTradingService } from '../../services/smart-trading.service'
 export const useCurrentPositions = () => {
   const [positions, setPositions] = useState<FuturesPositionResponse[]>([])
 
-  useEffect(() => {
+  const refresh = () => {
     SmartTradingService.getAllPositions().then((positions) =>
       setPositions(positions),
     )
+  }
+
+  useEffect(() => {
+    refresh()
   }, [])
 
-  return { positions }
+  return { positions, refresh }
 }

@@ -16,15 +16,16 @@ const navGroups = [
         icon: routes.rebalance.icon,
       },
       {
-        label: routes.alertLogs.label,
-        to: routes.alertLogs.path,
-        icon: routes.alertLogs.icon,
-      },
-      {
         label: routes.futuresTrade.label,
         to: routes.futuresTrade.path,
         icon: routes.futuresTrade.icon,
       },
+      {
+        label: routes.alertLogs.label,
+        to: routes.alertLogs.path,
+        icon: routes.alertLogs.icon,
+      },
+
       {
         label: routes.highVolume.label,
         to: routes.highVolume.path,

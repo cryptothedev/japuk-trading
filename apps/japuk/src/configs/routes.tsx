@@ -1,12 +1,14 @@
+import { BsFillBarChartFill } from 'react-icons/bs'
 import { FaBalanceScale, FaList } from 'react-icons/fa'
 import { FiSettings } from 'react-icons/fi'
+import { SiFuturelearn } from 'react-icons/si'
 
 import { AlertLogs } from '../pages/AlertLogs/AlertLogs'
+import { FuturesTrade } from '../pages/FuturesTrade/FuturesTrade'
 import { HighVolume } from '../pages/HighVolume/HighVolume'
 import { Login } from '../pages/Login/Login'
 import { Rebalance } from '../pages/Rebalance/Rebalance'
 import { Settings } from '../pages/Settings/Settings'
-import { FuturesTrade } from '../pages/FuturesTrade/FuturesTrade'
 
 export const routes = {
   login: {
@@ -30,13 +32,13 @@ export const routes = {
     label: 'Futures Trade',
     path: '/futures-trade',
     element: <FuturesTrade />,
-    icon: <FaList />,
+    icon: <SiFuturelearn />,
   },
   highVolume: {
     label: 'High Volume',
     path: '/high-volume',
     element: <HighVolume />,
-    icon: <FaList />,
+    icon: <BsFillBarChartFill />,
   },
   settings: {
     label: 'Settings',
