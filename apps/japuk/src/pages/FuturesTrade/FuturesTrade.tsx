@@ -59,7 +59,7 @@ export const FuturesTrade = () => {
             side: positionSide,
             leverage: maxLeverage,
             amountUSD: futuresAmountUSD,
-          })
+          }).catch((err) => console.log(err))
         }),
       )
     } finally {
@@ -83,7 +83,7 @@ export const FuturesTrade = () => {
                 (positionAmt * futuresAmountUSD) / isolatedWallet,
               ).toFixed(decimals),
             ),
-          })
+          }).catch((err) => console.log(err))
         }),
       )
     } finally {
@@ -95,8 +95,8 @@ export const FuturesTrade = () => {
     <>
       <Flex justifyContent="space-between">
         <PageHeader
-          title="High Volume"
-          description="High volume tickers in the past 24hrs"
+          title="Day Trade"
+          description="Try to close all positions in one day"
         />
 
         <Box>

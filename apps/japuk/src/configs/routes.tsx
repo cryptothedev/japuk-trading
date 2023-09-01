@@ -29,7 +29,7 @@ export const routes = {
     icon: <FaList />,
   },
   futuresTrade: {
-    label: 'Futures Trade',
+    label: 'Day Trade',
     path: '/futures-trade',
     element: <FuturesTrade />,
     icon: <SiFuturelearn />,
