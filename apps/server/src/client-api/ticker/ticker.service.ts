@@ -54,6 +54,19 @@ export class TickerService {
     return id
   }
 
+  async toggle(id: string) {
+    const toggled = await this.tickerRepo.toggle(id)
+    const myBalancesDict = await this.binanceSpotService.getMyBalancesDict()
+    const pricesDict = await this.binanceSpotService.getPricesDict()
+    if (!toggled) {
+      this.logger.error('failed to toggle ticker the id does not exist', {
+        id,
+      })
+      throw new BadRequestException()
+    }
+    return this.toTickerResponse(toggled, myBalancesDict, pricesDict)
+  }
+
   async getPairById(id: string) {
     const found = await this.tickerRepo.findById(id)
     if (!found) {
@@ -70,7 +83,7 @@ export class TickerService {
     myBalancesDict: Record<string, number>,
     pricesDict: Record<string, number>,
   ): TickerResponse {
-    const { _id, pair } = tickerDoc
+    const { _id, pair, isDisabled } = tickerDoc
     const coin = removeStable(pair)
     const currentPrice = pricesDict[pair] ?? 0
     const currentAmount = myBalancesDict[coin] ?? 0
@@ -81,6 +94,7 @@ export class TickerService {
       price: currentPrice,
       amount: currentAmount,
       value: currentPrice * currentAmount,
+      isDisabled: isDisabled === true,
     }
   }
 }

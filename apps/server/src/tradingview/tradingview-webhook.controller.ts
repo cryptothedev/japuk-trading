@@ -71,7 +71,6 @@ export class TradingviewWebhookController {
       throw new InternalServerErrorException()
     }
 
-    const pairs = await this.tickerService.getPairs()
     const messages = rawMessage.split('\n').filter(Boolean)
 
     for (const message of messages) {
@@ -100,6 +99,7 @@ export class TradingviewWebhookController {
 
           // SPOT
           case WebhookAction.RebalanceTo: {
+            const pairs = await this.tickerService.getPairs()
             await this.tradingviewWebhookService.rebalanceTo(
               actionBody,
               setting,

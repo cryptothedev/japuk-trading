@@ -11,7 +11,7 @@ export class TickerRepo {
   ) {}
 
   find(): Promise<TickerDocument[]> {
-    return this.tickerModel.find({}).exec()
+    return this.tickerModel.find({ isDisabled: { $ne: true } }).exec()
   }
 
   upsert(pair: string): Promise<TickerDocument> {
@@ -19,7 +19,7 @@ export class TickerRepo {
       pair,
     }
     return this.tickerModel
-      .findOneAndUpdate({ pair }, upserting, {
+      .findOneAndUpdate({ pair, isDisabled: false }, upserting, {
         upsert: true,
         new: true,
       })
@@ -32,5 +32,17 @@ export class TickerRepo {
 
   findById(id: string): Promise<TickerDocument | null> {
     return this.tickerModel.findById(id).exec()
+  }
+
+  toggle(id: string): Promise<TickerDocument | null> {
+    return this.tickerModel
+      .findByIdAndUpdate(
+        id,
+        {
+          $set: { isDisabled: { $not: '$isDisabled' } },
+        },
+        { new: true },
+      )
+      .exec()
   }
 }

@@ -8,6 +8,9 @@ export type TickerDocument = HydratedDocument<Ticker, WithTimestamp>
 export class Ticker {
   @Prop({ type: String, required: true, unique: true })
   pair: string
+
+  @Prop({ type: Boolean })
+  isDisabled?: boolean
 }
 
 export const TickerSchema = SchemaFactory.createForClass(Ticker)
