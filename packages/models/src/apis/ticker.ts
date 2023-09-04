@@ -13,6 +13,7 @@ export interface TickerResponse {
   amount: number
   value: number
   isDisabled: boolean
+  gains: number[]
 }
 
 export interface TickerPriceWs {

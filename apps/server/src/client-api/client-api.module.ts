@@ -11,13 +11,13 @@ import { RebalanceController } from './rebalance/rebalance.controller'
 import { RebalanceService } from './rebalance/rebalance.service'
 import { SettingController } from './setting/setting.controller'
 import { SettingService } from './setting/setting.service'
+import { AutoRiskControlService } from './smart-trading/auto-risk-control.service'
 import { SmartTradingController } from './smart-trading/smart-trading.controller'
 import { SmartTradingService } from './smart-trading/smart-trading.service'
 import { TickerPricesGateway } from './ticker/ticker-prices.gateway'
 import { TickerController } from './ticker/ticker.controller'
 import { TickerService } from './ticker/ticker.service'
 import { VolumeDetectGateway } from './volume-detect/volume-detect.gateway'
-import { AutoRiskControlService } from './smart-trading/auto-risk-control.service';
 
 @Module({
   imports: [CoreModule, DatabaseModule, BinanceModule],
@@ -46,6 +46,7 @@ import { AutoRiskControlService } from './smart-trading/auto-risk-control.servic
     TickerService,
     SmartTradingService,
     SettingService,
+    RebalanceService,
   ],
 })
 export class ClientApiModule {}

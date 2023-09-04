@@ -18,6 +18,7 @@ export class TickerRepo {
     const upserting: Ticker = {
       pair,
       isDisabled: false,
+      gains: [],
     }
     return this.tickerModel
       .findOneAndUpdate({ pair }, upserting, {
@@ -29,6 +30,18 @@ export class TickerRepo {
 
   delete(id: string): Promise<TickerDocument | null> {
     return this.tickerModel.findByIdAndDelete(id).exec()
+  }
+
+  pushGain(pair: string, gain: number): Promise<TickerDocument | null> {
+    return this.tickerModel
+      .findOneAndUpdate(
+        { pair },
+        {
+          $push: { gains: { $each: [gain], $slice: -10 } },
+        },
+        { new: true },
+      )
+      .exec()
   }
 
   findById(id: string): Promise<TickerDocument | null> {

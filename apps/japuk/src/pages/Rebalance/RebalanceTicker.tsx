@@ -1,4 +1,4 @@
-import { Checkbox, HStack, IconButton, Td, Tr } from '@chakra-ui/react'
+import { Checkbox, HStack, IconButton, Td, Text, Tr } from '@chakra-ui/react'
 import { TickerResponse } from '@japuk/models'
 import { useState } from 'react'
 import { MdDelete } from 'react-icons/md'
@@ -26,6 +26,7 @@ export const RebalanceTicker = ({
   refreshTicker,
 }: RebalanceTickerProps) => {
   const dispatch = useAppDispatch()
+
   const [isLoading, setIsLoading] = useState(false)
   const handleDelete = (id: string) => {
     deleteTicker(id)
@@ -53,7 +54,13 @@ export const RebalanceTicker = ({
     <Tr>
       <Td>{pair}</Td>
       <Td>{value.toLocaleString()}</Td>
-      <Td></Td>
+      <Td>
+        <HStack>
+          <Text color={gain > 0 ? 'primary.500' : 'danger.500'}>
+            <b>${gain.toFixed(0)}</b>
+          </Text>
+        </HStack>
+      </Td>
       <Td>
         <HStack spacing="6">
           <Checkbox

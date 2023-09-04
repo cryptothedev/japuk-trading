@@ -82,7 +82,7 @@ export class TickerService {
     myBalancesDict: Record<string, number>,
     pricesDict: Record<string, number>,
   ): TickerResponse {
-    const { _id, pair, isDisabled } = tickerDoc
+    const { _id, pair, isDisabled, gains } = tickerDoc
     const coin = removeStable(pair)
     const currentPrice = pricesDict[pair] ?? 0
     const currentAmount = myBalancesDict[coin] ?? 0
@@ -93,7 +93,12 @@ export class TickerService {
       price: currentPrice,
       amount: currentAmount,
       value: currentPrice * currentAmount,
-      isDisabled: isDisabled === true,
+      isDisabled,
+      gains,
     }
+  }
+
+  async pushGain(pair: string, gain: number) {
+    return this.tickerRepo.pushGain(pair, gain)
   }
 }

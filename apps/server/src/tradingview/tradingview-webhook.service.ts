@@ -2,7 +2,6 @@ import { PositionSide, SettingResponse, TradingCommandDto } from '@japuk/models'
 import { Injectable } from '@nestjs/common'
 
 import { BinanceFuturesService } from '../binance/binance-futures.service'
-import { BinanceSpotStrategyService } from '../binance/binance-spot-strategy.service'
 import { BinanceSpotService } from '../binance/binance-spot.service'
 import { AlertLogGateway } from '../client-api/alert-log/alert-log.gateway'
 import { AlertLogService } from '../client-api/alert-log/alert-log.service'
@@ -12,6 +11,7 @@ import { AlertLogRepo } from '../database/alert-log/alert-log.repo'
 import { TelegramBotService } from '../telegram/telegram-bot.service'
 import { TelegramClientService } from '../telegram/telegram-client.service'
 import { TickerDocument } from '../database/ticker/ticker.schema'
+import { RebalanceService } from '../client-api/rebalance/rebalance.service'
 
 @Injectable()
 export class TradingviewWebhookService {
@@ -22,10 +22,10 @@ export class TradingviewWebhookService {
     private telegramClientService: TelegramClientService,
     private telegramBotService: TelegramBotService,
     private configService: ConfigService,
-    private binanceSpotStrategyService: BinanceSpotStrategyService,
     private binanceSpotService: BinanceSpotService,
     private binanceFuturesService: BinanceFuturesService,
     private smartTradingService: SmartTradingService,
+    private rebalanceService: RebalanceService
   ) {}
   async processAlert(actionBody: string) {
     const [coin, price, reason] = actionBody.split(':')
@@ -67,7 +67,7 @@ reason: ${reason}`,
     const rebalanceToUSD = rebalanceToUSDFromRequest
       ? Number(rebalanceToUSDFromRequest)
       : rebalanceToUSDFromSetting
-    await this.binanceSpotStrategyService.rebalance(rebalanceToUSD, tickers, true)
+    await this.rebalanceService.rebalance(rebalanceToUSD, tickers, true)
   }
 
   async rebalancePair(actionBody: string, setting: SettingResponse) {
@@ -85,7 +85,7 @@ reason: ${reason}`,
       ],
     )
 
-    await this.binanceSpotStrategyService.rebalancePair(
+    await this.rebalanceService.rebalancePair(
       rebalanceToUSD,
       pair,
       true,

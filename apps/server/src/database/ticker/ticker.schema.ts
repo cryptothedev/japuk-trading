@@ -11,6 +11,9 @@ export class Ticker {
 
   @Prop({ type: Boolean })
   isDisabled: boolean
+
+  @Prop({ type: [Number] })
+  gains: number[]
 }
 
 export const TickerSchema = SchemaFactory.createForClass(Ticker)
