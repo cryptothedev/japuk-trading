@@ -25,9 +25,8 @@ export class TickerService {
     )
   }
 
-  async getPairs() {
-    const tickers = await this.tickerRepo.find()
-    return tickers.map((ticker) => ticker.pair)
+  async getTickers() {
+    return this.tickerRepo.find()
   }
 
   async upsert(upsertTickerDto: UpsertTickersDto) {

@@ -99,11 +99,11 @@ export class TradingviewWebhookController {
 
           // SPOT
           case WebhookAction.RebalanceTo: {
-            const pairs = await this.tickerService.getPairs()
+            const tickers = await this.tickerService.getTickers()
             await this.tradingviewWebhookService.rebalanceTo(
               actionBody,
               setting,
-              pairs,
+              tickers,
             )
             break
           }

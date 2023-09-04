@@ -11,6 +11,7 @@ import { ConfigService } from '../core/config.service'
 import { AlertLogRepo } from '../database/alert-log/alert-log.repo'
 import { TelegramBotService } from '../telegram/telegram-bot.service'
 import { TelegramClientService } from '../telegram/telegram-client.service'
+import { TickerDocument } from '../database/ticker/ticker.schema'
 
 @Injectable()
 export class TradingviewWebhookService {
@@ -58,7 +59,7 @@ reason: ${reason}`,
   async rebalanceTo(
     actionBody: string,
     setting: SettingResponse,
-    pairs: string[],
+    tickers: TickerDocument[],
   ) {
     const rebalanceToUSDFromRequest = actionBody
     const { rebalanceToUSD: rebalanceToUSDFromSetting } = setting
@@ -66,7 +67,7 @@ reason: ${reason}`,
     const rebalanceToUSD = rebalanceToUSDFromRequest
       ? Number(rebalanceToUSDFromRequest)
       : rebalanceToUSDFromSetting
-    await this.binanceSpotStrategyService.rebalance(rebalanceToUSD, pairs, true)
+    await this.binanceSpotStrategyService.rebalance(rebalanceToUSD, tickers, true)
   }
 
   async rebalancePair(actionBody: string, setting: SettingResponse) {

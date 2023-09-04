@@ -26,11 +26,10 @@ export class RebalanceService {
       throw new InternalServerErrorException()
     }
     this.logger.info('setting', setting)
-    const pairs = await this.tickerService.getPairs()
-    this.logger.info('pairs', pairs)
+    const tickers = await this.tickerService.getTickers()
     await this.binanceSpotStrategyService.rebalance(
       setting.rebalanceToUSD,
-      pairs,
+      tickers,
       true,
     )
   }

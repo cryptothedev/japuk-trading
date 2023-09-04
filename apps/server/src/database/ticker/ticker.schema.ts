@@ -10,7 +10,7 @@ export class Ticker {
   pair: string
 
   @Prop({ type: Boolean })
-  isDisabled?: boolean
+  isDisabled: boolean
 }
 
 export const TickerSchema = SchemaFactory.createForClass(Ticker)

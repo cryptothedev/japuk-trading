@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { chunk } from 'lodash'
 
 import { LogService } from '../core/log.service'
+import { TickerDocument } from '../database/ticker/ticker.schema'
 import { removeStable } from '../tradingview/utils/removeStable'
 import { wait } from '../utils/wait'
 import { BinanceSpotService } from './binance-spot.service'
@@ -13,7 +14,11 @@ export class BinanceSpotStrategyService {
     private logger: LogService,
   ) {}
 
-  async rebalance(rebalanceToUSD: number, pairs: string[], alsoBuy: boolean) {
+  async rebalance(
+    rebalanceToUSD: number,
+    tickers: TickerDocument[],
+    alsoBuy: boolean,
+  ) {
     const [balancesDict, pricesDict, quantityPrecisionDict] = await Promise.all(
       [
         this.binanceSpotService.getMyBalancesDict(),
@@ -21,14 +26,14 @@ export class BinanceSpotStrategyService {
         this.binanceSpotService.getQuantityPrecisionDict(),
       ],
     )
-    const size = Math.ceil(pairs.length / 2)
-    const pairsChunks = chunk(pairs, size)
-    for (const pairs of pairsChunks) {
+    const size = Math.ceil(tickers.length / 2)
+    const tickersChunk = chunk(tickers, size)
+    for (const tickers of tickersChunk) {
       await Promise.all(
-        pairs.map((pair) =>
+        tickers.map((ticker) =>
           this.rebalancePair(
             rebalanceToUSD,
-            pair,
+            ticker.pair,
             alsoBuy,
             balancesDict,
             pricesDict,
