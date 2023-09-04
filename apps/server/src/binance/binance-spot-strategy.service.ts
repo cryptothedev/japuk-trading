@@ -30,16 +30,18 @@ export class BinanceSpotStrategyService {
     const tickersChunk = chunk(tickers, size)
     for (const tickers of tickersChunk) {
       await Promise.all(
-        tickers.map((ticker) =>
-          this.rebalancePair(
-            rebalanceToUSD,
-            ticker.pair,
-            alsoBuy,
-            balancesDict,
-            pricesDict,
-            quantityPrecisionDict,
+        tickers
+          .filter((ticker) => !ticker.isDisabled)
+          .map((ticker) =>
+            this.rebalancePair(
+              rebalanceToUSD,
+              ticker.pair,
+              alsoBuy,
+              balancesDict,
+              pricesDict,
+              quantityPrecisionDict,
+            ),
           ),
-        ),
       )
     }
   }
