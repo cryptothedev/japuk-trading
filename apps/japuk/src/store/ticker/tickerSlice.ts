@@ -30,6 +30,17 @@ export const tickerSlice = createSlice({
         .filter((ticker) => !upsertedIds.includes(ticker.id))
         .concat(upserteds)
     },
+    updateTicker: (state, action: PayloadAction<TickerResponse>) => {
+      const updated = action.payload
+      const tickerIdx = state.tickers.findIndex(
+        (ticker) => ticker.id === updated.id,
+      )
+      state.tickers = [
+        ...state.tickers.slice(0, tickerIdx),
+        updated,
+        ...state.tickers.slice(tickerIdx + 1),
+      ]
+    },
     removeTicker: (state, action: PayloadAction<string>) => {
       const id = action.payload
       state.tickers = state.tickers.filter((ticker) => ticker.id !== id)
@@ -66,4 +77,5 @@ export const tickerSlice = createSlice({
 })
 
 export const tickerReducer = tickerSlice.reducer
-export const { updateTickers, removeTicker, updatePrices } = tickerSlice.actions
+export const { updateTickers, removeTicker, updatePrices, updateTicker } =
+  tickerSlice.actions

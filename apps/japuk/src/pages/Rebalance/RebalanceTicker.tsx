@@ -1,11 +1,14 @@
-import { HStack, IconButton, Td, Tr } from '@chakra-ui/react'
+import { Checkbox, HStack, IconButton, Td, Tr } from '@chakra-ui/react'
 import { TickerResponse } from '@japuk/models'
 import { useState } from 'react'
 import { MdDelete } from 'react-icons/md'
 
 import { RebalanceService } from '../../services/rebalance.service'
-import { RebalanceIcon } from './RebalanceIcon'
+import { TickerService } from '../../services/ticker.service'
+import { useAppDispatch } from '../../store/store'
+import { updateTicker } from '../../store/ticker/tickerSlice'
 import { wait } from '../../utils/wait'
+import { RebalanceIcon } from './RebalanceIcon'
 
 interface RebalanceTickerProps {
   ticker: TickerResponse
@@ -22,6 +25,7 @@ export const RebalanceTicker = ({
   deleteTicker,
   refreshTicker,
 }: RebalanceTickerProps) => {
+  const dispatch = useAppDispatch()
   const [isLoading, setIsLoading] = useState(false)
   const handleDelete = (id: string) => {
     deleteTicker(id)
@@ -35,17 +39,28 @@ export const RebalanceTicker = ({
     refreshTicker()
   }
 
-  const { id, pair, amount, price, value } = ticker
+  const toggleTicker = async (id: string) => {
+    setIsLoading(true)
+    const toggled = await TickerService.toggle(id)
+    dispatch(updateTicker(toggled))
+    setIsLoading(false)
+  }
+
+  const { id, pair, value, isDisabled } = ticker
   const gain = value - rebalanceToUSD
 
   return (
     <Tr>
       <Td>{pair}</Td>
-      <Td>{amount}</Td>
-      <Td>{price}</Td>
       <Td>{value.toLocaleString()}</Td>
+      <Td></Td>
       <Td>
         <HStack spacing="6">
+          <Checkbox
+            isChecked={!isDisabled}
+            onChange={() => toggleTicker(id)}
+            isDisabled={isLoading || isFetching}
+          />
           <RebalanceIcon
             gain={gain}
             onClick={() => rebalance(id)}
