@@ -47,8 +47,10 @@ export const RebalanceTicker = ({
     setIsLoading(false)
   }
 
-  const { id, pair, value, isDisabled } = ticker
+  const { id, pair, value, isDisabled, gains } = ticker
   const gain = value - rebalanceToUSD
+
+  console.log(gains)
 
   return (
     <Tr>
@@ -57,8 +59,19 @@ export const RebalanceTicker = ({
       <Td>
         <HStack>
           <Text color={gain > 0 ? 'primary.500' : 'danger.500'}>
-            <b>${gain.toFixed(0)}</b>
+            <b>{Math.abs(gain).toFixed(0)}</b>
           </Text>
+          <Text>|</Text>
+          {[...gains]
+            .reverse()
+            .slice(0, 10)
+            .map((gain) => {
+              return (
+                <Text color={gain > 0 ? 'primary.500' : 'danger.500'}>
+                  <b>{Math.abs(gain).toFixed(0)}</b>
+                </Text>
+              )
+            })}
         </HStack>
       </Td>
       <Td>
