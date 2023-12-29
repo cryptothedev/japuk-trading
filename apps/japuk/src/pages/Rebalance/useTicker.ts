@@ -1,5 +1,5 @@
 import { TickerEvent, TickerPriceWs } from '@japuk/models'
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { io } from 'socket.io-client'
 
 import { BASE_URL } from '../../configs/constants'
@@ -13,6 +13,7 @@ export const useTicker = (fetch: boolean) => {
   const tickersLoadingStatus = useAppSelector(
     TickerSelector.tickersLoadingStatus,
   )
+  const [fetchingPrice, setFetchingPrice] = useState(true)
 
   const refreshTicker = useCallback(() => {
     dispatch(fetchTickers())
@@ -25,6 +26,7 @@ export const useTicker = (fetch: boolean) => {
   }, [fetch, refreshTicker])
 
   useEffect(() => {
+    console.log('start')
     const wsURL = BASE_URL + '/ticker-prices'
     const socket = io(wsURL)
 
@@ -39,7 +41,9 @@ export const useTicker = (fetch: boolean) => {
     socket.on(
       TickerEvent.Price,
       (pricesDict: Record<string, TickerPriceWs>) => {
-        dispatch(updatePrices(pricesDict))
+        if (fetchingPrice) {
+          dispatch(updatePrices(pricesDict))
+        }
       },
     )
 
@@ -47,11 +51,13 @@ export const useTicker = (fetch: boolean) => {
       console.log('disconnect')
       socket.disconnect()
     }
-  }, [dispatch])
+  }, [dispatch, fetchingPrice])
 
   return {
     tickers,
     tickersLoadingStatus,
     refreshTicker,
+    fetchingPrice,
+    setFetchingPrice,
   }
 }

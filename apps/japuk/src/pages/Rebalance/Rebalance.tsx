@@ -9,6 +9,7 @@ import {
 import { UpsertTickersDto } from '@japuk/models'
 import { QueryStatus } from '@reduxjs/toolkit/query'
 import { useState } from 'react'
+import { MdPause, MdPlayArrow } from 'react-icons/md'
 import { RiAddFill, RiRefreshLine } from 'react-icons/ri'
 
 import { PageHeader } from '../../components/PageHeader/PageHeader'
@@ -29,7 +30,13 @@ export const Rebalance = () => {
   const [isLoading, setIsLoading] = useState(false)
   const dispatch = useAppDispatch()
 
-  const { tickers, refreshTicker, tickersLoadingStatus } = useTicker(true)
+  const {
+    tickers,
+    refreshTicker,
+    tickersLoadingStatus,
+    fetchingPrice,
+    setFetchingPrice,
+  } = useTicker(true)
   const { setting } = useSetting(true)
 
   const {
@@ -96,6 +103,20 @@ export const Rebalance = () => {
         </Box>
 
         <HStack spacing={6} alignSelf="flex-end">
+          <IconButton
+            icon={
+              fetchingPrice ? (
+                <MdPause fontSize="1.25rem" />
+              ) : (
+                <MdPlayArrow fontSize="1.25rem" />
+              )
+            }
+            variant="solid"
+            aria-label="add ticker"
+            colorScheme="blue"
+            onClick={() => setFetchingPrice(!fetchingPrice)}
+          />
+
           <IconButton
             icon={<RiRefreshLine fontSize="1.25rem" />}
             variant="outline"
