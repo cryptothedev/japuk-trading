@@ -8,6 +8,9 @@ export const getWebhookAction = (message: string) => {
     case WebhookAction.Alert: {
       return WebhookAction.Alert
     }
+    case WebhookAction.IndicatorRebalance: {
+      return WebhookAction.IndicatorRebalance
+    }
     case WebhookAction.Rebalance: {
       return WebhookAction.Rebalance
     }

@@ -5,13 +5,19 @@ import { BinanceFuturesService } from '../binance/binance-futures.service'
 import { BinanceSpotService } from '../binance/binance-spot.service'
 import { AlertLogGateway } from '../client-api/alert-log/alert-log.gateway'
 import { AlertLogService } from '../client-api/alert-log/alert-log.service'
+import { RebalanceService } from '../client-api/rebalance/rebalance.service'
 import { SmartTradingService } from '../client-api/smart-trading/smart-trading.service'
 import { ConfigService } from '../core/config.service'
+import { LogService } from '../core/log.service'
 import { AlertLogRepo } from '../database/alert-log/alert-log.repo'
+import { TickerDocument } from '../database/ticker/ticker.schema'
 import { TelegramBotService } from '../telegram/telegram-bot.service'
 import { TelegramClientService } from '../telegram/telegram-client.service'
-import { TickerDocument } from '../database/ticker/ticker.schema'
-import { RebalanceService } from '../client-api/rebalance/rebalance.service'
+
+const indicatorRebalanceDict: Record<
+  string,
+  { lastRun: Date; lastPrice: number }
+> = {}
 
 @Injectable()
 export class TradingviewWebhookService {
@@ -25,7 +31,8 @@ export class TradingviewWebhookService {
     private binanceSpotService: BinanceSpotService,
     private binanceFuturesService: BinanceFuturesService,
     private smartTradingService: SmartTradingService,
-    private rebalanceService: RebalanceService
+    private rebalanceService: RebalanceService,
+    private logger: LogService,
   ) {}
   async processAlert(actionBody: string) {
     const [coin, price, reason] = actionBody.split(':')
@@ -44,12 +51,12 @@ reason: ${reason}`,
     const { chatId, threadId } =
       this.configService.getNukZingBotTradeAlertThreadConfig()
 
-//     await this.telegramBotService.sendMessage(
-//       `<b>${coin}</b> price: <b>${price}</b>
-// reason: <b>${reason}</b>`,
-//       chatId,
-//       threadId,
-//     )
+    //     await this.telegramBotService.sendMessage(
+    //       `<b>${coin}</b> price: <b>${price}</b>
+    // reason: <b>${reason}</b>`,
+    //       chatId,
+    //       threadId,
+    //     )
 
     await this.alertLogGateway.newAlertLog(
       this.alertLogService.toAlertLogResponse(alertLogDoc),
@@ -76,6 +83,36 @@ reason: ${reason}`,
     const rebalanceToUSD = rebalanceToUSDFromRequest
       ? Number(rebalanceToUSDFromRequest)
       : rebalanceToUSDFromSetting
+
+    const [balancesDict, pricesDict, quantityPrecisionDict] = await Promise.all(
+      [
+        this.binanceSpotService.getMyBalancesDict(),
+        this.binanceSpotService.getPricesDict(),
+        this.binanceSpotService.getQuantityPrecisionDict(),
+      ],
+    )
+
+    await this.rebalanceService.rebalancePair(
+      rebalanceToUSD,
+      pair,
+      true,
+      balancesDict,
+      pricesDict,
+      quantityPrecisionDict,
+    )
+  }
+
+  async indicatorRebalancePair(actionBody: string, setting: SettingResponse) {
+    const { rebalanceToUSD } = setting
+    const [pair, currentPriceFromRequest] = actionBody.split('_')
+    const currentPrice = Number(currentPriceFromRequest)
+
+    indicatorRebalanceDict[pair] = {
+      lastRun: new Date(),
+      lastPrice: currentPrice,
+    }
+
+    this.logger.info(indicatorRebalanceDict[pair])
 
     const [balancesDict, pricesDict, quantityPrecisionDict] = await Promise.all(
       [

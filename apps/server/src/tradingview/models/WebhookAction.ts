@@ -2,6 +2,9 @@ export enum WebhookAction {
   // alert_{{ticker}}:{{close}}:{{reason}}
   Alert = 'alert',
 
+  // irb_{{ticker}}_{{current_price}
+  IndicatorRebalance = 'irb',
+
   // rbto or rbto_7000
   RebalanceTo = 'rbto',
 

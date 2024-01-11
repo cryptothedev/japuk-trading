@@ -116,6 +116,14 @@ export class TradingviewWebhookController {
             break
           }
 
+          case WebhookAction.IndicatorRebalance: {
+            await this.tradingviewWebhookService.indicatorRebalancePair(
+              actionBody,
+              setting,
+            )
+            break
+          }
+
           // FUTURES
           case WebhookAction.SmartLong: {
             await this.tradingviewWebhookService.smartFuturesTrade(
