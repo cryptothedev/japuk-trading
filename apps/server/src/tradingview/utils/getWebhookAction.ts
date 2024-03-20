@@ -5,6 +5,9 @@ import { WebhookAction } from '../models/WebhookAction'
 export const getWebhookAction = (message: string) => {
   const webhookAction = message.split('_')[0] as WebhookAction
   switch (webhookAction) {
+    case WebhookAction.AlertMessage:
+      return WebhookAction.AlertMessage
+
     case WebhookAction.Alert: {
       return WebhookAction.Alert
     }

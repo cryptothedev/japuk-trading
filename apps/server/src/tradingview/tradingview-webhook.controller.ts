@@ -91,6 +91,14 @@ export class TradingviewWebhookController {
         this.logger.info('action in progress', webhookAction, actionBody)
 
         switch (webhookAction) {
+          // Alert With Message
+          case WebhookAction.AlertMessage: {
+            await this.tradingviewWebhookService.processAlertWithMessage(
+              actionBody,
+            )
+            break
+          }
+
           // Alert
           case WebhookAction.Alert: {
             await this.tradingviewWebhookService.processAlert(actionBody)

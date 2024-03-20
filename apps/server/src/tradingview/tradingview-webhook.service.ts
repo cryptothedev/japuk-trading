@@ -34,6 +34,11 @@ export class TradingviewWebhookService {
     private rebalanceService: RebalanceService,
     private logger: LogService,
   ) {}
+
+  async processAlertWithMessage(message: string) {
+    await this.telegramClientService.callToAlert(`alert: ${message}`)
+  }
+
   async processAlert(actionBody: string) {
     const [coin, price, reason] = actionBody.split(':')
 
