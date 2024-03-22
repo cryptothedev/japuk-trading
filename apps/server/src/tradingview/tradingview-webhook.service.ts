@@ -35,8 +35,16 @@ export class TradingviewWebhookService {
     private logger: LogService,
   ) {}
 
-  async processAlertWithMessage(message: string) {
+  async processAlertWithMessage(actionBody: string) {
+    const [message, dontSend] = actionBody.split('_')
+    const { chatId, threadId } =
+      this.configService.getNukZingBotTradeAlertThreadConfig()
+
     await this.telegramClientService.callToAlert(`alert: ${message}`)
+
+    if (!dontSend) {
+      await this.telegramBotService.sendMessage(message, chatId, threadId)
+    }
   }
 
   async processAlert(actionBody: string) {
@@ -52,16 +60,6 @@ export class TradingviewWebhookService {
       `${coin} price: ${price}
 reason: ${reason}`,
     )
-
-    const { chatId, threadId } =
-      this.configService.getNukZingBotTradeAlertThreadConfig()
-
-    //     await this.telegramBotService.sendMessage(
-    //       `<b>${coin}</b> price: <b>${price}</b>
-    // reason: <b>${reason}</b>`,
-    //       chatId,
-    //       threadId,
-    //     )
 
     await this.alertLogGateway.newAlertLog(
       this.alertLogService.toAlertLogResponse(alertLogDoc),
