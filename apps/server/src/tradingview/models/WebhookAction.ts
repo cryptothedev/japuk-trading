@@ -1,4 +1,5 @@
 export enum WebhookAction {
+  // a_{{message}
   AlertMessage = 'a',
 
   // alert_{{ticker}}:{{close}}:{{reason}}

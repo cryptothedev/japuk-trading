@@ -37,13 +37,12 @@ export class TradingviewWebhookService {
 
   async processAlertWithMessage(actionBody: string) {
     const [message, dontSend] = actionBody.split('_')
-    const { chatId, threadId } =
-      this.configService.getNukZingBotTradeAlertThreadConfig()
+    const annId = this.configService.getNukZingAnnId()
 
     await this.telegramClientService.callToAlert(`alert: ${message}`)
 
     if (!dontSend) {
-      await this.telegramBotService.sendMessage(message, chatId, threadId)
+      await this.telegramBotService.sendMessage(message, annId)
     }
   }
 

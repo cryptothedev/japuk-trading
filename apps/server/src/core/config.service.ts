@@ -55,4 +55,8 @@ export class ConfigService {
       threadId: Number(process.env['NUKZING_BOT_TRADING_ALERT_THREAD_ID']),
     }
   }
+
+  getNukZingAnnId() {
+    return process.env['NUKZING_ANN_ID'] as string
+  }
 }

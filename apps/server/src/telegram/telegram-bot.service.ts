@@ -16,7 +16,7 @@ export class TelegramBotService {
     this.startBot(botToken)
   }
 
-  async sendMessage(message: string, chatId: string, threadId: number) {
+  async sendMessage(message: string, chatId: string, threadId?: number) {
     if (!this.client) {
       return
     }
