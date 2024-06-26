@@ -70,17 +70,17 @@ export class SmartTradingService {
 
     const { quantityPrecision } =
       await this.binanceFuturesService.getDecimalsInfo(symbol)
-    const quantity = await this.binanceFuturesService.calculateQuantity(
+    const { long, short } = await this.binanceFuturesService.calculateQuantity(
       tradingCommandDto,
       quantityPrecision,
     )
 
     switch (side) {
       case PositionSide.LONG: {
-        return this.binanceFuturesService.long(tradingCommandDto, quantity)
+        return this.binanceFuturesService.long(tradingCommandDto, long)
       }
       case PositionSide.SHORT: {
-        return this.binanceFuturesService.short(tradingCommandDto, quantity)
+        return this.binanceFuturesService.short(tradingCommandDto, short)
       }
     }
   }

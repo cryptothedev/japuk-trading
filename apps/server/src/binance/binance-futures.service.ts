@@ -87,34 +87,121 @@ export class BinanceFuturesService {
 
     const currentPrice = Number(markPrice.markPrice)
 
-    const quantity = ((amountUSD / currentPrice) * leverage).toFixed(
-      quantityPrecision,
-    )
+    const longPrices = [
+      currentPrice,
+      currentPrice * 0.95,
+      currentPrice * 0.9,
+      currentPrice * 0.85,
+    ]
 
-    return Number(quantity)
+    const shortPrices = [
+      currentPrice,
+      currentPrice * 1.05,
+      currentPrice * 1.1,
+      currentPrice * 1.15,
+    ]
+
+    return {
+      long: longPrices.map((price) => {
+        return {
+          price,
+          quantity: Number(
+            ((amountUSD / currentPrice) * leverage).toFixed(quantityPrecision),
+          ),
+        }
+      }),
+      short: shortPrices.map((price) => {
+        return {
+          price,
+          quantity: Number(
+            ((amountUSD / currentPrice) * leverage).toFixed(quantityPrecision),
+          ),
+        }
+      }),
+    }
   }
 
-  async long(command: TradingCommandDto, quantity: number) {
+  async long(
+    command: TradingCommandDto,
+    quantities: { quantity: number; price: number }[],
+  ) {
     const { symbol } = command
 
     await this.client.submitNewOrder({
       symbol,
-      quantity,
+      quantity: quantities[0].quantity,
       side: 'BUY',
       positionSide: 'LONG',
       type: 'MARKET',
     })
+
+    await this.client.submitNewOrder({
+      symbol,
+      quantity: quantities[1].quantity * 1.5,
+      price: Number(quantities[1].price),
+      side: 'BUY',
+      positionSide: 'LONG',
+      type: 'LIMIT',
+    })
+
+    await this.client.submitNewOrder({
+      symbol,
+      quantity: quantities[2].quantity * 2,
+      price: Number(quantities[2].price),
+      side: 'BUY',
+      positionSide: 'LONG',
+      type: 'LIMIT',
+    })
+
+    await this.client.submitNewOrder({
+      symbol,
+      quantity: quantities[3].quantity * 3,
+      price: Number(quantities[3].price),
+      side: 'BUY',
+      positionSide: 'LONG',
+      type: 'LIMIT',
+    })
   }
 
-  async short(command: TradingCommandDto, quantity: number) {
+  async short(
+    command: TradingCommandDto,
+    quantities: { quantity: number; price: number }[],
+  ) {
     const { symbol } = command
 
     await this.client.submitNewOrder({
       symbol,
-      quantity: quantity,
+      quantity: quantities[0].quantity,
       side: 'SELL',
       positionSide: 'SHORT',
       type: 'MARKET',
+    })
+
+    await this.client.submitNewOrder({
+      symbol,
+      quantity: quantities[1].quantity * 1.5,
+      price: Number(quantities[1].price),
+      side: 'SELL',
+      positionSide: 'SHORT',
+      type: 'LIMIT',
+    })
+
+    await this.client.submitNewOrder({
+      symbol,
+      quantity: quantities[2].quantity * 2,
+      price: Number(quantities[2].price),
+      side: 'SELL',
+      positionSide: 'SHORT',
+      type: 'LIMIT',
+    })
+
+    await this.client.submitNewOrder({
+      symbol,
+      quantity: quantities[3].quantity * 3,
+      price: Number(quantities[3].price),
+      side: 'SELL',
+      positionSide: 'SHORT',
+      type: 'LIMIT',
     })
   }
 
