@@ -68,12 +68,13 @@ export class SmartTradingService {
 
     await this.binanceFuturesService.setupTrade(tradingCommandDto)
 
-    const { quantityPrecision, pricePrecision } =
+    const { quantityPrecision, pricePrecision, tickSize } =
       await this.binanceFuturesService.getDecimalsInfo(symbol)
     const { long, short } = await this.binanceFuturesService.calculateQuantity(
       tradingCommandDto,
       quantityPrecision,
       pricePrecision,
+      tickSize,
     )
 
     switch (side) {

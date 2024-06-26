@@ -5,6 +5,7 @@ import {
 } from '@japuk/models'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { OrderResult, USDMClient } from 'binance'
+import { SymbolPriceFilter } from 'binance/lib/types/shared'
 
 import { ConfigService } from '../core/config.service'
 import { LogService } from '../core/log.service'
@@ -66,14 +67,28 @@ export class BinanceFuturesService {
       throw new BadRequestException('symbol info is not found')
     }
 
-    const { pricePrecision, quantityPrecision } = foundSymbolInfo
-    return { pricePrecision, quantityPrecision }
+    const { pricePrecision, quantityPrecision, filters } = foundSymbolInfo
+
+    const filter = filters.find(
+      (filter) => filter.filterType === 'PRICE_FILTER',
+    ) as SymbolPriceFilter
+
+    if (!filter) {
+      throw new BadRequestException('filter is not found')
+    }
+
+    return {
+      pricePrecision,
+      quantityPrecision,
+      tickSize: Number(filter.tickSize),
+    }
   }
 
   async calculateQuantity(
     command: TradingCommandDto,
     quantityPrecision: number,
     pricePrecision: number,
+    tickSize: number,
   ) {
     const { symbol, amountUSD, leverage } = command
 
@@ -105,11 +120,12 @@ export class BinanceFuturesService {
     return {
       long: longPrices.map((price, idx) => {
         const quantityRatio = idx > 2 ? 3 : 1 + 0.5 * idx
+        const roundPrice = Math.round(price / tickSize) * tickSize
 
         return {
-          price: Number(price.toFixed(pricePrecision)),
+          price: Number(roundPrice.toFixed(pricePrecision)),
           quantity: Number(
-            ((amountUSD / price) * leverage * quantityRatio).toFixed(
+            ((amountUSD / roundPrice) * leverage * quantityRatio).toFixed(
               quantityPrecision,
             ),
           ),
@@ -117,11 +133,12 @@ export class BinanceFuturesService {
       }),
       short: shortPrices.map((price, idx) => {
         const quantityRatio = idx > 2 ? 3 : 1 + 0.5 * idx
+        const roundPrice = Math.round(price / tickSize) * tickSize
 
         return {
-          price: Number(price.toFixed(pricePrecision)),
+          price: Number(roundPrice.toFixed(pricePrecision)),
           quantity: Number(
-            ((amountUSD / price) * leverage * quantityRatio).toFixed(
+            ((amountUSD / roundPrice) * leverage * quantityRatio).toFixed(
               quantityPrecision,
             ),
           ),
