@@ -73,6 +73,7 @@ export class BinanceFuturesService {
   async calculateQuantity(
     command: TradingCommandDto,
     quantityPrecision: number,
+    pricePrecision: number,
   ) {
     const { symbol, amountUSD, leverage } = command
 
@@ -102,19 +103,27 @@ export class BinanceFuturesService {
     ]
 
     return {
-      long: longPrices.map((price) => {
+      long: longPrices.map((price, idx) => {
+        const quantityRatio = idx > 2 ? 3 : 1 + 0.5 * idx
+
         return {
-          price,
+          price: Number(price.toFixed(pricePrecision)),
           quantity: Number(
-            ((amountUSD / currentPrice) * leverage).toFixed(quantityPrecision),
+            ((amountUSD / price) * leverage * quantityRatio).toFixed(
+              quantityPrecision,
+            ),
           ),
         }
       }),
-      short: shortPrices.map((price) => {
+      short: shortPrices.map((price, idx) => {
+        const quantityRatio = idx > 2 ? 3 : 1 + 0.5 * idx
+
         return {
-          price,
+          price: Number(price.toFixed(pricePrecision)),
           quantity: Number(
-            ((amountUSD / currentPrice) * leverage).toFixed(quantityPrecision),
+            ((amountUSD / price) * leverage * quantityRatio).toFixed(
+              quantityPrecision,
+            ),
           ),
         }
       }),
@@ -137,8 +146,8 @@ export class BinanceFuturesService {
 
     await this.client.submitNewOrder({
       symbol,
-      quantity: quantities[1].quantity * 1.5,
-      price: Number(quantities[1].price),
+      quantity: quantities[1].quantity,
+      price: quantities[1].price,
       side: 'BUY',
       positionSide: 'LONG',
       type: 'LIMIT',
@@ -147,8 +156,8 @@ export class BinanceFuturesService {
 
     await this.client.submitNewOrder({
       symbol,
-      quantity: quantities[2].quantity * 2,
-      price: Number(quantities[2].price),
+      quantity: quantities[2].quantity,
+      price: quantities[2].price,
       side: 'BUY',
       positionSide: 'LONG',
       type: 'LIMIT',
@@ -157,8 +166,8 @@ export class BinanceFuturesService {
 
     await this.client.submitNewOrder({
       symbol,
-      quantity: quantities[3].quantity * 3,
-      price: Number(quantities[3].price),
+      quantity: quantities[3].quantity,
+      price: quantities[3].price,
       side: 'BUY',
       positionSide: 'LONG',
       type: 'LIMIT',
@@ -182,8 +191,8 @@ export class BinanceFuturesService {
 
     await this.client.submitNewOrder({
       symbol,
-      quantity: quantities[1].quantity * 1.5,
-      price: Number(quantities[1].price),
+      quantity: quantities[1].quantity,
+      price: quantities[1].price,
       side: 'SELL',
       positionSide: 'SHORT',
       type: 'LIMIT',
@@ -192,8 +201,8 @@ export class BinanceFuturesService {
 
     await this.client.submitNewOrder({
       symbol,
-      quantity: quantities[2].quantity * 2,
-      price: Number(quantities[2].price),
+      quantity: quantities[2].quantity,
+      price: quantities[2].price,
       side: 'SELL',
       positionSide: 'SHORT',
       type: 'LIMIT',
@@ -202,8 +211,8 @@ export class BinanceFuturesService {
 
     await this.client.submitNewOrder({
       symbol,
-      quantity: quantities[3].quantity * 3,
-      price: Number(quantities[3].price),
+      quantity: quantities[3].quantity,
+      price: quantities[3].price,
       side: 'SELL',
       positionSide: 'SHORT',
       type: 'LIMIT',
