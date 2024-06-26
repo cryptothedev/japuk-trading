@@ -13,6 +13,7 @@ import { AlertLogRepo } from '../database/alert-log/alert-log.repo'
 import { TickerDocument } from '../database/ticker/ticker.schema'
 import { TelegramBotService } from '../telegram/telegram-bot.service'
 import { TelegramClientService } from '../telegram/telegram-client.service'
+import { wait } from '../utils/wait'
 
 const indicatorRebalanceDict: Record<
   string,
@@ -153,6 +154,8 @@ reason: ${reason}`,
       amountUSD: amountUsd ? Number(amountUsd) : amountUsdFromSetting,
       leverage,
     }
+
+    await wait(5)
 
     await this.smartTradingService.futuresTrade(dto)
   }
