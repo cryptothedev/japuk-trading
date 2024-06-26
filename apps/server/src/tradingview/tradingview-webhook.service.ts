@@ -139,8 +139,8 @@ reason: ${reason}`,
     side: PositionSide,
     setting: SettingResponse,
   ) {
-    const ticker = actionBody
-    const { maxLeverage, futuresAmountUSD } = setting
+    const [ticker, amountUsd] = actionBody.split('_')
+    const { maxLeverage, futuresAmountUSD: amountUsdFromSetting } = setting
     const leverage = await this.smartTradingService.getAutoLeverage(
       ticker,
       side,
@@ -150,7 +150,7 @@ reason: ${reason}`,
     const dto: TradingCommandDto = {
       symbol: ticker,
       side,
-      amountUSD: futuresAmountUSD,
+      amountUSD: amountUsd ? Number(amountUsd) : amountUsdFromSetting,
       leverage,
     }
 
