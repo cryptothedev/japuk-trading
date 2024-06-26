@@ -105,6 +105,7 @@ export class BinanceFuturesService {
 
     const longPrices = [
       currentPrice,
+      currentPrice * 0.98,
       currentPrice * 0.95,
       currentPrice * 0.9,
       currentPrice * 0.85,
@@ -112,6 +113,7 @@ export class BinanceFuturesService {
 
     const shortPrices = [
       currentPrice,
+      currentPrice * 1.02,
       currentPrice * 1.05,
       currentPrice * 1.1,
       currentPrice * 1.15,
@@ -119,7 +121,7 @@ export class BinanceFuturesService {
 
     return {
       long: longPrices.map((price, idx) => {
-        const quantityRatio = idx > 2 ? 3 : 1 + 0.5 * idx
+        const quantityRatio = this.getQuantityRatio(idx)
         const roundPrice = Math.round(price / tickSize) * tickSize
 
         return {
@@ -132,7 +134,7 @@ export class BinanceFuturesService {
         }
       }),
       short: shortPrices.map((price, idx) => {
-        const quantityRatio = idx > 2 ? 3 : 1 + 0.5 * idx
+        const quantityRatio = this.getQuantityRatio(idx)
         const roundPrice = Math.round(price / tickSize) * tickSize
 
         return {
@@ -365,5 +367,21 @@ export class BinanceFuturesService {
       .join(',')
 
     console.log(bigSymbols)
+  }
+
+  private getQuantityRatio(idx: number) {
+    if (idx === 0 || idx === 1) {
+      return 1
+    }
+
+    if (idx === 2) {
+      return 1.5
+    }
+
+    if (idx === 3) {
+      return 2
+    }
+
+    return 3
   }
 }
