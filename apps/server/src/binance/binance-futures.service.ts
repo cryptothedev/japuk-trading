@@ -192,6 +192,16 @@ export class BinanceFuturesService {
       type: 'LIMIT',
       timeInForce: 'GTC',
     })
+
+    await this.client.submitNewOrder({
+      symbol,
+      quantity: quantities[4].quantity,
+      price: quantities[4].price,
+      side: 'BUY',
+      positionSide: 'LONG',
+      type: 'LIMIT',
+      timeInForce: 'GTC',
+    })
   }
 
   async short(
@@ -232,6 +242,16 @@ export class BinanceFuturesService {
       symbol,
       quantity: quantities[3].quantity,
       price: quantities[3].price,
+      side: 'SELL',
+      positionSide: 'SHORT',
+      type: 'LIMIT',
+      timeInForce: 'GTC',
+    })
+
+    await this.client.submitNewOrder({
+      symbol,
+      quantity: quantities[4].quantity,
+      price: quantities[4].price,
       side: 'SELL',
       positionSide: 'SHORT',
       type: 'LIMIT',
