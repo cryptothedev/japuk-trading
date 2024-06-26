@@ -142,6 +142,7 @@ export class BinanceFuturesService {
       side: 'BUY',
       positionSide: 'LONG',
       type: 'LIMIT',
+      timeInForce: 'GTC',
     })
 
     await this.client.submitNewOrder({
@@ -151,6 +152,7 @@ export class BinanceFuturesService {
       side: 'BUY',
       positionSide: 'LONG',
       type: 'LIMIT',
+      timeInForce: 'GTC',
     })
 
     await this.client.submitNewOrder({
@@ -160,6 +162,7 @@ export class BinanceFuturesService {
       side: 'BUY',
       positionSide: 'LONG',
       type: 'LIMIT',
+      timeInForce: 'GTC',
     })
   }
 
@@ -184,6 +187,7 @@ export class BinanceFuturesService {
       side: 'SELL',
       positionSide: 'SHORT',
       type: 'LIMIT',
+      timeInForce: 'GTC',
     })
 
     await this.client.submitNewOrder({
@@ -193,6 +197,7 @@ export class BinanceFuturesService {
       side: 'SELL',
       positionSide: 'SHORT',
       type: 'LIMIT',
+      timeInForce: 'GTC',
     })
 
     await this.client.submitNewOrder({
@@ -202,6 +207,7 @@ export class BinanceFuturesService {
       side: 'SELL',
       positionSide: 'SHORT',
       type: 'LIMIT',
+      timeInForce: 'GTC',
     })
   }
 
