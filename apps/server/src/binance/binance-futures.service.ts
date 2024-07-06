@@ -372,11 +372,12 @@ export class BinanceFuturesService {
       .filter((symbol) =>
         symbol.brackets.some((bracket) => {
           const bigPairCondition =
-            (bracket.initialLeverage === 20 &&
-              bracket.notionalCap >= 150_000) ||
-            (bracket.initialLeverage === 25 && bracket.notionalCap >= 250_000)
+            (bracket.initialLeverage === 20 && bracket.notionalCap >= 50000) ||
+            (bracket.initialLeverage === 30 && bracket.notionalCap >= 5000)
           const notIncludeBTCETH =
-            !symbol.symbol.includes('ETH') && !symbol.symbol.includes('BTC')
+            !symbol.symbol.includes('ETH') &&
+            !symbol.symbol.includes('BTC') &&
+            !symbol.symbol.includes('USDC')
 
           return bigPairCondition && notIncludeBTCETH
         }),

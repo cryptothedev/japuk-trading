@@ -21,10 +21,10 @@ export class AutoRiskControlService {
     private binanceFuturesService: BinanceFuturesService,
     private logger: LogService,
   ) {
-    // this.initData()
+    this.initData()
 
-    // this.binanceWsService.addListener(this.processMarkUpdateEvents)
-    // this.binanceWsService.addListener(this.processTradeFilledEvents)
+    this.binanceWsService.addListener(this.processMarkUpdateEvents)
+    this.binanceWsService.addListener(this.processTradeFilledEvents)
   }
 
   private async initData() {
@@ -170,8 +170,8 @@ export class AutoRiskControlService {
     )
     const stopPrice = Number(
       (side === 'LONG'
-          ? entryPrice * (1 + trailingPercent / 100)
-          : entryPrice * (1 - trailingPercent / 100)
+        ? entryPrice * (1 + trailingPercent / 100)
+        : entryPrice * (1 - trailingPercent / 100)
       ).toFixed(pricePrecision),
     )
 
@@ -192,7 +192,7 @@ export class AutoRiskControlService {
 
   private getTrailingPercent = (profit: number) => {
     if (profit === 1) {
-      return 0.25
+      return 0.15
     }
 
     if (profit >= 2) {
