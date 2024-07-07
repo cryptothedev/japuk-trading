@@ -157,8 +157,6 @@ reason: ${reason}`,
       leverage,
     }
 
-    await wait(30)
-
     await this.smartTradingService.futuresTrade(dto)
   }
 
