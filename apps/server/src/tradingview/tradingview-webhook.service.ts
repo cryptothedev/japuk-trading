@@ -141,15 +141,17 @@ reason: ${reason}`,
     setting: SettingResponse,
   ) {
     const [ticker, amountUsd] = actionBody.split('_')
+    const spotTicker = ticker.replace('.P', '').replace('.p', '')
+
     const { maxLeverage, futuresAmountUSD: amountUsdFromSetting } = setting
     const leverage = await this.smartTradingService.getAutoLeverage(
-      ticker,
+      spotTicker,
       side,
       0,
       maxLeverage,
     )
     const dto: TradingCommandDto = {
-      symbol: ticker,
+      symbol: spotTicker,
       side,
       amountUSD: amountUsd ? Number(amountUsd) : amountUsdFromSetting,
       leverage,
@@ -162,6 +164,7 @@ reason: ${reason}`,
 
   async closeFuturesPosition(actionBody: string, side: PositionSide) {
     const ticker = actionBody
-    await this.binanceFuturesService.closePosition(ticker, side)
+    const spotTicker = ticker.replace('.P', '').replace('.p', '')
+    await this.binanceFuturesService.closePosition(spotTicker, side)
   }
 }
