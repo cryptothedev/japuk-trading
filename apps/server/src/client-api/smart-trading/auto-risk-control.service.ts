@@ -122,7 +122,7 @@ export class AutoRiskControlService {
           )
 
           if (
-            trailingPercent < 1 ||
+            trailingPercent < 3 ||
             trailingPercent <= stopPriceProfitPercent
           ) {
             continue
@@ -191,12 +191,8 @@ export class AutoRiskControlService {
   }
 
   private getTrailingPercent = (profit: number) => {
-    if (profit === 1) {
-      return 0.15
-    }
-
-    if (profit >= 2) {
-      return profit / 2
+    if (profit >= 3) {
+      return profit / 3
     }
   }
 }
