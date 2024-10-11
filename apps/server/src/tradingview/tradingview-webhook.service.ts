@@ -143,7 +143,7 @@ reason: ${reason}`,
     const [ticker, amountUsd] = actionBody.split('_')
     const spotTicker = ticker.replace('.P', '').replace('.p', '')
 
-    console.log('spotTicker', spotTicker)
+    this.logger.info('spotTicker', spotTicker)
 
     const { maxLeverage, futuresAmountUSD: amountUsdFromSetting } = setting
     const leverage = await this.smartTradingService.getAutoLeverage(
@@ -159,7 +159,7 @@ reason: ${reason}`,
       leverage,
     }
 
-    console.log(dto)
+    this.logger.info(dto)
 
     await this.smartTradingService.futuresTrade(dto)
   }
