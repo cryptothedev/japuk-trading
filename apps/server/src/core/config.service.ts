@@ -59,4 +59,11 @@ export class ConfigService {
   getNukZingAnnId() {
     return process.env['NUKZING_ANN_ID'] as string
   }
+
+  getForexMetaApiConfig() {
+    return {
+      token: process.env['FOREX_TOKEN'] as string,
+      accountId: process.env['FOREX_ACCOUNT_ID'] as string,
+    }
+  }
 }

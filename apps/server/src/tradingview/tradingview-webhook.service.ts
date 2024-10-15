@@ -11,6 +11,7 @@ import { ConfigService } from '../core/config.service'
 import { LogService } from '../core/log.service'
 import { AlertLogRepo } from '../database/alert-log/alert-log.repo'
 import { TickerDocument } from '../database/ticker/ticker.schema'
+import { ForexService } from '../forex/forex.service'
 import { TelegramBotService } from '../telegram/telegram-bot.service'
 import { TelegramClientService } from '../telegram/telegram-client.service'
 import { wait } from '../utils/wait'
@@ -33,6 +34,7 @@ export class TradingviewWebhookService {
     private binanceFuturesService: BinanceFuturesService,
     private smartTradingService: SmartTradingService,
     private rebalanceService: RebalanceService,
+    private forexService: ForexService,
     private logger: LogService,
   ) {}
 
@@ -168,5 +170,24 @@ reason: ${reason}`,
     const ticker = actionBody
     const spotTicker = ticker.replace('.P', '').replace('.p', '')
     await this.binanceFuturesService.closePosition(spotTicker, side)
+  }
+
+  async forexTrade(actionBody: string, positionSide: PositionSide) {
+    const [symbol, lot, slPip] = actionBody.split('_')
+    const usedSymbol = `${symbol}m`
+
+    if (positionSide === 'LONG') {
+      await this.forexService.marketBuyOrder(
+        usedSymbol,
+        Number(lot),
+        Number(slPip),
+      )
+    } else {
+      await this.forexService.marketSellOrder(
+        usedSymbol,
+        Number(lot),
+        Number(slPip),
+      )
+    }
   }
 }

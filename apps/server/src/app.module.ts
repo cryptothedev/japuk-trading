@@ -6,6 +6,7 @@ import { AuthGuard } from './client-api/auth/auth.guard'
 import { ClientApiModule } from './client-api/client-api.module'
 import { CoreModule } from './core/core.module'
 import { DatabaseModule } from './database/database.module'
+import { ForexModule } from './forex/forex.module'
 import { TelegramModule } from './telegram/telegram.module'
 import { TradingviewModule } from './tradingview/tradingview.module'
 
@@ -17,6 +18,7 @@ import { TradingviewModule } from './tradingview/tradingview.module'
     TradingviewModule,
     ClientApiModule,
     TelegramModule,
+    ForexModule,
   ],
   controllers: [],
   providers: [

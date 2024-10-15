@@ -32,6 +32,12 @@ export const getWebhookAction = (message: string) => {
     case WebhookAction.CloseLong: {
       return WebhookAction.CloseLong
     }
+    case WebhookAction.ForexBuy: {
+      return WebhookAction.ForexBuy
+    }
+    case WebhookAction.ForexSell: {
+      return WebhookAction.ForexSell
+    }
     default: {
       throw new SwitchNotMatchError(`${message}:${webhookAction}`)
     }

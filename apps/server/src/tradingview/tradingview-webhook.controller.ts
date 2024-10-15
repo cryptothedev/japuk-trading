@@ -166,6 +166,22 @@ export class TradingviewWebhookController {
             )
             break
           }
+
+          case WebhookAction.ForexBuy: {
+            await this.tradingviewWebhookService.forexTrade(
+              actionBody,
+              PositionSide.LONG,
+            )
+            break
+          }
+
+          case WebhookAction.ForexSell: {
+            await this.tradingviewWebhookService.forexTrade(
+              actionBody,
+              PositionSide.SHORT,
+            )
+            break
+          }
         }
       } catch (e) {
         this.logger.error('failed to process the message', e, message)

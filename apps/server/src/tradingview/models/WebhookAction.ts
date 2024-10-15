@@ -25,4 +25,10 @@ export enum WebhookAction {
 
   // closelong_{{ticker}}
   CloseLong = 'clong',
+
+  // fbuy_{{ticker}}_{{lot}}_{{sl_pip}
+  ForexBuy = 'fbuy',
+
+  // fsell_{{ticker}}_{{lot}}_{{sl_pip}
+  ForexSell = 'fsell',
 }

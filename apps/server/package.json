@@ -32,6 +32,7 @@
     "body-parser": "^1.20.2",
     "dotenv": "^16.3.1",
     "lodash": "^4.17.21",
+    "metaapi.cloud-sdk": "^28.0.0",
     "mongoose": "^7.3.0",
     "reflect-metadata": "^0.1.13",
     "request-ip": "^3.3.0",
