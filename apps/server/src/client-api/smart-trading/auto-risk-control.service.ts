@@ -191,8 +191,8 @@ export class AutoRiskControlService {
   }
 
   private getTrailingPercent = (profit: number) => {
-    if (profit >= 3) {
-      return profit / 3
+    if (profit > 2) {
+      return 2
     }
   }
 }
