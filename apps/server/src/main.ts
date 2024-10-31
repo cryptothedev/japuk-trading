@@ -10,7 +10,7 @@ async function bootstrap() {
 
   app.use('/tradingview-webhook', bodyParser.text())
 
-  await app.get(ForexService).initConnection()
+  // await app.get(ForexService).initConnection()
 
   await app.listen(80)
 }
