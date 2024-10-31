@@ -122,7 +122,7 @@ export class AutoRiskControlService {
           )
 
           if (
-            trailingPercent < 3 ||
+            trailingPercent < 2 ||
             trailingPercent <= stopPriceProfitPercent
           ) {
             continue
