@@ -20,8 +20,6 @@ export class BinanceFuturesService {
   ) {
     const { apiKey, apiSecret } = this.configService.getBinanceFuturesConfig()
     this.client = new USDMClient({ api_key: apiKey, api_secret: apiSecret })
-
-    this.getBigPairs()
   }
 
   async setupTrade(command: TradingCommandDto) {
@@ -295,7 +293,7 @@ export class BinanceFuturesService {
       .filter((position) => position.symbol)
       .filter((position) => position.positionSide === side)
 
-    console.log(JSON.stringify(closingPositions, null, 2))
+    this.logger.info(JSON.stringify(closingPositions, null, 2))
 
     for (const position of closingPositions) {
       await this.client.submitNewOrder({
@@ -387,7 +385,7 @@ export class BinanceFuturesService {
       })
       .join(',')
 
-    console.log(bigSymbols)
+    this.logger.info(bigSymbols)
   }
 
   private getQuantityRatio(idx: number) {
