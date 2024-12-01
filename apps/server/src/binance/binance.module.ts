@@ -7,15 +7,7 @@ import { BinanceWsService } from './binance-ws.service'
 
 @Module({
   imports: [CoreModule],
-  providers: [
-    BinanceFuturesService,
-    BinanceSpotService,
-    BinanceWsService,
-  ],
-  exports: [
-    BinanceSpotService,
-    BinanceFuturesService,
-    BinanceWsService,
-  ],
+  providers: [BinanceFuturesService, BinanceSpotService, BinanceWsService],
+  exports: [BinanceSpotService, BinanceFuturesService, BinanceWsService],
 })
 export class BinanceModule {}

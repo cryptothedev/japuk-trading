@@ -8,7 +8,7 @@ export const theme = extendTheme(
       brand: baseTheme.colors.teal,
       primary: baseTheme.colors.teal,
       neutral: baseTheme.colors.gray,
-      danger: baseTheme.colors.red
+      danger: baseTheme.colors.red,
     },
   },
   proTheme,
