@@ -12,6 +12,6 @@ async function bootstrap() {
 
   // await app.get(ForexService).initConnection()
 
-  await app.listen(80)
+  await app.listen(3005)
 }
 bootstrap()

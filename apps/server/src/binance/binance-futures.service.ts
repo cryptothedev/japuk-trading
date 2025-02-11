@@ -103,18 +103,18 @@ export class BinanceFuturesService {
 
     const longPrices = [
       currentPrice,
-      currentPrice * 0.98,
-      currentPrice * 0.95,
+      currentPrice * 0.955,
+      currentPrice * 0.935,
+      currentPrice * 0.92,
       currentPrice * 0.9,
-      currentPrice * 0.85,
     ]
 
     const shortPrices = [
       currentPrice,
-      currentPrice * 1.02,
-      currentPrice * 1.05,
+      currentPrice * 1.045,
+      currentPrice * 1.065,
+      currentPrice * 1.08,
       currentPrice * 1.1,
-      currentPrice * 1.15,
     ]
 
     return {
@@ -161,26 +161,26 @@ export class BinanceFuturesService {
       type: 'MARKET',
     })
 
-    // await this.client.submitNewOrder({
-    //   symbol,
-    //   quantity: quantities[1].quantity,
-    //   price: quantities[1].price,
-    //   side: 'BUY',
-    //   positionSide: 'LONG',
-    //   type: 'LIMIT',
-    //   timeInForce: 'GTC',
-    // })
-    //
-    // await this.client.submitNewOrder({
-    //   symbol,
-    //   quantity: quantities[2].quantity,
-    //   price: quantities[2].price,
-    //   side: 'BUY',
-    //   positionSide: 'LONG',
-    //   type: 'LIMIT',
-    //   timeInForce: 'GTC',
-    // })
-    //
+    await this.client.submitNewOrder({
+      symbol,
+      quantity: quantities[1].quantity,
+      price: quantities[1].price,
+      side: 'BUY',
+      positionSide: 'LONG',
+      type: 'LIMIT',
+      timeInForce: 'GTC',
+    })
+
+    await this.client.submitNewOrder({
+      symbol,
+      quantity: quantities[2].quantity,
+      price: quantities[2].price,
+      side: 'BUY',
+      positionSide: 'LONG',
+      type: 'LIMIT',
+      timeInForce: 'GTC',
+    })
+
     // await this.client.submitNewOrder({
     //   symbol,
     //   quantity: quantities[3].quantity,
@@ -216,26 +216,26 @@ export class BinanceFuturesService {
       type: 'MARKET',
     })
 
-    // await this.client.submitNewOrder({
-    //   symbol,
-    //   quantity: quantities[1].quantity,
-    //   price: quantities[1].price,
-    //   side: 'SELL',
-    //   positionSide: 'SHORT',
-    //   type: 'LIMIT',
-    //   timeInForce: 'GTC',
-    // })
-    //
-    // await this.client.submitNewOrder({
-    //   symbol,
-    //   quantity: quantities[2].quantity,
-    //   price: quantities[2].price,
-    //   side: 'SELL',
-    //   positionSide: 'SHORT',
-    //   type: 'LIMIT',
-    //   timeInForce: 'GTC',
-    // })
-    //
+    await this.client.submitNewOrder({
+      symbol,
+      quantity: quantities[1].quantity,
+      price: quantities[1].price,
+      side: 'SELL',
+      positionSide: 'SHORT',
+      type: 'LIMIT',
+      timeInForce: 'GTC',
+    })
+
+    await this.client.submitNewOrder({
+      symbol,
+      quantity: quantities[2].quantity,
+      price: quantities[2].price,
+      side: 'SELL',
+      positionSide: 'SHORT',
+      type: 'LIMIT',
+      timeInForce: 'GTC',
+    })
+
     // await this.client.submitNewOrder({
     //   symbol,
     //   quantity: quantities[3].quantity,
