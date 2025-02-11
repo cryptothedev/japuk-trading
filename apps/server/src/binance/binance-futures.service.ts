@@ -103,17 +103,17 @@ export class BinanceFuturesService {
 
     const longPrices = [
       currentPrice,
-      currentPrice * 0.955,
-      currentPrice * 0.935,
-      currentPrice * 0.92,
+      currentPrice * 0.94,
+      currentPrice * 0.91,
+      currentPrice * 0.9,
       currentPrice * 0.9,
     ]
 
     const shortPrices = [
       currentPrice,
-      currentPrice * 1.045,
-      currentPrice * 1.065,
-      currentPrice * 1.08,
+      currentPrice * 1.06,
+      currentPrice * 1.09,
+      currentPrice * 1.1,
       currentPrice * 1.1,
     ]
 
