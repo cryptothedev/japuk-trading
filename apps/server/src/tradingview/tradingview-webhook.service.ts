@@ -1,20 +1,23 @@
-import { PositionSide, SettingResponse, TradingCommandDto } from '@japuk/models'
-import { Injectable } from '@nestjs/common'
+import { PositionSide, SettingResponse, TradingCommandDto } from '@japuk/models';
+import { Injectable } from '@nestjs/common';
 
-import { BinanceFuturesService } from '../binance/binance-futures.service'
-import { BinanceSpotService } from '../binance/binance-spot.service'
-import { AlertLogGateway } from '../client-api/alert-log/alert-log.gateway'
-import { AlertLogService } from '../client-api/alert-log/alert-log.service'
-import { RebalanceService } from '../client-api/rebalance/rebalance.service'
-import { SmartTradingService } from '../client-api/smart-trading/smart-trading.service'
-import { ConfigService } from '../core/config.service'
-import { LogService } from '../core/log.service'
-import { AlertLogRepo } from '../database/alert-log/alert-log.repo'
-import { TickerDocument } from '../database/ticker/ticker.schema'
-import { ForexService } from '../forex/forex.service'
-import { TelegramBotService } from '../telegram/telegram-bot.service'
-import { TelegramClientService } from '../telegram/telegram-client.service'
-import { wait } from '../utils/wait'
+
+
+import { BinanceFuturesService } from '../binance/binance-futures.service';
+import { BinanceSpotService } from '../binance/binance-spot.service';
+import { AlertLogGateway } from '../client-api/alert-log/alert-log.gateway';
+import { AlertLogService } from '../client-api/alert-log/alert-log.service';
+import { RebalanceService } from '../client-api/rebalance/rebalance.service';
+import { SmartTradingService } from '../client-api/smart-trading/smart-trading.service';
+import { ConfigService } from '../core/config.service';
+import { LogService } from '../core/log.service';
+import { AlertLogRepo } from '../database/alert-log/alert-log.repo';
+import { TickerDocument } from '../database/ticker/ticker.schema';
+import { ForexService } from '../forex/forex.service';
+import { TelegramBotService } from '../telegram/telegram-bot.service';
+import { TelegramClientService } from '../telegram/telegram-client.service';
+import { wait } from '../utils/wait';
+
 
 const indicatorRebalanceDict: Record<
   string,
@@ -44,9 +47,9 @@ export class TradingviewWebhookService {
 
     await this.telegramClientService.callToAlert(`alert: ${message}`)
 
-    // if (!dontSend) {
-    //   await this.telegramBotService.sendMessage(message, annId)
-    // }
+    if (!dontSend) {
+      await this.telegramBotService.sendMessage(message, annId)
+    }
   }
 
   async processAlert(actionBody: string) {
