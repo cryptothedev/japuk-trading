@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common'
 import { BinanceModule } from '../binance/binance.module'
 import { CoreModule } from '../core/core.module'
 import { DatabaseModule } from '../database/database.module'
+import { TelegramModule } from '../telegram/telegram.module'
 import { AlertLogController } from './alert-log/alert-log.controller'
 import { AlertLogGateway } from './alert-log/alert-log.gateway'
 import { AlertLogService } from './alert-log/alert-log.service'
@@ -20,7 +21,7 @@ import { TickerService } from './ticker/ticker.service'
 import { VolumeDetectGateway } from './volume-detect/volume-detect.gateway'
 
 @Module({
-  imports: [CoreModule, DatabaseModule, BinanceModule],
+  imports: [CoreModule, DatabaseModule, BinanceModule, TelegramModule],
   controllers: [
     AlertLogController,
     SettingController,

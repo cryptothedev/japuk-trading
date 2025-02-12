@@ -10,21 +10,24 @@ import {
 import { BinanceFuturesService } from '../../binance/binance-futures.service'
 import { BinanceWsService } from '../../binance/binance-ws.service'
 import { LogService } from '../../core/log.service'
+import { TelegramClientService } from '../../telegram/telegram-client.service'
 
 @Injectable()
 export class AutoRiskControlService {
   private positions: FuturesPosition[] = []
   private openOrders: OrderResult[] = []
   private inProgressDict: Record<string, boolean> = {}
+
   constructor(
     private binanceWsService: BinanceWsService,
     private binanceFuturesService: BinanceFuturesService,
+    private telegramClientService: TelegramClientService,
     private logger: LogService,
   ) {
-    // this.initData()
+    this.initData()
 
-    // this.binanceWsService.addListener(this.processMarkUpdateEvents)
-    // this.binanceWsService.addListener(this.processTradeFilledEvents)
+    this.binanceWsService.addListener(this.processMarkUpdateEvents)
+    this.binanceWsService.addListener(this.processTradeFilledEvents)
   }
 
   private async initData() {
@@ -81,8 +84,6 @@ export class AutoRiskControlService {
       return dict
     }, {} as Record<string, number>)
 
-    let updated = false
-
     for (const position of this.positions) {
       const { symbol, positionSide } = position
       const action = `${symbol}-${positionSide}`
@@ -100,61 +101,17 @@ export class AutoRiskControlService {
           positionSide === 'LONG'
             ? ((markPrice - entryPrice) / entryPrice) * 100
             : ((entryPrice - markPrice) / entryPrice) * 100
-        const profitFloor = Math.floor(percentProfit)
 
-        const trailingPercent = this.getTrailingPercent(profitFloor)
-
-        if (!trailingPercent) {
-          continue
-        }
-
-        const trailingSlOrder = this.openOrders.find(
-          (order) =>
-            order.symbol === symbol &&
-            order.positionSide === positionSide &&
-            order.type === 'STOP_MARKET',
-        )
-
-        if (trailingSlOrder) {
-          const stopPrice = Number(trailingSlOrder.stopPrice)
-          const stopPriceProfitPercent = Math.abs(
-            ((markPrice - stopPrice) / stopPrice) * 100,
+        if (percentProfit > 5) {
+          await this.telegramClientService.callToAlert(
+            `${symbol} is now ${percentProfit} %`,
           )
-
-          if (
-            trailingPercent < 2 ||
-            trailingPercent <= stopPriceProfitPercent
-          ) {
-            continue
-          }
-
-          await this.setStopMarket(
-            symbol,
-            [trailingSlOrder],
-            positionSide as PositionSide,
-            entryPrice,
-            trailingPercent,
-          )
-          updated = true
-        } else {
-          await this.setStopMarket(
-            symbol,
-            [],
-            positionSide as PositionSide,
-            entryPrice,
-            trailingPercent,
-          )
-          updated = true
         }
       } catch (error) {
         console.error(error)
       } finally {
         this.inProgressDict[action] = false
       }
-    }
-
-    if (updated) {
-      await this.initData()
     }
   }
 
