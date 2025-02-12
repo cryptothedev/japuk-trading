@@ -103,9 +103,9 @@ export class AutoRiskControlService {
             : ((entryPrice - markPrice) / entryPrice) * 100
 
         if (percentProfit > 5) {
-          await this.telegramClientService.callToAlert(
-            `${symbol} is now ${percentProfit} %`,
-          )
+          // await this.telegramClientService.callToAlert(
+          //   `${symbol} is now ${percentProfit} %`,
+          // )
         }
       } catch (error) {
         console.error(error)
