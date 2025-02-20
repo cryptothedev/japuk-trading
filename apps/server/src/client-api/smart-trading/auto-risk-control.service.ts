@@ -17,6 +17,7 @@ export class AutoRiskControlService {
   private positions: FuturesPosition[] = []
   private openOrders: OrderResult[] = []
   private inProgressDict: Record<string, boolean> = {}
+  private alreadyCalled: Record<string, boolean> = {}
 
   constructor(
     private binanceWsService: BinanceWsService,
@@ -31,13 +32,22 @@ export class AutoRiskControlService {
   }
 
   private async initData() {
-    await this.binanceFuturesService
-      .getAllOpenPositions()
-      .then((positions) => (this.positions = positions))
-    await this.binanceFuturesService
-      .getAllOpenOrders()
-      .then((orders) => (this.openOrders = orders))
+    await this.binanceFuturesService.getAllOpenPositions().then((positions) => {
+      this.positions = positions
+    })
+    await this.binanceFuturesService.getAllOpenOrders().then((orders) => {
+      this.openOrders = orders
+    })
     this.logger.info('init data')
+
+    const positionSymbols = this.positions.map((position) => position.symbol)
+    Object.keys(this.alreadyCalled).forEach((symbol) => {
+      if (!positionSymbols.includes(symbol)) {
+        this.alreadyCalled[symbol] = false
+      }
+    })
+
+    console.log(this.alreadyCalled)
   }
 
   private processTradeFilledEvents = async (event: WsFormattedMessage) => {
@@ -102,11 +112,14 @@ export class AutoRiskControlService {
             ? ((markPrice - entryPrice) / entryPrice) * 100
             : ((entryPrice - markPrice) / entryPrice) * 100
 
-        if (percentProfit > 5) {
-          // await this.telegramClientService.callToAlert(
-          //   `${symbol} is now ${percentProfit} %`,
-          // )
+        if (!this.alreadyCalled[symbol] && percentProfit > 6) {
+          this.alreadyCalled[symbol] = true
+          await this.telegramClientService.callToAlert(
+            `${symbol} is now ${percentProfit} %`,
+          )
         }
+
+        console.log(this.alreadyCalled)
       } catch (error) {
         console.error(error)
       } finally {
