@@ -117,9 +117,8 @@ export class AutoRiskControlService {
           await this.telegramClientService.callToAlert(
             `${symbol} is now ${percentProfit} %`,
           )
+          console.log(this.alreadyCalled)
         }
-
-        console.log(this.alreadyCalled)
       } catch (error) {
         console.error(error)
       } finally {
