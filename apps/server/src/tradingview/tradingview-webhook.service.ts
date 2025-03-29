@@ -48,7 +48,7 @@ export class TradingviewWebhookService {
     await this.telegramClientService.callToAlert(`alert: ${message}`)
 
     if (!dontSend) {
-      await this.telegramBotService.sendMessage(message, annId)
+      // await this.telegramBotService.sendMessage(message, annId)
     }
   }
 
