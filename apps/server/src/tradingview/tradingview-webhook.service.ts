@@ -167,6 +167,10 @@ reason: ${reason}`,
     this.logger.info(dto)
 
     await this.smartTradingService.futuresTrade(dto)
+
+    const alertMessage = `${side}: ${spotTicker} $${amountUsd} with $${leverage}x`
+
+    await this.telegramClientService.callToAlert(alertMessage)
   }
 
   async closeFuturesPosition(actionBody: string, side: PositionSide) {
