@@ -161,25 +161,25 @@ export class BinanceFuturesService {
       type: 'MARKET',
     })
 
-    await this.client.submitNewOrder({
-      symbol,
-      quantity: quantities[1].quantity,
-      price: quantities[1].price,
-      side: 'BUY',
-      positionSide: 'LONG',
-      type: 'LIMIT',
-      timeInForce: 'GTC',
-    })
-
-    await this.client.submitNewOrder({
-      symbol,
-      quantity: quantities[2].quantity,
-      price: quantities[2].price,
-      side: 'BUY',
-      positionSide: 'LONG',
-      type: 'LIMIT',
-      timeInForce: 'GTC',
-    })
+    // await this.client.submitNewOrder({
+    //   symbol,
+    //   quantity: quantities[1].quantity,
+    //   price: quantities[1].price,
+    //   side: 'BUY',
+    //   positionSide: 'LONG',
+    //   type: 'LIMIT',
+    //   timeInForce: 'GTC',
+    // })
+    //
+    // await this.client.submitNewOrder({
+    //   symbol,
+    //   quantity: quantities[2].quantity,
+    //   price: quantities[2].price,
+    //   side: 'BUY',
+    //   positionSide: 'LONG',
+    //   type: 'LIMIT',
+    //   timeInForce: 'GTC',
+    // })
 
     // await this.client.submitNewOrder({
     //   symbol,
@@ -216,25 +216,25 @@ export class BinanceFuturesService {
       type: 'MARKET',
     })
 
-    await this.client.submitNewOrder({
-      symbol,
-      quantity: quantities[1].quantity,
-      price: quantities[1].price,
-      side: 'SELL',
-      positionSide: 'SHORT',
-      type: 'LIMIT',
-      timeInForce: 'GTC',
-    })
-
-    await this.client.submitNewOrder({
-      symbol,
-      quantity: quantities[2].quantity,
-      price: quantities[2].price,
-      side: 'SELL',
-      positionSide: 'SHORT',
-      type: 'LIMIT',
-      timeInForce: 'GTC',
-    })
+    // await this.client.submitNewOrder({
+    //   symbol,
+    //   quantity: quantities[1].quantity,
+    //   price: quantities[1].price,
+    //   side: 'SELL',
+    //   positionSide: 'SHORT',
+    //   type: 'LIMIT',
+    //   timeInForce: 'GTC',
+    // })
+    //
+    // await this.client.submitNewOrder({
+    //   symbol,
+    //   quantity: quantities[2].quantity,
+    //   price: quantities[2].price,
+    //   side: 'SELL',
+    //   positionSide: 'SHORT',
+    //   type: 'LIMIT',
+    //   timeInForce: 'GTC',
+    // })
 
     // await this.client.submitNewOrder({
     //   symbol,

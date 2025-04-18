@@ -157,10 +157,13 @@ reason: ${reason}`,
       0,
       maxLeverage,
     )
+
+    const usedAmountUSD = amountUsd ? Number(amountUsd) : amountUsdFromSetting
+
     const dto: TradingCommandDto = {
       symbol: spotTicker,
       side,
-      amountUSD: amountUsd ? Number(amountUsd) : amountUsdFromSetting,
+      amountUSD: usedAmountUSD,
       leverage,
     }
 
@@ -168,7 +171,7 @@ reason: ${reason}`,
 
     await this.smartTradingService.futuresTrade(dto)
 
-    const alertMessage = `${side}: ${spotTicker} $${amountUsd} with $${leverage}x`
+    const alertMessage = `${side}: ${spotTicker} $${usedAmountUSD} with ${leverage}x`
 
     await this.telegramClientService.callToAlert(alertMessage)
   }
